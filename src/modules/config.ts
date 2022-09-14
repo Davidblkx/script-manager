@@ -8,14 +8,16 @@ export interface RuntimeConfig {
 }
 
 export interface RuntimeHandler {
-  type: RuntimeType;
+  readonly type: RuntimeType;
+  readonly config: Readonly<RuntimeConfig>;
+
   setConfig(config: RuntimeConfig): void;
-  init(): void;
-  sync(): Promise<void>;
-  import(): Promise<void>;
-  disable(): Promise<void>;
-  enable(): Promise<void>;
-  clean(): Promise<void>;
+  init(): Promise<boolean>;
+  sync(): Promise<boolean>;
+  import(): Promise<boolean>;
+  disable(): Promise<boolean>;
+  enable(): Promise<boolean>;
+  clean(): Promise<boolean>;
 }
 
 export interface SMXConfig {
@@ -23,4 +25,5 @@ export interface SMXConfig {
   repo: string;
   global: boolean;
   dotFiles: string[];
+  editor: string;
 }

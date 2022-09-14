@@ -2,6 +2,7 @@
   "imports": {
     "deno/": "https://deno.land/std@0.155.0/",
     "cliffy/": "https://deno.land/x/cliffy@v0.25.0/",
-    "getFiles": "https://deno.land/x/getfiles@v1.0.0/mod.ts"
+    "getFiles": "https://deno.land/x/getfiles@v1.0.0/mod.ts",
+    "tty": "https://deno.land/x/tty@0.1.4/mod.ts"
   }
 }
