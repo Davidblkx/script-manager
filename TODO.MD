@@ -5,7 +5,7 @@
 - [x] Initialize repo
   - [ ] Add BIN to global path (or at least to the path of the current shell)
 - [x] Open in editor
-  - [ ] Check for changes in remote before open in editor
+  - [ ] Check for changes in remote before open in editor (maybe a setting)
 - [ ] Reset current changes
 - [ ] Save current changes
 - [ ] Download changes from remote
