@@ -19,6 +19,7 @@ function fail(message?: string): GitOpResult {
 export class GitRepo {
   #root: string;
   #branch = 'master';
+  #remote = 'origin';
 
   constructor(root: string) {
     this.#root = root;
@@ -35,6 +36,32 @@ export class GitRepo {
   public async getBranch() {
     const result = await this.executeGitCommand('branch', '--show-current');
     return result.stdout.trim();
+  }
+
+  public async getRemote() {
+    const result = await this.executeGitCommand('remote', 'get-url', this.#remote);
+    if (!result.success) { throw new Error(result.stderr); }
+    return result.stdout.trim();
+  }
+
+  public async setRemote(remote: string) {
+    if (await this.hasRemote() && await this.getRemote() === remote) { return fail('remote is current remote'); }
+
+    const result = await this.executeGitCommand('remote', 'add', this.#remote, remote);
+    return result;
+  }
+
+  public fetch() {
+    return this.executeGitCommand('fetch', '-q');
+  }
+
+  public status() {
+    return this.executeGitCommand('status', '--porcelain', '-b');
+  }
+
+  public async hasRemote() {
+    const result = await this.executeGitCommand('remote', 'get-url', this.#remote);
+    return result.success;
   }
 
   public async isGitRepo(): Promise<boolean> {
@@ -54,6 +81,13 @@ export class GitRepo {
 
     await this.executeGitCommand('add', '-A');
     return await this.executeGitCommand('commit', '-m', 'Initial commit');
+  }
+
+  public async commit(message: string): Promise<GitOpResult> {
+    const addOp = await this.executeGitCommand('add', '-A');
+    if (!addOp.success) { return addOp; }
+
+    return await this.executeGitCommand('commit', '-m', message);
   }
 
   async executeGitCommand(...params: string[]) {

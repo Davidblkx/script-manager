@@ -15,9 +15,9 @@ export async function initialize(force: boolean) {
 
   const config: SMXConfig = {
     engines: [],
-    dotFiles: [],
     global: false,
     repo: '',
+    editor: 'code',
   };
 
   const isGlobal = (await prompt('Do you want to add bin to global PATH? (y/N)') === 'y');

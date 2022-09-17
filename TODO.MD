@@ -1,36 +1,47 @@
 # For release 1.0
 
-## Repo Management
+## Basic features
 
-- [x] Initialize repo
-  - [ ] Add BIN to global path (or at least to the path of the current shell)
-- [x] Open in editor
-  - [ ] Check for changes in remote before open in editor (maybe a setting)
-- [ ] Reset current changes
-- [ ] Save current changes
-- [ ] Download changes from remote
-- [ ] Upload changes to remote
-- [ ] Sync changes with local
-
-## Configuration
-
-- [ ] Allow to read and write configuration options
-- [ ] Add 'Editor' configuration option (default: 'code')
-
-## Logging
-
-- [ ] Implement custom logging that respects verbosity
-
-## Engines
-
-- [ ] Implement PWSH engine
-- [ ] Implement Fish engine
-- [ ] Implement Bash engine
-- [ ] Implement DotFiles engine
-
-## General
-
-- [ ] Implement basic shell call (windows and linux)
-
-# Ideas
-> This is a list of ideas for future releases. They are not yet implemented.
+- [ ] Logger
+  - [ ] Has levels
+  - [ ] Support collored output
+  - [ ] Add progress bar
+  - [ ] Allow to create LogEntry to be logged at a later time
+- [ ] Add core actions
+  - [ ] Get/Set folder (with move option)
+  - [ ] Get/Set editor (multiple args split by comma)
+  - [ ] Create/Delete Targets
+  - [ ] Get/Set default target
+  - [ ] Add nuke support
+- [ ] Add UNIT config support
+  - [ ] List available UNITS
+  - [ ] Add from a list of core UNITS
+  - [ ] Get description, name, status, all
+  - [ ] Enable/Disable UNIT
+  - [ ] Set/Delete UNIT settings
+- [ ] Add middleware support
+  - [ ] Add models for middleware progress
+  - [ ] Add middleware actions
+  - [ ] Add pre, post middleware actions
+  - [ ] Add force
+  - [ ] Generic actions?
+- [ ] UNITS
+  - [ ] BIN
+    - [ ] INIT: Create BIN folder, Add entry to readme
+    - [ ] SYNC: Set top files as executable
+    - [ ] NEW: Create new file in BIN folder
+  - [ ] GIT
+    - [ ] INIT: Create git repo, add entry to readme, set remote repository
+    - [ ] DOWNLOAD: pull rebase from remote
+    - [ ] UPLOAD: push to remote (allow to force)
+    - [ ] SYNC: pull rebase from remote, push force to remote
+    - [ ] CLEAN: remove all untracked files
+    - [ ] STATUS: show status
+    - [ ] use repository from target settings
+  - [ ] FileSync
+    - [ ] INIT: Create backup folder, add entry to readme
+    - [ ] STATUS: Show files/folders to sync
+    - [ ] SYNC: Copy files/folders to target folder
+    - [ ] NEW: Copy file/folder to backup folder
+    - [ ] DOWNLOAD: Copy files/folders from target folder to backup folder
+    - [ ] CLEAN: Remove files/folders from backup folder that are not in target folder
