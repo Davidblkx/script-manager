@@ -1,12 +1,12 @@
 # For release 1.0
 
 ## Basic features
-
-- [ ] Logger
-  - [ ] Has levels
-  - [ ] Support collored output
-  - [ ] Add progress bar
-  - [ ] Allow to create LogEntry to be logged at a later time
+-
+- [x] Logger
+  - [x] Has levels
+  - [x] Support collored output
+  - ~~[ ] Add progress bar~~
+  - ~~[ ] Allow to create LogEntry to be logged at a later time~~
 - [ ] Add core actions
   - [ ] Get/Set folder (with move option)
   - [ ] Get/Set editor (multiple args split by comma)
