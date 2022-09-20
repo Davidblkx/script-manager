@@ -8,11 +8,11 @@
   - ~~[ ] Add progress bar~~
   - ~~[ ] Allow to create LogEntry to be logged at a later time~~
 - [ ] Add core actions
-  - [ ] Get/Set folder (with move option)
+  - [x] Get/Set folder (with move option)
   - [ ] Get/Set editor (multiple args split by comma)
   - [ ] Create/Delete Targets
-  - [ ] Get/Set default target
-  - [ ] Add nuke support
+  - [ ] Get/Set default Targets
+  - [ ] Edit target configs
 - [ ] Add UNIT config support
   - [ ] List available UNITS
   - [ ] Add from a list of core UNITS
