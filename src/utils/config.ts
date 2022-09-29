@@ -1,11 +1,7 @@
 import { join } from 'deno/path/mod.ts';
 
 export function getHomeDirectory() {
-  if (Deno.build.os === 'windows') {
-    return Deno.env.get('USERPROFILE');
-  } else {
-    return Deno.env.get('HOME');
-  }
+  return Deno.env.get('HOME') || Deno.env.get('USERPROFILE') || Deno.env.get('HOMEPATH') || '~';
 }
 
 export function getConfigDirectory() {

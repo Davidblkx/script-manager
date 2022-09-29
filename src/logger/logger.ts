@@ -6,6 +6,7 @@ import {
   LogOption,
   LogOptionExtra,
 } from './models.ts';
+import { readLogLevel } from './args-reader.ts';
 
 export class LoggerService {
   private readonly _engines: LoggerEngine[] = [ProgressLogger];
@@ -13,6 +14,10 @@ export class LoggerService {
 
   public setLogLevel(v: number): void {
     this.logLevel = v;
+  }
+
+  public setLogLevelFromArgs(): void {
+    this.setLogLevel(readLogLevel());
   }
 
   public addEngine(engine: LoggerEngine): void {

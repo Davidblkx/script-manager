@@ -1,25 +1,34 @@
+// Module to manage the configuration file and related directories
+
 import { ensureDir } from 'deno/fs/mod.ts';
 import { join } from 'deno/path/mod.ts';
 
 import { defaultConfig } from './defaults.ts';
 import { SMXConfig } from './models.ts';
 import { logger } from '../logger.ts';
+import { getFileInfo } from '../utils/file.ts';
 
+/** Name of config file */
 const FILE_NAME = '.smx.json';
-
+/** Current config in memory */
 let _config: SMXConfig = defaultConfig;
-let _fromFile = false;
+/** Defines if current config was loaded from a file */
+let _loadedFromFile = false;
+/** Current config folder */
 let _folder: string | undefined;
 
+/** Get current config folder */
 export function getConfigPath(): string {
   if (!_folder) { return "NOT_DEFINED"; }
   return join(_folder, FILE_NAME);
 }
 
+/** Get current config */
 export function getConfig(): SMXConfig {
   return _config;
 }
 
+/** Set current config */
 export function setConfig(config: SMXConfig): void {
   _config = {
     ...defaultConfig,
@@ -27,12 +36,29 @@ export function setConfig(config: SMXConfig): void {
   }
 }
 
+export function loadConfigFromHome() {
+  return loadConfig(getHomeDirectory());
+}
+
+/**
+ * Load config and update current config file
+ * Properties are merged with default config
+ *
+ * If no config file is found, a new one is created
+ *
+ * If no folder is provided, returns current config in memory
+ * Must be called with a valid folder at least once
+ *
+ * @param folder Folder to load config from
+ * @param force Force to load config from file
+ * @returns Config object
+*/
 export async function loadConfig(folder?: string, force = false): Promise<SMXConfig> {
   if (folder) {
     _folder = folder;
   }
 
-  if (_fromFile && !force) {
+  if (_loadedFromFile && !force) {
     logger.debug('Loading config from memory');
     return _config;
   }
@@ -47,6 +73,13 @@ export async function loadConfig(folder?: string, force = false): Promise<SMXCon
   }
 }
 
+/**
+ * Save current config to file
+ *
+ * If no folder is provided, uses last folder used
+ *
+ * @param folder Folder to save config to
+ */
 export async function saveConfig(folder?: string): Promise<void> {
   const saveFolder = folder || _folder;
   if (!saveFolder) {
@@ -65,7 +98,7 @@ async function readAndUpdateConfig(folder: string): Promise<SMXConfig> {
   await Deno.writeTextFile(path, JSON.stringify(config, null, 2));
   setConfig(config);
 
-  _fromFile = true;
+  _loadedFromFile = true;
   return config;
 }
 
@@ -88,18 +121,23 @@ function parseConfig(content: string | undefined): Partial<SMXConfig> {
 }
 
 async function readFile(file: string): Promise<string | undefined> {
-  const info = await Deno.stat(file);
+  const info = await getFileInfo(file);
+
+  if (!info) return undefined;
 
   if (info.isFile) {
     logger.debug(`Reading config file from: ${file}`);
     return await Deno.readTextFile(file);
   }
 
-  logger.debug(`Config file not found: ${file}`);
-  return undefined;
+  throw new Error('Config file is not a valid file: ' + file);
 }
 
 async function ensureConfigPath(folder: string): Promise<string> {
   await ensureDir(folder);
   return join(folder, FILE_NAME);
+}
+
+export function getHomeDirectory() {
+  return Deno.env.get('HOME') || Deno.env.get('USERPROFILE') || Deno.env.get('HOMEPATH') || '~';
 }

@@ -1,14 +1,15 @@
 import { write } from 'tty';
 
-import { TOP } from '../utils.ts';
-import { getConfigPath } from '../../core/config.ts';
+import { getConfig } from '../../core/config.ts';
+import { rootCommand } from '../sub-command.ts';
 
-export const WHERE = TOP(
-  cmd => cmd.command('where')
-    .description('Show config path')
-    .action(async () => {
-      const path = getConfigPath();
-      await write(path, Deno.stdout);
-      await write('\n', Deno.stdout);
-    })
-);
+export function registerWhere() {
+  const where = rootCommand.createSubCommand('where', 'Print the path to the configuration file');
+  where.apply(e => e.action(printWhere));
+}
+
+async function printWhere() {
+  const path = getConfig().folder;
+  await write(path, Deno.stdout);
+  await write('\n', Deno.stdout);
+}
