@@ -9,7 +9,7 @@
   - ~~[ ] Allow to create LogEntry to be logged at a later time~~
 - [ ] Add core actions
   - [x] Get/Set folder (with move option)
-  - [ ] Get/Set editor (multiple args split by comma)
+  - [x] Get/Set editor (multiple args split by comma)
   - [ ] Create/Delete Targets
   - [ ] Get/Set default Targets
   - [ ] Edit target configs
