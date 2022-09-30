@@ -8,7 +8,8 @@ export class CommandBuilder<T> {
   #builders = new Set<(cmd: T) => void>();
 
   get canInvoke() {
-    return this.command.getName() === Deno.args[0];
+    return this.command.getName() === Deno.args[0]
+      || this.command.getAliases().includes(Deno.args[0]);
   }
 
   get command(): Command {
@@ -38,6 +39,11 @@ export class CommandBuilder<T> {
 
     const args = Deno.args.slice(1);
     return this.build().parse(args);
+  }
+
+  aliases(...aliases: string[]): this {
+    aliases.forEach(a => this.command.alias(a));
+    return this;
   }
 
   public static create<T>(name: string, desc: string, init: (cmd: ReturnType<typeof buildBaseCommand>) => T): CommandBuilder<T>

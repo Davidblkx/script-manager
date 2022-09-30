@@ -25,7 +25,11 @@ export class RootCommand {
     for (const sub of this.#subs) {
       const name = sub.command.getName();
       const desc = sub.command.getDescription();
-      root.command(name, desc);
+
+      const cmd = root.command(name, desc);
+
+      sub.command.getAliases()
+        .forEach(a => cmd.alias(a));
     }
     root.parse(Deno.args);
   }
