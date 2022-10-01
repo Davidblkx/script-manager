@@ -11,18 +11,14 @@
   - [x] Create/Delete Targets
   - [x] Get/Set default Targets
   - [x] Edit target configs
-- [ ] Add UNIT config support
-  - [ ] List available UNITS
-  - [ ] Add from a list of core UNITS
-  - [ ] Get description, name, status, all
-  - [ ] Enable/Disable UNIT
-  - [ ] Set/Delete UNIT settings
-- [ ] Add middleware support
-  - [ ] Add models for middleware progress
-  - [ ] Add middleware actions
-  - [ ] Add pre, post middleware actions
-  - [ ] Add force
-  - [ ] Generic actions?
+- [x] Add UNIT config support
+  - [x] List available UNITS
+  - [x] Add from a list of core UNITS
+  - [x] Get description, name, status, all
+  - [x] Enable/Disable UNIT
+  - [x] Set/Delete UNIT settings
+  - [ ] Add help support
+  - [ ] Add command hooks
 - [ ] UNITS
   - [ ] BIN
     - [ ] INIT: Create BIN folder, Add entry to readme
@@ -35,10 +31,3 @@
     - [ ] SYNC: pull rebase from remote, push force to remote
     - [ ] CLEAN: remove all untracked files
     - [ ] STATUS: show status
-  - [ ] FileSync
-    - [ ] INIT: Create backup folder, add entry to readme
-    - [ ] STATUS: Show files/folders to sync
-    - [ ] SYNC: Copy files/folders to target folder
-    - [ ] NEW: Copy file/folder to backup folder
-    - [ ] DOWNLOAD: Copy files/folders from target folder to backup folder
-    - [ ] CLEAN: Remove files/folders from backup folder that are not in target folder

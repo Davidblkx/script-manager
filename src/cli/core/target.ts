@@ -11,7 +11,7 @@ export function registerTargetCommands() {
       cmd =>
         cmd.option('-i, --id <target>', 'Target id to use', { conflicts: ['name'], global: true })
           .option('-n, --name <name>', 'Target name to use', { conflicts: ['id'], global: true })
-    ).aliases('trg');
+    ).aliases('t');
 
   target.apply(
     e => e.command('create')

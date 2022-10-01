@@ -2,12 +2,9 @@ export type Action = 'sync' | 'save' | 'clean' | 'status' | 'new' | 'download' |
 
 export interface UnitConfig {
   id: string;
-  name: string;
-  description: string;
   enabled: boolean;
   type: 'core' | 'module';
   settings: Record<string, string>;
-  hooks: string[];
 }
 
 export interface TargetConfig {

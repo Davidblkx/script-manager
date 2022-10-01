@@ -8,7 +8,7 @@ import { getEditor, setEditor, TARGET_NAME } from '../../core/editor.ts';
 export function registerConfigCommand() {
   const config = rootCommand
     .createSubCommand('config', 'Manage configuration')
-    .aliases('cfg');
+    .aliases('c');
 
   config.apply(e => e.action(printConfigPath));
 
