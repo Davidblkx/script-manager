@@ -7,6 +7,7 @@ export interface UnitConfig {
   enabled: boolean;
   type: 'core' | 'module';
   settings: Record<string, string>;
+  hooks: string[];
 }
 
 export interface TargetConfig {
@@ -16,8 +17,8 @@ export interface TargetConfig {
 }
 
 export interface SMXConfig {
-  targets: TargetConfig[];
-  units: UnitConfig[];
+  targets: Record<string, TargetConfig>;
+  units: Record<string, UnitConfig>;
   default: string;
   editor: string[];
   folder: string;

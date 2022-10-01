@@ -7,12 +7,14 @@ import { getHomeDirectory } from '../utils/config.ts';
 const folder = join(getHomeDirectory() || '~', '.smx');
 
 export const defaultConfig: SMXConfig = {
-  targets: [{
-    id: 'main',
-    name: 'Main',
-    settings: {},
-  }],
-  units: [],
+  targets: {
+    main: {
+      id: 'main',
+      name: 'Main',
+      settings: {},
+    }
+  },
+  units: {},
   default: 'main',
   editor: ['code', '$TARGET'],
   folder,

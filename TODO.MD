@@ -5,14 +5,12 @@
 - [x] Logger
   - [x] Has levels
   - [x] Support collored output
-  - ~~[ ] Add progress bar~~
-  - ~~[ ] Allow to create LogEntry to be logged at a later time~~
-- [ ] Add core actions
+- [x] Add core actions
   - [x] Get/Set folder (with move option)
   - [x] Get/Set editor (multiple args split by comma)
-  - [ ] Create/Delete Targets
-  - [ ] Get/Set default Targets
-  - [ ] Edit target configs
+  - [x] Create/Delete Targets
+  - [x] Get/Set default Targets
+  - [x] Edit target configs
 - [ ] Add UNIT config support
   - [ ] List available UNITS
   - [ ] Add from a list of core UNITS
@@ -28,7 +26,7 @@
 - [ ] UNITS
   - [ ] BIN
     - [ ] INIT: Create BIN folder, Add entry to readme
-    - [ ] SYNC: Set top files as executable
+    - [ ] SYNC: Set top files as executable and add to PATH
     - [ ] NEW: Create new file in BIN folder
   - [ ] GIT
     - [ ] INIT: Create git repo, add entry to readme, set remote repository
@@ -37,7 +35,6 @@
     - [ ] SYNC: pull rebase from remote, push force to remote
     - [ ] CLEAN: remove all untracked files
     - [ ] STATUS: show status
-    - [ ] use repository from target settings
   - [ ] FileSync
     - [ ] INIT: Create backup folder, add entry to readme
     - [ ] STATUS: Show files/folders to sync
