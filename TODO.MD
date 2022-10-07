@@ -37,3 +37,4 @@
 - [ ] Add support for multiple config files
 - [ ] Remove dependency on `tty`
 - [ ] Add settings manager to easly add new settings
+- [ ] BIN > init > refactor to use a generic way to add to PATH

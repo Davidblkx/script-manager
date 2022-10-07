@@ -1,5 +1,5 @@
 import { GitUnit } from './core/git.ts';
-import { BinUnit } from './core/bin.ts';
+import { BinUnit } from './core/bin/__.ts';
 import { Unit } from "./models.ts";
 import { getConfig } from '../core/config.ts';
 import { singleton } from '../utils/singleton.ts';
