@@ -21,7 +21,7 @@
   - [x] Add command hooks
 - [ ] UNITS
   - [ ] BIN
-    - [ ] INIT: Create BIN folder, Add entry to readme
+    - [ ] INIT: Create BIN folder, add to PATH
     - [ ] SYNC: Set top files as executable and add to PATH
     - [ ] NEW: Create new file in BIN folder
   - [ ] GIT

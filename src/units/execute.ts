@@ -71,6 +71,24 @@ export async function executeCommand(command: string, props: HookProps, unitIdOr
   }
 }
 
+export async function listCommands(unitIdOrName?: string): Promise<void> {
+  const units = getActiveUnits(unitIdOrName);
+  if (!units) { return; }
+
+  const hooks = new Set<string>();
+
+  for (const unit of units) {
+    Object.keys(unit.hooks)
+      .forEach(hook => hooks.add(hook));
+  }
+
+  await write(`Available commands:\n`, Deno.stdout);
+
+  for (const hook of hooks) {
+    await write(` - ${hook}\n`, Deno.stdout);
+  }
+}
+
 async function getHelpForCommand(command: string, unit: UnitStatus): Promise<string | undefined> {
   const hook = unit.hooks[command as unknown as Hook];
   if (!hook) {
@@ -92,7 +110,7 @@ function loadByCommandHook(command: string, unitIdOrName?: string): UnitStatus[]
     unitManager.getUnitById(unitIdOrName) || unitManager.getUnitByName(unitIdOrName)
     : unitManager.getUnits({ hook: command, enabled: true, installed: true });
 
-  if (!!unitIdOrName && !units) {
+  if (!!unitIdOrName && !isUnit(units)) {
     logger.error(`Unit ${unitIdOrName} not found`);
     return;
   }
@@ -102,9 +120,44 @@ function loadByCommandHook(command: string, unitIdOrName?: string): UnitStatus[]
     return;
   }
 
+  if (isUnit(units) && !units.enabled) {
+    logger.error(`Unit ${units.name} is not enabled`);
+    return;
+  }
+
   return Array.isArray(units)
     ? units
     : units
       ? [units]
       : undefined;
+}
+
+function getActiveUnits(unitIdOrName?: string): UnitStatus[] | undefined {
+  const unitManager = getUnitManager();
+  const units = unitIdOrName ?
+    unitManager.getUnitById(unitIdOrName) || unitManager.getUnitByName(unitIdOrName)
+    : unitManager.getUnits({ enabled: true, installed: true });
+
+  if (!!unitIdOrName && !isUnit(units)) {
+    logger.error(`Unit ${unitIdOrName} not found`);
+    return;
+  }
+
+  if (isUnit(units) && !units.enabled) {
+    logger.error(`Unit ${units.name} is not enabled`);
+    return;
+  }
+
+  return Array.isArray(units)
+    ? units
+    : units
+      ? [units]
+      : undefined;
+}
+
+function isUnit(e: unknown): e is UnitStatus {
+  return typeof e === 'object'
+    && e !== null
+    && 'id' in e
+    && 'name' in e;
 }
