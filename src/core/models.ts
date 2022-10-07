@@ -1,5 +1,3 @@
-export type Action = 'sync' | 'save' | 'clean' | 'status' | 'new' | 'download' | 'upload' | 'init' | 'update';
-
 export interface UnitConfig {
   id: string;
   enabled: boolean;

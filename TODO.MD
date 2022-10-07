@@ -17,8 +17,8 @@
   - [x] Get description, name, status, all
   - [x] Enable/Disable UNIT
   - [x] Set/Delete UNIT settings
-  - [ ] Add help support
-  - [ ] Add command hooks
+  - [x] Add help support
+  - [x] Add command hooks
 - [ ] UNITS
   - [ ] BIN
     - [ ] INIT: Create BIN folder, Add entry to readme
@@ -31,3 +31,9 @@
     - [ ] SYNC: pull rebase from remote, push force to remote
     - [ ] CLEAN: remove all untracked files
     - [ ] STATUS: show status
+
+# Improvements
+
+- [ ] Add support for multiple config files
+- [ ] Remove dependency on `tty`
+- [ ] Add settings manager to easly add new settings

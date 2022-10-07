@@ -2,7 +2,7 @@ import { write } from 'tty';
 import { Table } from 'cliffy/table/mod.ts'
 
 import { rootCommand } from '../sub-command.ts';
-import { getAvailableUnits, getSetting, installUnit, setEnableStatus, setSetting } from "../../units.ts";
+import { getUnitManager, getSetting, installUnit, setEnableStatus, setSetting } from "../../units.ts";
 
 export function registerUnitsCommands() {
   const units = rootCommand
@@ -12,19 +12,15 @@ export function registerUnitsCommands() {
   units.apply(
     e => e.command('list')
       .description('List all units available to install')
-      .option('-a, --all', 'List all units, including installed ones')
       .option('-r, --raw', 'Output raw data')
       .action(async (opt) => {
-        const units = opt.all ?
-          getAvailableUnits()
-          : getAvailableUnits().filter((u) => !u.installed);
+        const units = getUnitManager().getUnits()
 
-        const header = ['Id', 'Name', 'Description'];
-        if (opt.all) header.push('Status');
+        const header = ['Id', 'Name', 'Description', 'Status'];
 
         const body: string[][] = units.map((u) => {
           const row = [u.id, u.name, u.description];
-          if (opt.all) row.push(u.installed ? u.enabled ? 'enabled' : 'disabled' : 'not installed');
+          row.push(u.installed ? u.enabled ? 'enabled' : 'disabled' : 'not installed');
           return row;
         });
 

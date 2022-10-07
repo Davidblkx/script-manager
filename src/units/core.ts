@@ -1,40 +1,13 @@
 import { logger } from '../logger.ts';
 import { getConfig, setConfig, saveConfig } from '../core/config.ts';
-
-import type { Unit } from './models.ts';
-
-import { GitUnit } from './core/git.ts';
-import { BinUnit } from './core/bin.ts';
-
-export const CoreUnitList: Unit[] = [
-  BinUnit,
-  GitUnit,
-];
-
-export function getAvailableUnits() {
-  const list:(Unit & { enabled: boolean, installed: boolean })[] = [];
-  const cfg = getConfig();
-
-  for (const unit of CoreUnitList) {
-    const installed = !!cfg.units[unit.id];
-    const enabled = !!cfg.units[unit.id]?.enabled;
-    list.push({ ...unit, enabled, installed });
-  }
-
-  return list;
-}
+import { getUnitManager } from './unit-manager.ts';
 
 export async function installUnit(id: string, enabled = true): Promise<void> {
-  const units = getAvailableUnits();
+  const units = getUnitManager().getUnits({ installed: false });
   const cfg = getConfig();
   const unit = units.find((u) => u.id === id);
   if (!unit) {
     logger.error(`Unit ${id} not found`);
-    return;
-  }
-
-  if (cfg.units[id]) {
-    logger.error(`Unit ${id} already installed`);
     return;
   }
 
