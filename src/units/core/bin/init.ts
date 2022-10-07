@@ -4,9 +4,9 @@ import { ensureDir } from 'deno/fs/mod.ts';
 
 import { HookHandler, HookProps } from '../exports.ts';
 import { logger } from '../../../logger.ts';
-import { getTargetById, buildTargetPath } from '../../../core/target.ts';
 import { getHomeDirectory } from '../../../utils/config.ts';
 import { getFileInfo } from '../../../utils/file.ts';
+import { getBinPath } from "./utils.ts";
 
 const SEGMENT_START = '### SMX -- START --';
 const SEGMENT_END = '### SMX -- END --';
@@ -20,10 +20,7 @@ export const init: HookHandler = {
 async function handler(props: HookProps) {
   logger.debug('Initializing bin folder.');
   const binPath = getBinPath(props.target);
-  if (!binPath) {
-    logger.error('Could not find bin path for target: ' + props.target);
-    return;
-  }
+  if (!binPath) { return; }
 
   logger.debug(`Creating bin folder at ${binPath}.`);
   await ensureDir(binPath);
@@ -58,10 +55,7 @@ async function handler(props: HookProps) {
 
 async function dry(props: HookProps) {
   const binPath = getBinPath(props.target);
-  if (!binPath) {
-    logger.error('Could not find bin path for target: ' + props.target);
-    return;
-  }
+  if (!binPath) { return; }
 
   const folderInfo = await getFileInfo(binPath);
   if (!folderInfo) {
@@ -94,14 +88,6 @@ async function dry(props: HookProps) {
   if (shellList.nu) {
     await write(`  Nu: ${shellList.nu}\n`, Deno.stdout);
   }
-}
-
-function getBinPath(targetId: string) {
-  const target = getTargetById(targetId);
-  if (!target) { return undefined; }
-
-  const basePath = buildTargetPath(target);
-  return join(basePath, 'bin');
 }
 
 interface ShellToUse {

@@ -20,10 +20,10 @@
   - [x] Add help support
   - [x] Add command hooks
 - [ ] UNITS
-  - [ ] BIN
-    - [ ] INIT: Create BIN folder, add to PATH
-    - [ ] SYNC: Set top files as executable and add to PATH
-    - [ ] NEW: Create new file in BIN folder
+  - [x] BIN
+    - [x] INIT: Create BIN folder, add to PATH
+    - [x] SYNC: Set top files as executable and add to PATH
+    - [x] NEW: Create new file in BIN folder
   - [ ] GIT
     - [ ] INIT: Create git repo, add entry to readme, set remote repository
     - [ ] DOWNLOAD: pull rebase from remote

@@ -26,3 +26,8 @@ export function getEditor(): string {
   const config = getConfig();
   return config.editor.join(' ').replace(TARGET_NAME, '<PATH TO FILE>');
 }
+
+export function buildEditorArgs(filePath: string): string[] {
+  const config = getConfig();
+  return config.editor.map(arg => arg.replace(TARGET_NAME, filePath));
+}

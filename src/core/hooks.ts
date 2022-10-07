@@ -7,6 +7,7 @@ export interface HookProps {
   settings: Record<string, string>;
   target: string;
   args: string[];
+  exclusive: boolean;
 }
 
 export type HookHandler = {

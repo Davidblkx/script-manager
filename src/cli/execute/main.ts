@@ -23,6 +23,7 @@ export function registerMainExecuteCommand() {
               config,
               target: config.default,
               settings: config.targets[config.default]?.settings ?? {},
+              exclusive: !!opt.unit,
             }
 
             if (opt.dryRun) {
