@@ -25,16 +25,19 @@
     - [x] SYNC: Set top files as executable and add to PATH
     - [x] NEW: Create new file in BIN folder
   - [ ] GIT
-    - [ ] INIT: Create git repo, add entry to readme, set remote repository
-    - [ ] DOWNLOAD: pull rebase from remote
+    - [ ] INIT: Create git repo, add readme me, set remote repository
+    - [ ] UPDATE: pull rebase from remote
     - [ ] UPLOAD: push to remote (allow to force)
     - [ ] SYNC: pull rebase from remote, push force to remote
     - [ ] CLEAN: remove all untracked files
+    - [ ] SAVE: commit all changes
     - [ ] STATUS: show status
 
 # Improvements
 
+- [ ] Add x-*-* to execute any command
 - [ ] Add support for multiple config files
+- [ ] Add support for GLOBAL option
 - [ ] Remove dependency on `tty`
 - [ ] Add settings manager to easly add new settings
 - [ ] BIN > init > refactor to use a generic way to add to PATH

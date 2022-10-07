@@ -36,11 +36,11 @@ async function dry(props: HookProps) {
   const filePath = await getFile(props);
   if (!filePath) { return; }
 
-  await write(`Create file at ${filePath}`, Deno.stdout);
+  await write(`Create file at ${filePath}\n`, Deno.stdout);
   if (Deno.build.os !== 'windows') {
-    await write(`Add executable permissions to ${filePath}`, Deno.stdout);
+    await write(`Add executable permissions to ${filePath}\n`, Deno.stdout);
   }
-  await write(`Open file at ${filePath}`, Deno.stdout);
+  await write(`Open file at ${filePath}\n`, Deno.stdout);
 }
 
 function getFilePath(target: string, name: string) {
