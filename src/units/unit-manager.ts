@@ -3,6 +3,7 @@ import { BinUnit } from './core/bin/__.ts';
 import { Unit } from "./models.ts";
 import { getConfig } from '../core/config.ts';
 import { singleton } from '../utils/singleton.ts';
+import type { RootCommand } from '../root-command/root.ts';
 
 const manager = singleton(() => new UnitManager([]));
 
@@ -33,11 +34,10 @@ export class UnitManager {
 
   constructor(units: UnitStatus[]) {
     this.#units = units;
-    this.loadCoreUnits();
   }
 
-  public async loadPluginUnits(): Promise<void> {
-    // TODO: load plugin units
+  public async init(root: RootCommand): Promise<void> {
+    await this.loadCoreUnits(root);
   }
 
   public getUnits(filter: UnitFilter = {}): UnitStatus[] {
@@ -74,13 +74,22 @@ export class UnitManager {
     return this.#units.find((unit) => unit.name === name);
   }
 
-  private loadCoreUnits(): void {
+  private async loadCoreUnits(root: RootCommand): Promise<void> {
     const cfg = getConfig();
 
     for (const unit of CoreUnitList) {
       const installed = !!cfg.units[unit.id];
       const enabled = !!cfg.units[unit.id]?.enabled;
-      this.#units.push({ ...unit, enabled, installed, type: 'core' });
+
+      try {
+        if (enabled && unit.init) {
+          await unit.init(root);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.#units.push({ ...unit, enabled, installed, type: 'core' });
+      }
     }
   }
 }

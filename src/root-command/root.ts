@@ -1,4 +1,5 @@
 import { CommandBuilder, buildBaseCommand } from './sub-command.ts';
+import { getUnitManager } from '../units.ts';
 
 export class RootCommand {
   // deno-lint-ignore no-explicit-any
@@ -17,7 +18,9 @@ export class RootCommand {
     return cmd;
   }
 
-  run() {
+  async run() {
+    await getUnitManager().init(this);
+
     const sub = this.#subs.find(s => s.canInvoke);
     if (sub) { return sub.parse(); }
 
