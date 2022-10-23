@@ -35,7 +35,6 @@
 
 # Improvements
 
-- [ ] Add x-*-* to execute any command
 - [ ] Add support for multiple config files
 - [ ] Add support for GLOBAL option
 - [ ] Remove dependency on `tty`
