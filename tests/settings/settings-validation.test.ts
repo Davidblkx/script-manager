@@ -1,6 +1,6 @@
 import { assertEquals } from "deno/testing/asserts.ts";
-import { SettingsValidation } from '../../src/settings/settings-validation.ts';
-import { logger, LogLevel } from '../../src/logger.ts';
+import { SettingsValidation } from '../../src/modules/settings/settings-validation.ts';
+import { logger, LogLevel } from '../../src/modules/logger.ts';
 
 Deno.test('#SettingsValidation', async settingsSteps => {
 

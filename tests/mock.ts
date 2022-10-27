@@ -1,8 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
 import { assertEquals } from 'deno/testing/asserts.ts';
-import { logger, LogLevel } from '../src/logger.ts';
-
-logger.setLogLevel(LogLevel.disabled);
 
 function assertObjectEquals(actual: any, expected: any) {
   if (typeof actual !== 'object' && actual === expected) { return; }

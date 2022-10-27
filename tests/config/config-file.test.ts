@@ -1,9 +1,14 @@
-import { IFileHandler } from '../../src/infra/file-handler.ts';
-import { ConfigFile } from '../../src/config/config-file.ts';
-import { BaseConfig } from '../../src/config/model.ts';
+import { IFileHandler } from '../../src/modules/infra/file-handler.ts';
+import { ConfigFile } from '../../src/modules/config/config-file.ts';
+import { BaseConfig } from '../../src/modules/config/model.ts';
 import { mockAll } from '../mock.ts';
+import { logger, LogLevel } from '../../src/modules/logger.ts';
 
 Deno.test('#ConfigFile', async configSteps => {
+
+  const level = logger.logLevel;
+  logger.setLogLevel(LogLevel.disabled);
+
   await configSteps.step('.init', async initSteps => {
     await initSteps.step('reads the file', async () => {
       const handler = mockAll<IFileHandler>();
@@ -100,4 +105,6 @@ Deno.test('#ConfigFile', async configSteps => {
       handler.assertWasCalledWith('writeJsonFile', { p: 2 });
     });
   });
+
+  logger.setLogLevel(level);
 });

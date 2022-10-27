@@ -2,28 +2,28 @@
 
 ## Basic features
 -
-- [x] Logger
-  - [x] Has levels
-  - [x] Support collored output
-- [x] Add core actions
-  - [x] Get/Set folder (with move option)
-  - [x] Get/Set editor (multiple args split by comma)
-  - [x] Create/Delete Targets
-  - [x] Get/Set default Targets
-  - [x] Edit target configs
-- [x] Add UNIT config support
-  - [x] List available UNITS
-  - [x] Add from a list of core UNITS
-  - [x] Get description, name, status, all
-  - [x] Enable/Disable UNIT
-  - [x] Set/Delete UNIT settings
-  - [x] Add help support
-  - [x] Add command hooks
+- [X] Logger
+  - [X] Has levels
+  - [X] Support collored output
+- [ ] Add core actions
+  - [ ] Get/Set folder (with move option)
+  - [ ] Get/Set editor (multiple args split by comma)
+  - [ ] Create/Delete Targets
+  - [ ] Get/Set default Targets
+  - [ ] Edit target configs
+- [ ] Add UNIT config support
+  - [ ] List available UNITS
+  - [ ] Add from a list of core UNITS
+  - [ ] Get description, name, status, all
+  - [ ] Enable/Disable UNIT
+  - [ ] Set/Delete UNIT settings
+  - [ ] Add help support
+  - [ ] Add command hooks
 - [ ] UNITS
-  - [x] BIN
-    - [x] INIT: Create BIN folder, add to PATH
-    - [x] SYNC: Set top files as executable and add to PATH
-    - [x] NEW: Create new file in BIN folder
+  - [ ] BIN
+    - [ ] INIT: Create BIN folder, add to PATH
+    - [ ] SYNC: Set top files as executable and add to PATH
+    - [ ] NEW: Create new file in BIN folder
   - [ ] GIT
     - [ ] INIT: Create git repo, add readme me, set remote repository
     - [ ] UPDATE: pull rebase from remote
@@ -35,8 +35,7 @@
 
 # Improvements
 
-- [ ] Add support for multiple config files
-- [ ] Add support for GLOBAL option
+- [X] Add support for multiple config files
+- [X] Add support for GLOBAL option
 - [ ] Remove dependency on `tty`
-- [ ] Add settings manager to easly add new settings
-- [ ] BIN > init > refactor to use a generic way to add to PATH
+- [X] Add settings manager to easly add new settings
