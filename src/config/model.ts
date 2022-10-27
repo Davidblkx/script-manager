@@ -5,6 +5,8 @@ export type SettingValue = JsonValue | JsonValue[];
 
 export type EditorContext = 'file' | 'folder' | 'diff';
 
+export type SettingsObject = Record<string, SettingValue>;
+
 export interface UnitConfig {
   id: string;
   enabled: boolean;
@@ -14,7 +16,7 @@ export interface UnitConfig {
 export interface TargetConfig {
   id: string;
   name: string;
-  settings: Record<string, SettingValue>;
+  settings: SettingsObject;
 }
 
 export interface EditorConfig {
@@ -24,7 +26,7 @@ export interface EditorConfig {
 }
 
 export interface BaseConfig {
-  settings: Record<string, SettingValue>;
+  settings: SettingsObject;
   version: string;
 }
 

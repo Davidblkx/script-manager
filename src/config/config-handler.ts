@@ -2,14 +2,16 @@ import { GlobalConfigFile } from "./global-config.ts";
 import { LocalConfigFile } from "./local-config.ts";
 import { IFileHandlerFactory } from '../infra/file-handler.ts';
 import { logger } from '../logger.ts';
+import { ConfigFile } from "./config-file.ts";
+import { GlobalConfig, LocalConfig } from "./model.ts";
 
 export interface IConfigHandler {
   loadGlobalConfig(path?: string): Promise<void>;
   loadLocalConfig(path: string): Promise<void>;
   setTargetId(targetId: string): void
 
-  readonly globalFile: GlobalConfigFile | undefined;
-  readonly localFile: LocalConfigFile | undefined
+  readonly globalFile: ConfigFile<GlobalConfig> | undefined;
+  readonly localFile: ConfigFile<LocalConfig> | undefined
   readonly targetId: string | undefined;
 }
 
@@ -23,11 +25,11 @@ export class ConfigHandler implements IConfigHandler {
     this.#factory = factory;
   }
 
-  get globalFile(): GlobalConfigFile | undefined {
+  get globalFile(): ConfigFile<GlobalConfig> | undefined {
     return this.#globalFile;
   }
 
-  get localFile(): LocalConfigFile | undefined {
+  get localFile(): ConfigFile<LocalConfig> | undefined {
     return this.#localFile;
   }
 
