@@ -1,11 +1,13 @@
 import { IConfigHandler } from '../modules/config.ts';
-import { logger } from '../modules/logger.ts';
+import { logger, LogLevel } from '../modules/logger.ts';
 import { ISettingsManager } from '../modules/settings.ts';
 
 export interface InitOptions {
   globalConfigPath: string;
-  localConfigPath?: string;
-  initLocalPath?: boolean;
+  localConfigPath: string;
+  initLocalPath: boolean;
+  logLevel: LogLevel;
+  quiet: boolean;
 }
 
 export interface IScriptManager {

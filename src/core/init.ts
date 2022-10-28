@@ -7,9 +7,10 @@ import { buildDefaultOptions, initConfig, initSettingsManager } from './init/__.
 export async function initScritpManager(initOptions?: Partial<InitOptions>): Promise<IScriptManager> {
   const options = {
     ...buildDefaultOptions(),
-    ...(initOptions ?? {})
+    ...(cleanUndefined(initOptions)),
   }
 
+  logger.setLogLevel(options.logLevel);
   const config = await initConfig(options);
   const settings = initSettingsManager(config);
 
@@ -18,4 +19,17 @@ export async function initScritpManager(initOptions?: Partial<InitOptions>): Pro
     config,
     settings,
   };
+}
+
+function cleanUndefined<T>(opt?: T): Partial<T> {
+  // deno-lint-ignore no-explicit-any
+  const input: any = opt ?? {};
+
+  for (const key of Object.keys(input)) {
+    if (input[key] === undefined) {
+      delete input[key];
+    }
+  }
+
+  return input;
 }

@@ -1,5 +1,6 @@
 import { InitOptions } from '../model.ts';
 import { join } from 'deno/path/mod.ts';
+import { LogLevel } from "../../modules/logger.ts";
 
 export function buildDefaultOptions(): InitOptions {
   const homeDir = Deno.env.get('HOME') ?? Deno.env.get('USERPROFILE') ?? Deno.env.get('HOMEPATH') ?? Deno.cwd();
@@ -10,5 +11,7 @@ export function buildDefaultOptions(): InitOptions {
     globalConfigPath,
     localConfigPath,
     initLocalPath: true,
+    logLevel: LogLevel.warning,
+    quiet: false,
   }
 }

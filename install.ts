@@ -1,4 +1,3 @@
-import { buildRootCommand } from './src/cli.ts';
+import { initCli } from './src/cli.ts';
 
-const cmd = await buildRootCommand();
-await cmd.run();
+await initCli();
