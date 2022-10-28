@@ -1,8 +1,8 @@
-import { IFileHandler } from '../../src/modules/infra/file-handler.ts';
-import { ConfigFile } from '../../src/modules/config/config-file.ts';
-import { BaseConfig } from '../../src/modules/config/model.ts';
-import { mockAll } from '../mock.ts';
-import { logger, LogLevel } from '../../src/modules/logger.ts';
+import { IFileHandler } from '../../../src/modules/infra/file-handler.ts';
+import { ConfigFile } from '../../../src/modules/config/config-file.ts';
+import { BaseConfig } from '../../../src/modules/config/model.ts';
+import { mockAll } from '../../mock.ts';
+import { logger, LogLevel } from '../../../src/modules/logger.ts';
 
 Deno.test('#ConfigFile', async configSteps => {
 
@@ -14,7 +14,7 @@ Deno.test('#ConfigFile', async configSteps => {
       const handler = mockAll<IFileHandler>();
       const initialConfig = {} as BaseConfig;
 
-      const file = new ConfigFile({ path: '', initialConfig, fileFactory: () => handler.get() });
+      const file = new ConfigFile({ path: ['', 'folder'], initialConfig, fileFactory: () => handler.get() });
 
       await file.init();
 
@@ -25,7 +25,7 @@ Deno.test('#ConfigFile', async configSteps => {
       const handler = mockAll<IFileHandler>();
       const initialConfig = {} as BaseConfig;
 
-      const file = new ConfigFile({ path: '', initialConfig, fileFactory: () => handler.get() });
+      const file = new ConfigFile({ path: ['', 'folder'], initialConfig, fileFactory: () => handler.get() });
 
       await file.init();
 
@@ -52,7 +52,7 @@ Deno.test('#ConfigFile', async configSteps => {
         version: '2.0.0',
       }
 
-      const file = new ConfigFile({ path: '', initialConfig, fileFactory: () => handler.get() });
+      const file = new ConfigFile({ path: ['', 'folder'], initialConfig, fileFactory: () => handler.get() });
 
       await file.init();
 
@@ -72,7 +72,7 @@ Deno.test('#ConfigFile', async configSteps => {
       const handler = mockAll<IFileHandler>();
       const initialConfig = {} as BaseConfig;
 
-      const file = new ConfigFile({ path: '', initialConfig, fileFactory: () => handler.get() });
+      const file = new ConfigFile({ path: ['', 'folder'], initialConfig, fileFactory: () => handler.get() });
 
       await file.save();
 
@@ -85,7 +85,7 @@ Deno.test('#ConfigFile', async configSteps => {
       const handler = mockAll<IFileHandler>();
       const initialConfig = {} as BaseConfig;
 
-      const file = new ConfigFile({ path: '', initialConfig, fileFactory: () => handler.get() });
+      const file = new ConfigFile({ path: ['', 'folder'], initialConfig, fileFactory: () => handler.get() });
 
       await file.reload();
 
@@ -98,7 +98,7 @@ Deno.test('#ConfigFile', async configSteps => {
       const handler = mockAll<IFileHandler>();
       const initialConfig = { p: 1 } as unknown as BaseConfig;
 
-      const file = new ConfigFile({ path: '', initialConfig, fileFactory: () => handler.get() });
+      const file = new ConfigFile({ path: ['', 'folder'], initialConfig, fileFactory: () => handler.get() });
 
       await file.setConfig({ p: 2 } as unknown as BaseConfig);
 

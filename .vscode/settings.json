@@ -1,4 +1,5 @@
 {
     "deno.enable": true,
-    "deno.unstable": true
+    "deno.unstable": true,
+    "peacock.remoteColor": "#9a673b"
 }

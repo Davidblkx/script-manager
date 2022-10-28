@@ -3,7 +3,7 @@ import { IFileHandlerFactory, IFileHandler, FileHandler } from '../infra/file-ha
 import { logger } from '../logger.ts';
 
 export interface ConfigFileOptions<T extends BaseConfig> {
-  path: string;
+  path: [string, 'file' | 'folder'];
   initialConfig: T;
   fileFactory?: IFileHandlerFactory;
 }
@@ -17,8 +17,8 @@ export class ConfigFile<T extends BaseConfig> {
   constructor(options: ConfigFileOptions<T>) {
     this.#config = this.#initialConfig = options.initialConfig;
     this.#fileHandler = options.fileFactory
-      ? options.fileFactory(options.path)
-      : new FileHandler(options.path);
+      ? options.fileFactory(options.path[0], options.path[1])
+      : new FileHandler(options.path[0], options.path[1]);
   }
 
   public async init(): Promise<void> {

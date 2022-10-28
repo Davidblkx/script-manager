@@ -6,7 +6,7 @@ import { ConfigFile } from "./config-file.ts";
 import { GlobalConfig, LocalConfig } from "./model.ts";
 
 export interface IConfigHandler {
-  loadGlobalConfig(path?: string): Promise<void>;
+  loadGlobalConfig(path: [string, 'file' | 'folder'], localPath?: string): Promise<void>;
   loadLocalConfig(path: string): Promise<void>;
   setTargetId(targetId: string): void
 
@@ -37,9 +37,9 @@ export class ConfigHandler implements IConfigHandler {
     return this.#targetId;
   }
 
-  async loadGlobalConfig(path = ".smx.json"): Promise<void> {
+  async loadGlobalConfig(path: [string, 'file' | 'folder'], localPath?: string): Promise<void> {
     logger.debug(`Loading global config from ${path}`);
-    this.#globalFile = await GlobalConfigFile.load(path, this.#factory);
+    this.#globalFile = await GlobalConfigFile.load(path, this.#factory, localPath);
   }
 
   async loadLocalConfig(path: string): Promise<void> {

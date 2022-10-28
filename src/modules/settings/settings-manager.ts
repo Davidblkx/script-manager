@@ -23,6 +23,10 @@ export class SettingsManager implements ISettingsManager {
     return this.#targetId ?? this.#configHandler?.targetId;
   }
 
+  get validator(): ISettingsValidation {
+    return this.#validator;
+  }
+
   constructor({
     configHandler,
     validator,

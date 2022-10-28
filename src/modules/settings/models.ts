@@ -14,6 +14,8 @@ export interface ISettingsManager {
   deleteSetting(key: string): Promise<boolean>
   deleteSetting(key: string, target: SettingTarget): Promise<boolean>
   deleteSetting(key: string, target: 'local', targetId: string): Promise<boolean>
+
+  readonly validator: ISettingsValidation;
 }
 
 export interface ISettingsValidation {

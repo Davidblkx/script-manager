@@ -1,10 +1,10 @@
 import { assertEquals } from "deno/testing/asserts.ts";
-import { mock } from "../mock.ts";
-import { ISettingsValidation } from '../../src/modules/settings/models.ts';
-import { SettingsManager } from '../../src/modules/settings/settings-manager.ts';
-import type { ConfigFile } from "../../src/modules/config/config-file.ts";
-import { LocalConfig, GlobalConfig } from "../../src/modules/config/model.ts";
-import { logger, LogLevel } from '../../src/modules/logger.ts';
+import { mock } from "../../mock.ts";
+import { ISettingsValidation } from '../../../src/modules/settings/models.ts';
+import { SettingsManager } from '../../../src/modules/settings/settings-manager.ts';
+import type { ConfigFile } from "../../../src/modules/config/config-file.ts";
+import { LocalConfig, GlobalConfig } from "../../../src/modules/config/model.ts";
+import { logger, LogLevel } from '../../../src/modules/logger.ts';
 
 Deno.test('#SettingsManager', async settingsSteps => {
 

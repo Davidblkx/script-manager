@@ -1,11 +1,11 @@
 import { ensureDir } from 'deno/fs/ensure_dir.ts';
-import { join } from 'deno/path/mod.ts';
+import { join, parse } from 'deno/path/mod.ts';
 import { logger } from '../logger.ts';
 import { getFileInfo } from '../utils/file.ts';
 
 export const CONFIG_FILE_NAME = '.smx.json';
 
-export type IFileHandlerFactory = (path: string) => IFileHandler;
+export type IFileHandlerFactory = ((path: string) => IFileHandler) | ((path: string, type: 'file' | 'folder') => IFileHandler);
 
 export interface IFileHandler {
   readonly path: string;
@@ -24,9 +24,10 @@ export class FileHandler implements IFileHandler {
     return this._path;
   }
 
-  constructor(folder: string) {
+  constructor(path: string, type: 'file' | 'folder' = 'folder') {
+    const [folder, name] = this.getPathPair(path, type);
     this._folder = folder;
-    this._path = join(folder, CONFIG_FILE_NAME);
+    this._path = join(folder, name ?? CONFIG_FILE_NAME);
   }
 
   public async readTextFile(defaultValue = ''): Promise<string> {
@@ -81,5 +82,14 @@ export class FileHandler implements IFileHandler {
     }
   }
 
-  public static create = (path: string): IFileHandler => new FileHandler(path);
+  private getPathPair(path: string, type: 'file' | 'folder'): [string, string] {
+    if (type === 'file') {
+      const info = parse(path);
+      return [info.dir, info.base];
+    } else {
+      return [path, CONFIG_FILE_NAME];
+    }
+  }
+
+  public static create = (path: string): IFileHandler => new FileHandler(path, 'folder');
 }

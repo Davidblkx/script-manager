@@ -1,3 +1,4 @@
+import { APP_VERSION } from "../../version.ts";
 import { LocalConfig } from "./model.ts";
 import { ConfigFile, ConfigFileOptions } from "./config-file.ts";
 import { IFileHandlerFactory } from '../infra/file-handler.ts';
@@ -26,7 +27,7 @@ export const DEFAULT_LOCAL_CONFIG: LocalConfig = {
     }
   },
   units: {},
-  version: "0.1.0",
+  version: APP_VERSION,
 };
 
 export class LocalConfigFile extends ConfigFile<LocalConfig> {
@@ -36,7 +37,7 @@ export class LocalConfigFile extends ConfigFile<LocalConfig> {
 
   public static async load(path: string, fileFactory?: IFileHandlerFactory): Promise<LocalConfigFile> {
     const configFile = new LocalConfigFile({
-      path,
+      path: [path, 'folder'],
       fileFactory,
       initialConfig: DEFAULT_LOCAL_CONFIG,
     });
