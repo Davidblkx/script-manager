@@ -8,6 +8,7 @@ export interface InitOptions {
   initLocalPath: boolean;
   logLevel: LogLevel;
   quiet: boolean;
+  targetId?: string;
 }
 
 export interface IScriptManager {

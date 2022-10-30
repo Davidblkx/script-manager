@@ -1,7 +1,7 @@
 import { parseFlags } from 'cliffy/flags/flags.ts';
 import { initScritpManager } from '../core/init.ts';
 import { LogLevel } from '../modules/logger.ts';
-import type { IScriptManager } from '../core/model.ts';
+import type { IScriptManager, InitOptions } from '../core/model.ts';
 
 class CliSMXInstance implements IScriptManager {
   #smx: IScriptManager | undefined;
@@ -24,7 +24,7 @@ class CliSMXInstance implements IScriptManager {
     this.#smx = await initScritpManager(options);
   }
 
-  #getInitOptions() {
+  #getInitOptions(): InitOptions {
     const opt = this.#parseFlags();
     return {
       globalConfigPath: opt.config,
@@ -32,6 +32,7 @@ class CliSMXInstance implements IScriptManager {
       localConfigPath: opt.local,
       logLevel: opt.quiet ? LogLevel.disabled : opt.verbose ? LogLevel.debug : LogLevel.warning,
       quiet: opt.quiet,
+      targetId: opt.targetId
     }
   }
 
@@ -61,6 +62,10 @@ class CliSMXInstance implements IScriptManager {
         }, {
           name: 'noLocal',
           type: 'boolean',
+        },{
+          name: 'targetId',
+          aliases: ['t'],
+          type: 'string',
         }]
       }
     );

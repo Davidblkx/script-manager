@@ -12,7 +12,7 @@ export async function initScritpManager(initOptions?: Partial<InitOptions>): Pro
 
   logger.setLogLevel(options.logLevel);
   const config = await initConfig(options);
-  const settings = initSettingsManager(config);
+  const settings = initSettingsManager(config, options);
 
   return {
     logger,
