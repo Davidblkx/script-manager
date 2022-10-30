@@ -13,5 +13,9 @@ export const INTERNAL_SETTINGS: SettingDefinition[] = [
   {
     key: settingKeys.editor.diff.tool,
     types: 'string',
+  },
+  {
+    key: settingKeys.targets.default,
+    types: 'string',
   }
 ];

@@ -8,6 +8,7 @@ export const DEFAULT_LOCAL_CONFIG: LocalConfig = {
   settings: {
     [settingKeys.editor.files.tool]: "code",
     [settingKeys.editor.folder.tool]: "code",
+    [settingKeys.targets.default]: "main",
   },
   editors: {
     code: {

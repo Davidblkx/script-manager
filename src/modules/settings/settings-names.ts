@@ -9,5 +9,8 @@ export const settingKeys = {
     diff: {
       tool: 'editor.diff.tool',
     },
+  },
+  targets: {
+    default: 'targets.default',
   }
 }

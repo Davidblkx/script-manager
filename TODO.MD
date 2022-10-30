@@ -6,8 +6,6 @@
   - [X] Has levels
   - [X] Support collored output
 - [ ] Add core actions
-  - [ ] Get/Set folder (with move option)
-  - [ ] Get/Set editor (multiple args split by comma)
   - [ ] Create/Delete Targets
   - [ ] Get/Set default Targets
   - [ ] Edit target configs
