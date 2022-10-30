@@ -2,7 +2,7 @@ import { tty } from 'cliffy/ansi/mod.ts';
 import { Table } from 'cliffy/table/table.ts';
 
 import type { RootCommand, RootOptions } from './__.ts';
-import { loadSMX } from '../load-smx.ts';
+import { CliSMX } from '../cli-smx.ts';
 
 export function where(cmd: RootCommand) {
   cmd.command('where')
@@ -10,13 +10,11 @@ export function where(cmd: RootCommand) {
     .action(printWhere);
 }
 
-async function printWhere(o: RootOptions) {
+function printWhere(o: RootOptions) {
   if (o.quiet) { return; }
 
-  const sm = await loadSMX(o);
-
-  const global = sm.config.globalFile?.path;
-  const local = sm.config.localFile?.path;
+  const global = CliSMX.config.globalFile?.path;
+  const local = CliSMX.config.localFile?.path;
 
   const output: string[][] = [];
 

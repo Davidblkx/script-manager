@@ -11,7 +11,7 @@ export interface InitOptions {
 }
 
 export interface IScriptManager {
-  logger: typeof logger;
-  config: IConfigHandler;
-  settings: ISettingsManager;
+  readonly logger: typeof logger;
+  readonly config: IConfigHandler;
+  readonly settings: ISettingsManager;
 }

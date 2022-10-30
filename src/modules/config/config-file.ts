@@ -58,7 +58,7 @@ export class ConfigFile<T extends BaseConfig> {
   }
 
   public async reload(): Promise<void> {
-    logger.debug(`Reloading config file ${this.#fileHandler.path}`);
+    logger.debug(`Reloading config file: ${this.#fileHandler.path}`);
     const configValue = await this.#fileHandler.readJsonFile<T>(this.#initialConfig);
     this.#config = configValue;
   }

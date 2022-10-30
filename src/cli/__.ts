@@ -1,10 +1,12 @@
 import { buildRootCommand } from './root.ts';
+import { CliSMX } from './cli-smx.ts';
 
 import { commands } from './commands/__.ts';
 import { cliPlugins } from './plugins.ts';
 export { cliPlugins } from './plugins.ts';
 
 export async function initCli() {
+  await CliSMX.init();
   const cmd = buildRootCommand();
 
   for (const loader of commands) {
