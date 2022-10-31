@@ -29,7 +29,6 @@ class CliSMXInstance implements IScriptManager {
     return {
       globalConfigPath: opt.config,
       initLocalPath: !opt.noLocal,
-      localConfigPath: opt.local,
       logLevel: opt.quiet ? LogLevel.disabled : opt.verbose ? LogLevel.debug : LogLevel.warning,
       quiet: opt.quiet,
       targetId: opt.targetId
@@ -54,10 +53,6 @@ class CliSMXInstance implements IScriptManager {
         }, {
           name: 'config',
           aliases: ['c'],
-          type: 'string',
-        }, {
-          name: 'local',
-          aliases: ['l'],
           type: 'string',
         }, {
           name: 'noLocal',

@@ -51,9 +51,18 @@ export class SettingsManager implements ISettingsManager {
   getSetting(key: string, target: SettingTarget): SettingValue;
   getSetting(key: string, target: 'target', targetId: string): SettingValue
   getSetting(key: string, target?: SettingTarget, targetId?: string): SettingValue {
-    const settings = this.#getSettings(target, targetId);
-    if (!settings) { return undefined; }
-    return settings[key];
+    if (target) {
+      const settings = this.#getSettings(target, targetId);
+      if (!settings) { return undefined; }
+      return settings[key];
+    }
+
+    const targets: SettingTarget[] = ['target', 'local', 'global'];
+    for (const target of targets) {
+      const settings = this.#getSettings(target, targetId);
+      if (!settings || !Object.hasOwn(settings, key)) { continue; }
+      return settings[key];
+    }
   }
 
   async setSetting(key: string, value: SettingValue): Promise<boolean>
@@ -94,6 +103,18 @@ export class SettingsManager implements ISettingsManager {
     }
 
     return true;
+  }
+
+  bundle(): SettingsObject {
+    const targetSettings = this.#getSettings('target') ?? {};
+    const localSettings = this.#getSettings('local') ?? {};
+    const globalSettings = this.#getSettings('global') ?? {};
+
+    return {
+      ...globalSettings,
+      ...localSettings,
+      ...targetSettings,
+    }
   }
 
   #getSettings(target?: SettingTarget, targetId?: string): SettingsObject | undefined {

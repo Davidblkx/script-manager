@@ -18,7 +18,7 @@ Deno.test('#SettingsManager', async settingsSteps => {
         validateSetting: () => [true, '']
       }).get();
 
-      const config = mock<LocalConfig>({
+      const mockLocalConfig = mock<LocalConfig>({
         settings: {
           foo: 'local'
         },
@@ -32,11 +32,18 @@ Deno.test('#SettingsManager', async settingsSteps => {
           }
         }
       }).get();
-      const localConfig = mock<ConfigFile<LocalConfig>>({ config }).get();
+      const mockGlobalConfig = mock<GlobalConfig>({
+        settings: {
+          foo: 'global'
+        }
+      }).get();
+      const localConfig = mock<ConfigFile<LocalConfig>>({ config: mockLocalConfig }).get();
+      const globalConfig = mock<ConfigFile<GlobalConfig>>({ config: mockGlobalConfig }).get();
 
       const settings = new SettingsManager({
         validator,
         localConfig,
+        globalConfig,
         targetId: 'main'
       });
 
@@ -54,14 +61,49 @@ Deno.test('#SettingsManager', async settingsSteps => {
           foo: 'bar'
         }
       }).get();
+      const mockGlobalConfig = mock<GlobalConfig>({
+        settings: {
+          foo: 'global'
+        }
+      }).get();
       const localConfig = mock<ConfigFile<LocalConfig>>({ config }).get();
+      const globalConfig = mock<ConfigFile<GlobalConfig>>({ config: mockGlobalConfig }).get();
 
       const settings = new SettingsManager({
         validator,
         localConfig,
+        globalConfig,
       });
 
       const result = settings.getSetting('foo');
+      assertEquals(result, 'bar');
+    });
+
+    await getSteps.step('fallback to "global" settings', () => {
+      const validator = mock<ISettingsValidation>({
+        validateSetting: () => [true, '']
+      }).get();
+
+      const mockLocalConfig = mock<LocalConfig>({
+        settings: { },
+      }).get();
+      const mockGlobalConfig = mock<GlobalConfig>({
+        settings: {
+          foo: 'bar'
+        }
+      }).get();
+
+      const localConfig = mock<ConfigFile<LocalConfig>>({ config: mockLocalConfig }).get();
+      const globalConfig = mock<ConfigFile<GlobalConfig>>({ config: mockGlobalConfig }).get();
+
+      const settings = new SettingsManager({
+        validator,
+        localConfig,
+        globalConfig,
+      });
+
+      const result = settings.getSetting('foo');
+
       assertEquals(result, 'bar');
     });
 

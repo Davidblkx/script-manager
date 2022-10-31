@@ -35,5 +35,9 @@
 
 - [X] Add support for multiple config files
 - [X] Add support for GLOBAL option
-- [ ] Remove dependency on `tty`
+- [X] Remove dependency on `tty`
 - [X] Add settings manager to easly add new settings
+
+# Future
+
+- [ ] Settings CLI for multiple types: boolean, string, number, array

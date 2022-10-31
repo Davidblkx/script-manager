@@ -20,7 +20,6 @@ export function buildRootCommand() {
       .option('-v, --verbose', 'Enable verbose logging', { global: true })
       .option('-q, --quiet', 'Disable logging', { global: true })
       .option('-c, --config <path:string>', 'Path to root config file', { global: true })
-      .option('-l, --local <path:string>', 'Path to script folder', { global: true })
       .option('-t, --targetId <string>', 'Target ID to use', { global: true })
       .option('--noLocal', 'Disable loading config from script folder', { global: true })
 }

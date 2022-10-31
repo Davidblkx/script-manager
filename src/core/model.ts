@@ -4,10 +4,10 @@ import { ISettingsManager } from '../modules/settings.ts';
 
 export interface InitOptions {
   globalConfigPath: string;
-  localConfigPath: string;
   initLocalPath: boolean;
   logLevel: LogLevel;
   quiet: boolean;
+  localConfigPath?: string;
   targetId?: string;
 }
 

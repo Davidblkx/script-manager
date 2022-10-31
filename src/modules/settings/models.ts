@@ -1,4 +1,4 @@
-import { SettingValue } from "../config/model.ts";
+import { SettingsObject, SettingValue } from "../config/model.ts";
 
 export type SettingTarget = 'global' | 'local' | 'target';
 
@@ -14,6 +14,8 @@ export interface ISettingsManager {
   deleteSetting(key: string): Promise<boolean>
   deleteSetting(key: string, target: SettingTarget): Promise<boolean>
   deleteSetting(key: string, target: 'local', targetId: string): Promise<boolean>
+
+  bundle(): SettingsObject;
 
   readonly validator: ISettingsValidation;
 }
