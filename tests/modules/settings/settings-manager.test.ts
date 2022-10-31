@@ -13,7 +13,38 @@ Deno.test('#SettingsManager', async settingsSteps => {
 
   await settingsSteps.step('.getSetting', async getSteps => {
 
-    await getSteps.step('get "local" by default', () => {
+    await getSteps.step('load "target" by default', () => {
+      const validator = mock<ISettingsValidation>({
+        validateSetting: () => [true, '']
+      }).get();
+
+      const config = mock<LocalConfig>({
+        settings: {
+          foo: 'local'
+        },
+        targets: {
+          main: {
+            id: 'main',
+            settings: {
+              foo: 'target'
+            },
+            name: 'main'
+          }
+        }
+      }).get();
+      const localConfig = mock<ConfigFile<LocalConfig>>({ config }).get();
+
+      const settings = new SettingsManager({
+        validator,
+        localConfig,
+        targetId: 'main'
+      });
+
+      const result = settings.getSetting('foo');
+      assertEquals(result, 'target');
+    });
+
+    await getSteps.step('fallback to "local" settings', () => {
       const validator = mock<ISettingsValidation>({
         validateSetting: () => [true, '']
       }).get();
@@ -87,7 +118,38 @@ Deno.test('#SettingsManager', async settingsSteps => {
 
   await settingsSteps.step('.setSetting', async setSteps => {
 
-    await setSteps.step('set "local" by default', async () => {
+    await setSteps.step('set "target" setting', () => {
+      const validator = mock<ISettingsValidation>({
+        validateSetting: () => [true, '']
+      }).get();
+
+      const config = mock<LocalConfig>({
+        targets: {
+          main: {
+            id: 'main',
+            settings: { foo: 'bar' },
+            name: 'main'
+          }
+        },
+        settings: {
+          foo: 'baz'
+        }
+      }).get();
+
+      const localConfig = mock<ConfigFile<LocalConfig>>({ config })
+        .stub('save', () => Promise.resolve()).get();
+
+      const settings = new SettingsManager({
+        validator,
+        localConfig,
+        targetId: 'main'
+      });
+
+      settings.setSetting('foo', 'target');
+      assertEquals(config.targets.main.settings.foo, 'target');
+    });
+
+    await setSteps.step('fallback to "local"', async () => {
       const validator = mock<ISettingsValidation>({
         validateSetting: () => [true, '']
       }).get();

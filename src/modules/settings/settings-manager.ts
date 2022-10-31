@@ -50,7 +50,7 @@ export class SettingsManager implements ISettingsManager {
   getSetting(key: string): SettingValue;
   getSetting(key: string, target: SettingTarget): SettingValue;
   getSetting(key: string, target: 'target', targetId: string): SettingValue
-  getSetting(key: string, target: SettingTarget = 'local', targetId?: string): SettingValue {
+  getSetting(key: string, target?: SettingTarget, targetId?: string): SettingValue {
     const settings = this.#getSettings(target, targetId);
     if (!settings) { return undefined; }
     return settings[key];
@@ -59,7 +59,7 @@ export class SettingsManager implements ISettingsManager {
   async setSetting(key: string, value: SettingValue): Promise<boolean>
   async setSetting(key: string, value: SettingValue, target: SettingTarget): Promise<boolean>
   async setSetting(key: string, value: SettingValue, target: 'target', targetId: string): Promise<boolean>
-  async setSetting(key: string, value: SettingValue, target: SettingTarget = 'local', targetId?: string): Promise<boolean> {
+  async setSetting(key: string, value: SettingValue, target?: SettingTarget, targetId?: string): Promise<boolean> {
     const settings = this.#getSettings(target, targetId);
 
     if (!settings) { return false; }
@@ -81,7 +81,7 @@ export class SettingsManager implements ISettingsManager {
   async deleteSetting(key: string): Promise<boolean>
   async deleteSetting(key: string, target: SettingTarget): Promise<boolean>
   async deleteSetting(key: string, target: 'target', targetId: string): Promise<boolean>
-  async deleteSetting(key: string, target: SettingTarget = 'local', targetId?: string): Promise<boolean> {
+  async deleteSetting(key: string, target?: SettingTarget, targetId?: string): Promise<boolean> {
     const settings = this.#getSettings(target, targetId);
 
     if (!settings) { return false; }
@@ -96,7 +96,13 @@ export class SettingsManager implements ISettingsManager {
     return true;
   }
 
-  #getSettings(target: SettingTarget, targetId?: string): SettingsObject | undefined {
+  #getSettings(target?: SettingTarget, targetId?: string): SettingsObject | undefined {
+    if (!target) {
+      return this.#getTargetSettings(targetId)
+        ?? this.#getLocalSettings()
+        ?? this.#getGlobalSettings();
+    }
+
     switch (target) {
       case 'global': return this.#getGlobalSettings();
       case 'local': return this.#getLocalSettings();
