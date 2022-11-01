@@ -3,6 +3,8 @@ import { SettingsObject, SettingValue } from "../config/model.ts";
 export type SettingTarget = 'global' | 'local' | 'target';
 
 export interface ISettingsManager {
+  readonly targetId: string | undefined;
+
   getSetting(key: string): SettingValue;
   getSetting(key: string, target: SettingTarget): SettingValue;
   getSetting(key: string, target: 'target', targetId: string): SettingValue

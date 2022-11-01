@@ -1,7 +1,8 @@
 import { tty, colors } from 'cliffy/ansi/mod.ts';
+import { Table } from 'cliffy/table/table.ts';
+
 import type { RootCommand, RootOptions } from './__.ts';
 import { CliSMX } from '../cli-smx.ts';
-import { Table } from 'https://deno.land/x/cliffy@v0.25.2/table/table.ts';
 
 export function config(cmd: RootCommand) {
   cmd.command('config')

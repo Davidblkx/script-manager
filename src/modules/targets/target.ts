@@ -37,6 +37,10 @@ export class Target implements ITarget {
     return this.#target.name;
   }
 
+  public get initialized() {
+    return this.#dirHandler.exists;
+  }
+
   public async init(setDefault: boolean): Promise<void> {
     logger.debug(`Initializing target ${this.#target.id}`);
     await this.#dirHandler.create();

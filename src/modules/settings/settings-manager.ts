@@ -27,6 +27,10 @@ export class SettingsManager implements ISettingsManager {
     return this.#validator;
   }
 
+  get targetId(): string | undefined {
+    return this.#currentTargetId;
+  }
+
   constructor({
     configHandler,
     validator,

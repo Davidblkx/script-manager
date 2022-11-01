@@ -1,8 +1,14 @@
 import { logger } from "../modules/logger.ts";
+import { getSettingsObj } from '../modules/settings.ts';
 
 import type { IScriptManager, InitOptions } from "./model.ts";
 
-import { buildDefaultOptions, initConfig, initSettingsManager } from './init/__.ts';
+import {
+  buildDefaultOptions,
+  initConfig,
+  initSettingsManager,
+  initTargetHandler,
+} from './init/__.ts';
 
 export async function initScritpManager(initOptions?: Partial<InitOptions>): Promise<IScriptManager> {
   const options = {
@@ -13,11 +19,14 @@ export async function initScritpManager(initOptions?: Partial<InitOptions>): Pro
   logger.setLogLevel(options.logLevel);
   const config = await initConfig(options);
   const settings = initSettingsManager(config, options);
+  const targets = initTargetHandler(config, settings);
 
   return {
     logger,
     config,
     settings,
+    targets,
+    SMXSettings: getSettingsObj(settings)
   };
 }
 

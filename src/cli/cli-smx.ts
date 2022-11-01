@@ -15,6 +15,8 @@ class CliSMXInstance implements IScriptManager {
   get logger() { return this.smx.logger; }
   get config() { return this.smx.config; }
   get settings() { return this.smx.settings; }
+  get targets() { return this.smx.targets; }
+  get SMXSettings() { return this.smx.SMXSettings; }
 
   public async init() {
     if (this.#init) { return; }

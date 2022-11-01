@@ -47,6 +47,7 @@ export class TargetHandler implements ITargetHandler {
 
     const targetFolder = join(rootPath, id);
     const dirHandler = await this.#dirHandlerFactory(targetFolder);
+    await dirHandler.load();
 
     return new Target(this.#settingsManager, config, dirHandler, save);
   }
@@ -100,5 +101,21 @@ export class TargetHandler implements ITargetHandler {
     await target.delete();
     delete localFile.config.targets[id];
     await localFile.save();
+  }
+
+  public async current(): Promise<ITarget> {
+    const id = this.#settingsManager.targetId;
+    if (!id) {
+      logger.error('No target selected');
+      Deno.exit(1);
+    }
+
+    const target = await this.get(id);
+    if (!target) {
+      logger.error(`Target ${id} not found`);
+      Deno.exit(1);
+    }
+
+    return target;
   }
 }
