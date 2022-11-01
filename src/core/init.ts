@@ -8,6 +8,7 @@ import {
   initConfig,
   initSettingsManager,
   initTargetHandler,
+  initEditorHandler,
 } from './init/__.ts';
 
 export async function initScritpManager(initOptions?: Partial<InitOptions>): Promise<IScriptManager> {
@@ -20,13 +21,15 @@ export async function initScritpManager(initOptions?: Partial<InitOptions>): Pro
   const config = await initConfig(options);
   const settings = initSettingsManager(config, options);
   const targets = initTargetHandler(config, settings);
+  const editor = initEditorHandler(config, settings);
 
   return {
     logger,
     config,
     settings,
     targets,
-    SMXSettings: getSettingsObj(settings)
+    editor,
+    SMXSettings: getSettingsObj(settings),
   };
 }
 

@@ -2,6 +2,7 @@ import type { IConfigHandler } from '../modules/config.ts';
 import { logger, LogLevel } from '../modules/logger.ts';
 import type { ISettingsManager, getSettingsObj } from '../modules/settings.ts';
 import type { ITargetHandler } from '../modules/targets.ts';
+import type { IEditorHandler } from '../modules/editor.ts';
 
 export interface InitOptions {
   globalConfigPath: string;
@@ -18,4 +19,5 @@ export interface IScriptManager {
   readonly settings: ISettingsManager;
   readonly targets: ITargetHandler;
   readonly SMXSettings: ReturnType<typeof getSettingsObj>;
+  readonly editor: IEditorHandler;
 }

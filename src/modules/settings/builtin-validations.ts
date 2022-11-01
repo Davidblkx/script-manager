@@ -3,7 +3,7 @@ import type { SettingDefinition } from './models.ts';
 
 export const INTERNAL_SETTINGS: SettingDefinition[] = [
   {
-    key: settingKeys.editor.files.tool,
+    key: settingKeys.editor.file.tool,
     types: 'string',
   },
   {

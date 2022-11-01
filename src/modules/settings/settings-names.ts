@@ -7,7 +7,7 @@ const SETTINGS_KEY = Symbol('settings');
 
 export const settingKeys = {
   editor: {
-    files: {
+    file: {
       tool: 'editor.files.tool',
     },
     folder: {
@@ -28,12 +28,12 @@ function getSettingsByName(manager: ISettingsManager, target?: SettingTarget) {
 
   return {
     editor: {
-      files: {
+      file: {
         get tool() {
-          return getS(settingKeys.editor.files.tool);
+          return getS(settingKeys.editor.file.tool);
         },
         set tool(value: SettingValue) {
-          setS(settingKeys.editor.files.tool, value);
+          setS(settingKeys.editor.file.tool, value);
         }
       },
       folder: {
