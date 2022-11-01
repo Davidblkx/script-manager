@@ -6,6 +6,7 @@ import { config } from './config.ts';
 import { createTarget } from './create-target.ts';
 import { target } from './target.ts';
 import { where } from './where.ts';
+import { editorCommand } from './editor.ts';
 
 export type CommandLoader = (cmd: RootCommand) => Promise<void> | void;
 
@@ -14,4 +15,5 @@ export const commands: CommandLoader[] = [
   createTarget,
   target,
   where,
+  editorCommand,
 ];

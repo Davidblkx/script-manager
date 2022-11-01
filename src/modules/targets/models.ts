@@ -3,6 +3,7 @@ export interface ITarget {
   readonly isDefault: boolean;
   readonly name: string;
   readonly initialized: boolean;
+  readonly path: string;
 
   init(setDefault: boolean): Promise<void>;
   reset(type: 'all' | 'settings' | 'content'): Promise<void>;

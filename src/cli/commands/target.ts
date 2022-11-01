@@ -27,6 +27,7 @@ export function target(cmd: RootCommand) {
     .option('--init', 'Initialize target', { standalone: true })
     .option('--delete', 'Delete target', { standalone: true })
     .option('--status', 'Get target status', { standalone: true })
+    .option('-e, --edit [name]', 'Edit target scripts', { standalone: true })
     .action(targetAction);
 }
 
@@ -39,6 +40,7 @@ export interface ExtraOptions {
   init?: boolean;
   delete?: boolean;
   status?: boolean;
+  edit?: true | string;
 }
 
 async function targetAction(o: RootOptions & ExtraOptions) {
@@ -54,6 +56,8 @@ async function targetAction(o: RootOptions & ExtraOptions) {
     await deleteTarget(o);
   } else if (o.status) {
     await statusTarget(o);
+  } else if (o.edit) {
+    await editTarget(o);
   } else {
     logger.error('No action specified');
   }
@@ -156,4 +160,14 @@ export async function statusTarget(o: RootOptions & ExtraOptions) {
   table.push(['Initialized', bool(hasFolder)]);
 
   tty.text(table.toString());
+}
+
+export async function editTarget(o: RootOptions & ExtraOptions) {
+  if (!o.edit) { return; }
+  const target = await CliSMX.targets.current();
+  const path = target.path;
+  const editor = typeof o.edit === 'string' ? o.edit : undefined;
+
+  logger.debug(`Opening ${path} with ${editor}`);
+  CliSMX.editor.edit(path, editor);
 }

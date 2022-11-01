@@ -8,7 +8,7 @@ export interface RootOptions {
   verbose?: boolean;
   quiet?: boolean;
   config?: string;
-  local?: string;
+  targetId?: string;
   noLocal?: boolean;
 }
 
