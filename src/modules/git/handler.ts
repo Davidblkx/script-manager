@@ -3,6 +3,7 @@ import type { IGitHandler, GitStatus } from './models.ts';
 import { parseGitStatus } from './parser.ts';
 import { logger } from '../logger.ts';
 import { getFolder } from '../utils/file.ts';
+import { join } from "deno/path/mod.ts";
 
 export class GitHandler implements IGitHandler {
   #runner: IRunProcess;
@@ -198,12 +199,30 @@ export class GitHandler implements IGitHandler {
 
   async clone(url: string): Promise<GitStatus> {
     const parent = getFolder(this.#path);
-    const res = await this.#runner.run(['git', 'clone', url], parent);
+    const tempPath = join(parent, '.smx-temp');
+
+    const move = await this.#runner.run(['mv', this.#path, tempPath], parent);
+    if (!move.success) {
+      logger.error(`Failed to backup ${this.#path}`);
+      logger.error(move.stderr);
+      Deno.exit(1);
+    }
+
+    const res = await this.#runner.run(['git', 'clone', url, this.#path], parent);
     if (!res.success) {
       logger.error(`Failed to clone ${url} in ${parent}`);
       logger.error(res.stderr);
+
+      const moveBack = await this.#runner.run(['mv', tempPath, this.#path], parent);
+      if (!moveBack.success) {
+        logger.error(`Failed to restore ${this.#path}`);
+        logger.error(moveBack.stderr);
+      }
+
       Deno.exit(1);
     }
+
+    await this.#runner.run(['rm', '-rf', tempPath], parent);
 
     return this.status();
   }

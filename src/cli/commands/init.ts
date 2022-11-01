@@ -36,13 +36,7 @@ async function initAction(o: InitOptions) {
     Deno.exit(1);
   }
 
-  if (o.clone) {
-    logger.debug('Cloning repository');
-    await CliSMX.git.clone(o.clone);
-    await CliSMX.git.checkout();
-    tty.text('Script folder was cloned from: ' + o.clone);
-  }
-
+  await cloneRepo(o);
   await initTargets(path, o);
 
   if (o.clone) { Deno.exit(0); }
@@ -114,6 +108,23 @@ async function firstCommit(status: GitStatus, o: InitOptions) {
   }
 
   return await CliSMX.git.commit(message ?? 'Initial commit');
+}
+
+async function cloneRepo(o: InitOptions) {
+  if (!o.clone) { return; }
+
+  if (!o.force) {
+    const confirm = await Confirm.prompt({
+      message: `Cloning repository will delete current config, continue?`,
+      default: false,
+    });
+    if (!confirm) { Deno.exit(0); }
+  }
+
+  logger.debug('Cloning repository');
+  await CliSMX.git.clone(o.clone);
+  await CliSMX.git.checkout();
+  tty.text('Script folder was cloned from: ' + o.clone + '\n');
 }
 
 async function setOrigin(status: GitStatus, o: InitOptions) {
