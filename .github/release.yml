@@ -3,20 +3,20 @@ changelog:
     labels:
       - ignore-for-release
   categories:
-    - title: Breaking Changes 🚨
+    - title: 🚨 Breaking Changes 🚨
       labels:
         - breaking-change
-    - title: Features 🎉
+    - title: 🚀 Features 🚀
       labels:
         - enhancement
-    - title: Bug Fixes 🐛
+    - title: 🐛 Bug Fixes 🐛
       labels:
         - Semver-Patch
         - bug
-    - title: Documentation 📝
+    - title: 📝 Documentation 📝
       labels:
         - documentation
-    - title: Maintenance 🚧
+    - title: 🚧 Maintenance 🚧
       labels:
         - maintenance
     - title: Other Changes
