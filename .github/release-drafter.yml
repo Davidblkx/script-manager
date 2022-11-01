@@ -2,24 +2,24 @@ name-template: 'v$RESOLVED_VERSION 🌈'
 tag-template: 'v$RESOLVED_VERSION'
 categories:
   - title: 🚨 Breaking Changes 🚨
-      labels:
-        - breaking-change
-    - title: 🚀 Features 🚀
-      labels:
-        - enhancement
-    - title: 🐛 Bug Fixes 🐛
-      labels:
-        - Semver-Patch
-        - bug
-    - title: 📝 Documentation 📝
-      labels:
-        - documentation
-    - title: 🚧 Maintenance 🚧
-      labels:
-        - maintenance
-    - title: Other Changes
-      labels:
-        - "*"
+    labels:
+      - breaking-change
+  - title: 🚀 Features 🚀
+    labels:
+      - enhancement
+  - title: 🐛 Bug Fixes 🐛
+    labels:
+      - Semver-Patch
+      - bug
+  - title: 📝 Documentation 📝
+    labels:
+      - documentation
+  - title: 🚧 Maintenance 🚧
+    labels:
+      - maintenance
+  - title: Other Changes
+    labels:
+      - "*"
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
