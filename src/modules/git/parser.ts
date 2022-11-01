@@ -30,7 +30,7 @@ export function parseGitStatus(out: string, err?: string): GitStatus {
   }
 
   status.canPull = status.behind > 0 && !status.dirty;
-  status.canPush = status.ahead > 0;
+  status.canPush = status.ahead > 0 || !status.remote;
 
   return status;
 }

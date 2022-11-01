@@ -106,7 +106,7 @@ export class GitHandler implements IGitHandler {
       return status;
     }
 
-    const gitArgs = ['git', 'push'];
+    const gitArgs = ['git', 'push', '-u', 'origin', this.#branch];
     if (force) {
       gitArgs.push('--force');
     }
@@ -177,7 +177,10 @@ export class GitHandler implements IGitHandler {
   }
 
   async setOrigin(url: string): Promise<GitStatus> {
-    const res = await this.#runner.run(['git', 'remote', 'set-url', 'origin', url], this.#path);
+    const remote = await this.getOrigin();
+    const args = !remote ? ['git', 'remote', 'add', 'origin', url] : ['git', 'remote', 'set-url', 'origin', url];
+
+    const res = await this.#runner.run(args, this.#path);
     if (!res.success) {
       logger.error(`Failed to set origin in ${this.#path}`);
       logger.error(res.stderr);
@@ -187,14 +190,9 @@ export class GitHandler implements IGitHandler {
     return this.status();
   }
 
-  async getOrigin(): Promise<string> {
+  async getOrigin(): Promise<false | string> {
     const res = await this.#runner.run(['git', 'remote', 'get-url', 'origin'], this.#path);
-    if (!res.success) {
-      logger.error(`Failed to get origin in ${this.#path}`);
-      logger.error(res.stderr);
-      Deno.exit(1);
-    }
-
+    if (!res.success) {  return false; }
     return res.stdout.trim();
   }
 
@@ -208,5 +206,10 @@ export class GitHandler implements IGitHandler {
     }
 
     return this.status();
+  }
+
+  async hasCommit(): Promise<boolean> {
+    const res = await this.#runner.run(['git', 'rev-parse', 'HEAD'], this.#path);
+    return res.success;
   }
 }

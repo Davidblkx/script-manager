@@ -22,7 +22,8 @@ export interface IGitHandler {
   reset(): Promise<GitStatus>;
   status(): Promise<GitStatus>;
   setOrigin(url: string): Promise<GitStatus>;
-  getOrigin(): Promise<string>;
+  getOrigin(): Promise<false | string>;
   fetch(): Promise<GitStatus>;
   clone(url: string): Promise<GitStatus>;
+  hasCommit(): Promise<boolean>;
 }
