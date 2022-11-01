@@ -17,3 +17,7 @@ export function getBrotherFile(path: string, name: string): string {
   const info = parse(path);
   return join(info.dir, name);
 }
+
+export function removeInvalidPathChars(path: string, token = '_'): string {
+  return path.replace(/[<>:"/\\|?*]/g, token);
+}
