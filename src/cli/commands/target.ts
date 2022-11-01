@@ -22,7 +22,7 @@ export function target(cmd: RootCommand) {
     .option('-l, --list', 'List all targets')
     .option('--filter <string>', 'Regex to filter the list of configuration entries', { depends: ['list'] })
     .option('--clean', 'Print table without border and headers', { depends: ['list'] })
-    .option('--default', 'Get/Set target as default', { standalone: true })
+    .option('--default', 'Set target as default', { standalone: true })
     .option('--reset [type:reset]', 'Reset default target', { standalone: true })
     .option('--init', 'Initialize target', { standalone: true })
     .option('--delete', 'Delete target', { standalone: true })
@@ -132,7 +132,7 @@ export async function deleteTarget(o: RootOptions & ExtraOptions) {
     Deno.exit(1);
   }
 
-  await target.delete();
+  await CliSMX.targets.delete(target.id);
   if (!o.quiet) {
     const message = `Target ${target.id} was deleted\n`;
     tty.text(colors.green(message));

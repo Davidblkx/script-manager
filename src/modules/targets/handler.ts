@@ -53,7 +53,7 @@ export class TargetHandler implements ITargetHandler {
   }
 
   public async create(name: string, id?: string, setDefault = false): Promise<ITarget> {
-    const newId = id ?? removeInvalidPathChars(name);
+    const newId = id ?? removeInvalidPathChars(name).toLowerCase();
 
     const exists = !!(await this.get(newId));
 
