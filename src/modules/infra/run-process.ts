@@ -6,15 +6,16 @@ export interface ProcessResult {
 }
 
 export interface IRunProcess {
-  run(args: string[]): Promise<ProcessResult>;
+  run(args: string[], cwd?: string): Promise<ProcessResult>;
 }
 
-export class DenoRunProcess {
-  async run(args: string[]): Promise<ProcessResult> {
+export class DenoRunProcess implements IRunProcess {
+  async run(args: string[], cwd = Deno.cwd()): Promise<ProcessResult> {
     const p = Deno.run({
       cmd: args,
       stdout: 'piped',
       stderr: 'piped',
+      cwd,
     });
     const [status, stdout, stderr] = await Promise.all([
       p.status(),
