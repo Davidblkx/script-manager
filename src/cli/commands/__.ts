@@ -9,6 +9,7 @@ import { where } from './where.ts';
 import { editorCommand } from './editor.ts';
 import { init } from './init.ts';
 import { status } from './status.ts';
+import { sync } from './sync.ts';
 
 export type CommandLoader = (cmd: RootCommand) => Promise<void> | void;
 
@@ -20,4 +21,5 @@ export const commands: CommandLoader[] = [
   editorCommand,
   init,
   status,
+  sync,
 ];
