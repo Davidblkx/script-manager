@@ -3,6 +3,8 @@ import { logger, LogLevel } from '../modules/logger.ts';
 import type { ISettingsManager, getSettingsObj } from '../modules/settings.ts';
 import type { ITargetHandler } from '../modules/targets.ts';
 import type { IEditorHandler } from '../modules/editor.ts';
+import type { IGitHandler } from '../modules/git.ts';
+import { IRunProcess } from "../modules/infra/run-process.ts";
 
 export interface InitOptions {
   globalConfigPath: string;
@@ -20,4 +22,6 @@ export interface IScriptManager {
   readonly targets: ITargetHandler;
   readonly SMXSettings: ReturnType<typeof getSettingsObj>;
   readonly editor: IEditorHandler;
+  readonly git: IGitHandler;
+  readonly runner: IRunProcess;
 }

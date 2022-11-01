@@ -19,6 +19,9 @@ export const settingKeys = {
   },
   targets: {
     default: 'targets.default',
+  },
+  git: {
+    branch: 'git.branch',
   }
 }
 
@@ -60,10 +63,20 @@ function getSettingsByName(manager: ISettingsManager, target?: SettingTarget) {
       set default(value: SettingValue) {
         setS(settingKeys.targets.default, value);
       }
-    }
+    },
+    git: {
+      get branch() {
+        return getS(settingKeys.git.branch);
+      },
+      set branch(value: SettingValue) {
+        setS(settingKeys.git.branch, value);
+      }
+    },
   }
 }
 
 export function getSettingsObj(manager: ISettingsManager, target?: SettingTarget) {
   return singleton(() => getSettingsByName(manager, target), SETTINGS_KEY).value;
 }
+
+export type NamedSettings = ReturnType<typeof getSettingsObj>;

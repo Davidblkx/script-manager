@@ -3,6 +3,7 @@ import { Table } from 'cliffy/table/table.ts';
 
 import type { RootCommand, RootOptions } from './__.ts';
 import { CliSMX } from '../cli-smx.ts';
+import { getFolder } from '../../modules/utils/file.ts';
 
 export function where(cmd: RootCommand) {
   cmd.command('where')
@@ -19,7 +20,9 @@ function printWhere(o: RootOptions) {
   const output: string[][] = [];
 
   if (global) { output.push(['Configuration:', global]); }
-  if (local) { output.push(['Script Folder:', local]); }
+  if (local) {
+    output.push(['Script Folder:', getFolder(local)]);
+  }
 
   tty.text(new Table(...output).toString());
 }

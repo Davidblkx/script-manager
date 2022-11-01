@@ -18,6 +18,8 @@ class CliSMXInstance implements IScriptManager {
   get targets() { return this.smx.targets; }
   get editor() { return this.smx.editor; }
   get SMXSettings() { return this.smx.SMXSettings; }
+  get git() { return this.smx.git; }
+  get runner() { return this.smx.runner; }
 
   public async init() {
     if (this.#init) { return; }

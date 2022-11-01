@@ -17,5 +17,9 @@ export const INTERNAL_SETTINGS: SettingDefinition[] = [
   {
     key: settingKeys.targets.default,
     types: 'string',
+  },
+  {
+    key: settingKeys.git.branch,
+    types: 'string',
   }
 ];
