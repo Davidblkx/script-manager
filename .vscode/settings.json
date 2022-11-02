@@ -1,5 +1,13 @@
 {
     "deno.enable": true,
     "deno.unstable": true,
-    "peacock.remoteColor": "#9a673b"
+    "peacock.remoteColor": "#9a673b",
+    "workbench.colorCustomizations": {
+        "sash.hoverBorder": "#bb804d",
+        "statusBar.background": "#9a673b",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#bb804d",
+        "statusBarItem.remoteBackground": "#9a673b",
+        "statusBarItem.remoteForeground": "#e7e7e7"
+    }
 }
