@@ -1,3 +1,3 @@
-import { initCli } from './src/cli.ts';
+import { initCli } from './src/cli/__.ts';
 
 await initCli();
