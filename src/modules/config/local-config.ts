@@ -2,13 +2,14 @@ import { APP_VERSION } from "../../version.ts";
 import { LocalConfig } from "./model.ts";
 import { ConfigFile, ConfigFileOptions } from "./config-file.ts";
 import { IFileHandlerFactory } from '../infra/file-handler.ts';
-import { settingKeys } from '../settings/settings-names.ts';
+import { editorKeys } from '../editor.ts';
+import { targetKeys } from '../targets.ts';
 
 export const DEFAULT_LOCAL_CONFIG: LocalConfig = {
   settings: {
-    [settingKeys.editor.file.tool]: "code",
-    [settingKeys.editor.folder.tool]: "code",
-    [settingKeys.targets.default]: "main",
+    [editorKeys('editor.file.tool')]: "code",
+    [editorKeys('editor.folder.tool')]: "code",
+    [targetKeys('targets.default')]: "main",
   },
   editors: {
     code: {

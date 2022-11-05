@@ -65,7 +65,7 @@ async function targetAction(o: RootOptions & ExtraOptions) {
 
 export function printList(o: RootOptions & ExtraOptions) {
   if (o.quiet) { return; }
-  const defaultId = CliSMX.SMXSettings.targets.default;
+  const defaultId = CliSMX.SMXSettings.value['targets.default'];
 
   const targetList = CliSMX.config.localFile?.config.targets;
   if (!targetList) {

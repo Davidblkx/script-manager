@@ -1,18 +1,21 @@
 import { EditorConfig, IConfigHandler } from '../config.ts';
 import { getFileInfo } from '../utils/file.ts';
-import { ISettingsManager, getSettingsObj, settingKeys } from '../settings.ts';
+import { ISettingsManager, ISection } from '../settings.ts';
 import type { IEditorHandler } from './models.ts';
 import { IRunProcess } from '../infra/run-process.ts';
-
 import { logger } from '../logger.ts';
+import { editorSection, EditorSettings } from './settings.ts';
 
 const DEFAULT_TARGET_ALIAS = '__TARGET_PATH';
 
 export class EditorHandler implements IEditorHandler {
-  #settings: ReturnType<typeof getSettingsObj>;
-  #settingsManager: ISettingsManager;
+  #section: ISection<EditorSettings>;
   #config: IConfigHandler;
   #runner: IRunProcess;
+
+  get #settings() {
+    return this.#section.value;
+  }
 
   constructor({
     settings,
@@ -23,10 +26,9 @@ export class EditorHandler implements IEditorHandler {
     config: IConfigHandler;
     runner: IRunProcess;
   }) {
-    this.#settings = getSettingsObj(settings);
+    this.#section = editorSection(settings);
     this.#config = config;
     this.#runner = runner;
-    this.#settingsManager = settings;
   }
 
   get(name: string): EditorConfig | undefined {
@@ -40,7 +42,8 @@ export class EditorHandler implements IEditorHandler {
   }
 
   getDefault(type: 'folder' | 'file' | 'diff'): EditorConfig | undefined {
-    const id = this.#settings.editor[type].tool;
+    const key: keyof EditorSettings = `editor.${type}.tool`;
+    const id = this.#settings[key];
     if (typeof id !== 'string') {
       logger.error(`No default editor for ${type}`);
       return undefined;
@@ -49,7 +52,8 @@ export class EditorHandler implements IEditorHandler {
     return this.get(id);
   }
 
-  async setDefault(editor: string, type: 'folder' | 'file' | 'diff', saveToTarget: boolean): Promise<void> {
+  async setDefault(editor: string, type: 'folder' | 'file' | 'diff', _: boolean): Promise<void> {
+    const key: keyof EditorSettings = `editor.${type}.tool`;
     const config = this.get(editor);
     if (!config) { return }
 
@@ -58,10 +62,8 @@ export class EditorHandler implements IEditorHandler {
       return;
     }
 
-    const saveTarget = saveToTarget ? 'target' : 'local';
-
-    logger.debug(`Setting default editor for ${type} to ${editor} [${saveTarget}]`);
-    await this.#settingsManager.setSetting(settingKeys.editor[type].tool, editor, saveTarget);
+    logger.debug(`Setting default editor for ${type} to ${editor}`);
+    await this.#section.set(key, editor);
   }
 
   async edit(path: string, editor?: string): Promise<void> {

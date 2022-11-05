@@ -1,17 +1,19 @@
 import type { TargetConfig } from "../config.ts";
-import type { ISettingsManager } from "../settings/models.ts";
+import type { ISettingsManager, ISection } from "../settings.ts";
 import type { IDirHandler } from '../infra/dir-handler.ts';
-
-import { getSettingsObj, settingKeys } from "../settings/settings-names.ts";
 import { logger } from '../logger.ts';
-
 import { ITarget } from "./models.ts";
+import { targetSection, TargetSettings } from "./settings.ts";
 
 export class Target implements ITarget {
-  #settings: ISettingsManager;
+  #section: ISection<TargetSettings>;
   #target: TargetConfig;
   #dirHandler: IDirHandler;
   #save: () => Promise<void>;
+
+  get #settings() {
+    return this.#section.value;
+  }
 
   constructor(
     settings: ISettingsManager,
@@ -19,7 +21,7 @@ export class Target implements ITarget {
     dirHandler: IDirHandler,
     save: () => Promise<void>,
   ) {
-    this.#settings = settings;
+    this.#section = targetSection(settings);
     this.#target = target;
     this.#dirHandler = dirHandler;
     this.#save = save;
@@ -30,7 +32,7 @@ export class Target implements ITarget {
   }
 
   public get isDefault() {
-    return this.#target.id === getSettingsObj(this.#settings).targets.default;
+    return this.#target.id === this.#settings["targets.default"];
   }
 
   public get name() {
@@ -69,7 +71,7 @@ export class Target implements ITarget {
 
   public async setDefault(): Promise<void> {
     logger.debug(`Setting target ${this.#target.id} as default`);
-    await this.#settings.setSetting(settingKeys.targets.default, this.#target.id, 'local');
+    await this.#section.set("targets.default", this.#target.id);
   }
 
   public async delete(): Promise<void> {
