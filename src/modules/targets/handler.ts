@@ -1,18 +1,24 @@
 import { join } from 'deno/path/mod.ts';
 
 import type { IConfigHandler } from "../config.ts";
-import type { ISettingsManager } from "../settings/models.ts";
 
 import { logger } from '../logger.ts';
 import { ITarget, ITargetHandler } from "./models.ts";
 import { Target } from './target.ts';
 import { IDirHandlerFactory } from "../infra/dir-handler.ts";
 import { removeInvalidPathChars } from '../utils/file.ts';
+import { ISection, ISettingsManager } from "../settings.ts";
+import { TargetSettings, targetSection } from './settings.ts';
 
 export class TargetHandler implements ITargetHandler {
   #configHandler: IConfigHandler;
+  #section: ISection<TargetSettings>;
   #settingsManager: ISettingsManager;
   #dirHandlerFactory: IDirHandlerFactory;
+
+  get #settings() {
+    return this.#section.value;
+  }
 
   constructor(
     configHandler: IConfigHandler,
@@ -20,8 +26,9 @@ export class TargetHandler implements ITargetHandler {
     dirHandlerFactory: IDirHandlerFactory
   ) {
     this.#configHandler = configHandler;
-    this.#settingsManager = settings;
+    this.#section = targetSection(settings);
     this.#dirHandlerFactory = dirHandlerFactory;
+    this.#settingsManager = settings;
   }
 
   public async get(id: string): Promise<ITarget | undefined> {
@@ -104,7 +111,7 @@ export class TargetHandler implements ITargetHandler {
   }
 
   public async current(): Promise<ITarget> {
-    const id = this.#settingsManager.targetId;
+    const id = this.#settings['targets.default'];
     if (!id) {
       logger.error('No target selected');
       Deno.exit(1);

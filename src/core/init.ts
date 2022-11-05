@@ -1,7 +1,6 @@
 import { logger } from "../modules/logger.ts";
-import { getSettingsObj } from '../modules/settings.ts';
 
-import type { IScriptManager, InitOptions } from "./model.ts";
+import type { IScriptManager, InitOptions, AppSettings } from "./model.ts";
 import { DenoRunProcess } from "../modules/infra/run-process.ts";
 
 import {
@@ -25,7 +24,7 @@ export async function initScritpManager(initOptions?: Partial<InitOptions>): Pro
   const targets = initTargetHandler(config, settings);
   const editor = initEditorHandler(config, settings);
   const runner = new DenoRunProcess();
-  const SMXSettings = getSettingsObj(settings);
+  const SMXSettings = settings.section<AppSettings>();
   const git = initGitHandler(config, SMXSettings, runner);
 
   return {

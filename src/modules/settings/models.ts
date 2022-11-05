@@ -1,36 +1,28 @@
-import { SettingsObject, SettingValue } from "../config/model.ts";
+export type PropValue = string | number | boolean | undefined | null;
+export type JsonValue = PropValue | PropValue[];
+
+export interface OSValue {
+  value: JsonValue;
+  windows?: JsonValue;
+  linux?: JsonValue;
+  darwin?: JsonValue;
+}
+
+export type SettingValue = OSValue | JsonValue;
 
 export type SettingTarget = 'global' | 'local' | 'target';
 
-export interface ISettingsManager {
-  readonly targetId: string | undefined;
+export type TargetOrder = [SettingTarget, SettingTarget, SettingTarget];
 
-  getSetting(key: string): SettingValue;
-  getSetting(key: string, target: SettingTarget): SettingValue;
-  getSetting(key: string, target: 'target', targetId: string): SettingValue
-
-  setSetting(key: string, value: SettingValue): Promise<boolean>
-  setSetting(key: string, value: SettingValue, target: SettingTarget): Promise<boolean>
-  setSetting(key: string, value: SettingValue, target: 'local', targetId: string): Promise<boolean>
-
-  deleteSetting(key: string): Promise<boolean>
-  deleteSetting(key: string, target: SettingTarget): Promise<boolean>
-  deleteSetting(key: string, target: 'local', targetId: string): Promise<boolean>
-
-  bundle(): SettingsObject;
-
-  readonly validator: ISettingsValidation;
-}
-
-export interface ISettingsValidation {
-  validateSetting(key: string, value: SettingValue): [boolean, string];
-  addDefinition(definition: SettingDefinition): void;
-}
-
-export type SettingValueType = 'string' | 'number' | 'boolean' | 'undefined' | 'null';
-
-export interface SettingDefinition {
+export interface SettingUnit {
   key: string;
-  types: SettingValueType | SettingValueType[];
-  array?: false | 'force' | 'optional';
+  value: Readonly<JsonValue>;
+  target: SettingTarget;
+  OS: keyof OSValue | 'none';
+}
+
+export type JsonSettings = Record<string, JsonValue>;
+
+export function isOSValue(e: unknown): e is OSValue {
+  return typeof e === 'object' && e !== null && 'value' in e;
 }

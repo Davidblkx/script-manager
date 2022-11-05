@@ -14,4 +14,4 @@
 
 # Whishlist
 
-- [ ] Settings CLI for multiple types: boolean, string, number, array
+- [ ] Research a better test framework

@@ -1,11 +1,9 @@
 export const TARGET_NAME = '__TARGET_PATH';
 
-export type JsonValue = string | number | boolean | undefined | null;
-export type SettingValue = JsonValue | JsonValue[];
-
 export type EditorContext = 'file' | 'folder' | 'diff';
 
-export type SettingsObject = Record<string, SettingValue>;
+// deno-lint-ignore no-explicit-any
+export type SettingsObject = Record<string, any>;
 
 export interface UnitConfig {
   id: string;
