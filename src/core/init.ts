@@ -21,7 +21,7 @@ export async function initScritpManager(initOptions?: Partial<InitOptions>): Pro
   logger.setLogLevel(options.logLevel);
   const config = await initConfig(options);
   const settings = initSettingsManager(config, options);
-  const targets = initTargetHandler(config, settings);
+  const targets = initTargetHandler(config, settings, options.targetId);
   const editor = initEditorHandler(config, settings);
   const runner = new DenoRunProcess();
   const SMXSettings = settings.section<AppSettings>();

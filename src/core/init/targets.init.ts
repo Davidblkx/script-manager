@@ -6,10 +6,12 @@ import { ISettingsManager } from "../../modules/settings.ts";
 export function initTargetHandler(
   configHandler: IConfigHandler,
   settings: ISettingsManager,
+  targetId?: string,
 ): ITargetHandler {
   return new TargetHandler(
     configHandler,
     settings,
-    DirHandler.create
+    DirHandler.create,
+    targetId,
   )
 }
