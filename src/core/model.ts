@@ -5,6 +5,7 @@ import type { ITargetHandler } from '../modules/targets.ts';
 import type { IEditorHandler } from '../modules/editor.ts';
 import type { IGitHandler } from '../modules/git.ts';
 import { IRunProcess } from "../modules/infra/run-process.ts";
+import { IRunManager } from '../modules/runner.ts';
 
 import type { EditorSettings } from '../modules/editor.ts';
 import type { GitSettings } from '../modules/git.ts';
@@ -30,4 +31,5 @@ export interface IScriptManager {
   readonly editor: IEditorHandler;
   readonly git: IGitHandler;
   readonly runner: IRunProcess;
+  readonly scripts: IRunManager;
 }

@@ -9,6 +9,7 @@ import { editorCommand } from './editor.ts';
 import { init } from './init.ts';
 import { status } from './status.ts';
 import { sync } from './sync.ts';
+import { execute } from './x.ts';
 
 export type CommandLoader = (cmd: RootCommand) => Promise<void> | void;
 
@@ -20,4 +21,5 @@ export const commands: CommandLoader[] = [
   init,
   status,
   sync,
+  execute,
 ];
