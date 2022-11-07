@@ -1,4 +1,4 @@
-name: Assign labels
+name: assign_labels
 on:
   pull_request:
     types: [opened]

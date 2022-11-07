@@ -9,7 +9,7 @@ export interface ISettingsPiority {
 }
 
 export class SettingsPriority implements ISettingsPiority {
-  #order: TargetOrder = ['global', 'local', 'target'];
+  #order: TargetOrder = ['global', 'target', 'local'];
   #default: SettingTarget = 'global';
 
   get order(): TargetOrder {
