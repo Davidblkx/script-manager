@@ -10,6 +10,7 @@ import {
   initTargetHandler,
   initEditorHandler,
   initGitHandler,
+  initScriptRunner,
 } from './init/__.ts';
 
 export async function initScritpManager(initOptions?: Partial<InitOptions>): Promise<IScriptManager> {
@@ -26,6 +27,7 @@ export async function initScritpManager(initOptions?: Partial<InitOptions>): Pro
   const runner = new DenoRunProcess();
   const SMXSettings = settings.section<AppSettings>();
   const git = initGitHandler(config, SMXSettings, runner);
+  const scripts = initScriptRunner(targets);
 
   return {
     logger,
@@ -36,6 +38,7 @@ export async function initScritpManager(initOptions?: Partial<InitOptions>): Pro
     SMXSettings,
     git,
     runner,
+    scripts,
   };
 }
 

@@ -1,3 +1,4 @@
+import { ValidationError } from "cliffy/command/mod.ts";
 import { buildRootCommand } from './root.ts';
 import { CliSMX } from './cli-smx.ts';
 
@@ -17,5 +18,13 @@ export async function initCli() {
     await loader(cmd);
   }
 
-  await cmd.parse(Deno.args);
+  try {
+    await cmd.parse(Deno.args);
+  } catch (err) {
+    if (err instanceof ValidationError) {
+      cmd.showHelp();
+    } else {
+      throw err;
+    }
+  }
 }
