@@ -66,7 +66,7 @@ export class SettingsManager implements ISettingsManager {
       this.#targets.local = new SettingsConfig({ configFile: localFile });
     }
     if (target && localFile) {
-      this.#targets.local = new SettingsConfig({
+      this.#targets.target = new SettingsConfig({
         configFile: localFile,
         getObj: c => c.config.targets[target].settings,
       });
