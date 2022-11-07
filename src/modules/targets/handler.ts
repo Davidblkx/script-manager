@@ -15,6 +15,7 @@ export class TargetHandler implements ITargetHandler {
   #section: ISection<TargetSettings>;
   #settingsManager: ISettingsManager;
   #dirHandlerFactory: IDirHandlerFactory;
+  #current?: string;
 
   get #settings() {
     return this.#section.value;
@@ -23,12 +24,14 @@ export class TargetHandler implements ITargetHandler {
   constructor(
     configHandler: IConfigHandler,
     settings: ISettingsManager,
-    dirHandlerFactory: IDirHandlerFactory
+    dirHandlerFactory: IDirHandlerFactory,
+    targetId?: string,
   ) {
     this.#configHandler = configHandler;
     this.#section = targetSection(settings);
     this.#dirHandlerFactory = dirHandlerFactory;
     this.#settingsManager = settings;
+    this.#current = targetId;
   }
 
   public async get(id: string): Promise<ITarget | undefined> {
@@ -111,7 +114,7 @@ export class TargetHandler implements ITargetHandler {
   }
 
   public async current(): Promise<ITarget> {
-    const id = this.#settings['targets.default'];
+    const id = this.#current ?? this.#settings['targets.default'];
     if (!id) {
       logger.error('No target selected');
       Deno.exit(1);
