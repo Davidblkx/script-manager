@@ -10,5 +10,5 @@ export function execute(cmd: RootCommand) {
 }
 
 async function executeScript(_: RootOptions, name: string) {
-  await CliSMX.scripts.run(name);
+  await CliSMX.scripts.run(name, CliSMX);
 }

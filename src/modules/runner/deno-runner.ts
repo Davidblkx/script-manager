@@ -1,3 +1,4 @@
+import type { IScriptManager } from '../../core/model.ts';
 import { IRunnable, IRunner } from "./models.ts";
 import { logger } from '../logger.ts';
 import { ITargetHandler } from "../targets.ts";
@@ -30,11 +31,11 @@ export class DenoRunner implements IRunner {
     }
   }
 
-  async run(runnable: IRunnable): Promise<void> {
+  async run(runnable: IRunnable, context: IScriptManager): Promise<void> {
     logger.debug(`Running ${runnable.name}`);
     try {
       const args = this.#getArgs(runnable.name);
-      await runnable.action(args);
+      await runnable.action(args, context);
     } catch (e) {
       logger.error('Error running custom DENO script', e);
       Deno.exit(1);

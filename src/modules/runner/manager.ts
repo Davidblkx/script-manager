@@ -1,3 +1,4 @@
+import type { IScriptManager } from '../../core/model.ts';
 import { IRunManager, IRunner } from "./models.ts";
 import { DenoRunner } from './deno-runner.ts';
 import { ITargetHandler } from "../targets.ts";
@@ -10,7 +11,7 @@ export class RunManager implements IRunManager {
     this.#denoRunner = new DenoRunner(targetHandler);
   }
 
-  async run(name: string): Promise<void> {
+  async run(name: string, context: IScriptManager): Promise<void> {
     const runnable = await this.#denoRunner.build(name);
     if (!runnable) {
       logger.error(`Script ${name} not found`);
@@ -18,7 +19,7 @@ export class RunManager implements IRunManager {
     }
 
     try {
-      await this.#denoRunner.run(runnable);
+      await this.#denoRunner.run(runnable, context);
     } catch (e) {
       logger.error('Error running custom script', e);
       Deno.exit(1);

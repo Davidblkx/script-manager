@@ -1,4 +1,6 @@
-export type RunAction = (args: string[]) => Promise<void> | void;
+import type { IScriptManager } from '../../core/model.ts';
+
+export type RunAction = (args: string[], context: IScriptManager) => Promise<void> | void;
 
 export interface IRunnable {
   name: string;
@@ -7,9 +9,9 @@ export interface IRunnable {
 
 export interface IRunner {
   build(name: string): Promise<IRunnable | false>;
-  run(runnable: IRunnable): Promise<void>;
+  run(runnable: IRunnable, context: IScriptManager): Promise<void>;
 }
 
 export interface IRunManager {
-  run(name: string): Promise<void>;
+  run(name: string, context: IScriptManager): Promise<void>;
 }
