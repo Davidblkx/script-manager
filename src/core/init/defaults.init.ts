@@ -11,7 +11,7 @@ export function buildDefaultOptions(): InitOptions {
     globalConfigPath,
     localConfigPath,
     initLocalPath: true,
-    logLevel: LogLevel.warning,
+    logLevel: LogLevel.info,
     quiet: false,
   }
 }
