@@ -1,6 +1,7 @@
 {
   "imports": {
-    "deno/": "https://deno.land/std@0.155.0/",
+    "$smx/": "https://deno.land/x/smx@v0.4.2/src/",
+    "deno/": "https://deno.land/std@0.163.0/",
     "cliffy/": "https://deno.land/x/cliffy@v0.25.2/",
     "getFiles": "https://deno.land/x/getfiles@v1.0.0/mod.ts"
   }
