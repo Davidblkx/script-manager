@@ -57,7 +57,10 @@ export class DenoRunner implements IRunner {
       const fileInfo = await getFileInfo(scriptPath);
       if (fileInfo && fileInfo.isFile) {
         logger.debug(`Found script: ${scriptPath}`);
-        return scriptPath;
+
+        return Deno.build.os === 'windows'
+          ? removeDriveLetter(scriptPath)
+          : scriptPath;
       }
     }
 
@@ -69,4 +72,8 @@ export class DenoRunner implements IRunner {
     const args = Deno.args.slice(index + 1);
     return args[0] === '--' ? args.slice(1) : args;
   }
+}
+
+function removeDriveLetter(path: string): string {
+  return path.replace(/^[a-zA-Z]:/, '/');
 }
