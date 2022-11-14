@@ -75,5 +75,5 @@ export class DenoRunner implements IRunner {
 }
 
 function removeDriveLetter(path: string): string {
-  return path.replace(/^[a-zA-Z]:/, '/');
+  return path.replace(/^[a-zA-Z]:\//, '/');
 }
