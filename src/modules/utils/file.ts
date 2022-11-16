@@ -21,3 +21,8 @@ export function getBrotherFile(path: string, name: string): string {
 export function removeInvalidPathChars(path: string, token = '_'): string {
   return path.replace(/[<>:"/\\|?*]/g, token);
 }
+
+export function formatWindowsImport(path: string): string {
+  return path.replace(/^[a-zA-Z]:\\/, '/')
+    .replace(/\\/g, '/');
+}

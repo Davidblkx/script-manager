@@ -1,5 +1,5 @@
 import { assertEquals } from "deno/testing/asserts.ts";
-import { getBrotherFile, getFolder } from "../../../src/modules/utils/file.ts";
+import { getBrotherFile, getFolder, formatWindowsImport } from "../../../src/modules/utils/file.ts";
 
 Deno.test("#utils/file", async utils => {
 
@@ -16,6 +16,13 @@ Deno.test("#utils/file", async utils => {
     const result = getFolder(path);
 
     assertEquals(result, "/home/user/project");
+  });
+
+  await utils.step("formatWindowsImport", () => {
+    const path = "C:\\Users\\user\\project\\file.ts";
+    const result = formatWindowsImport(path);
+
+    assertEquals(result, "/Users/user/project/file.ts");
   });
 
 });

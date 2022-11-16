@@ -3,7 +3,7 @@ import { IRunnable, IRunner } from "./models.ts";
 import { logger } from '../logger.ts';
 import { ITargetHandler } from "../targets.ts";
 import { join } from 'deno/path/mod.ts';
-import { getFileInfo } from '../utils/file.ts';
+import { getFileInfo, formatWindowsImport } from '../utils/file.ts';
 
 export class DenoRunner implements IRunner {
   #targetHandler: ITargetHandler;
@@ -59,7 +59,7 @@ export class DenoRunner implements IRunner {
         logger.debug(`Found script: ${scriptPath}`);
 
         return Deno.build.os === 'windows'
-          ? removeDriveLetter(scriptPath)
+          ? formatWindowsImport(scriptPath)
           : scriptPath;
       }
     }
@@ -72,8 +72,4 @@ export class DenoRunner implements IRunner {
     const args = Deno.args.slice(index + 1);
     return args[0] === '--' ? args.slice(1) : args;
   }
-}
-
-function removeDriveLetter(path: string): string {
-  return path.replace(/^[a-zA-Z]:\//, '/');
 }
