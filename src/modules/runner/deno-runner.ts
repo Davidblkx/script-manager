@@ -3,7 +3,7 @@ import { IRunnable, IRunner } from "./models.ts";
 import { logger } from '../logger.ts';
 import { ITargetHandler } from "../targets.ts";
 import { join } from 'deno/path/mod.ts';
-import { getFileInfo, formatWindowsImport } from '../utils/file.ts';
+import { getFileInfo, findPathTo } from '../utils/file.ts';
 
 export class DenoRunner implements IRunner {
   #targetHandler: ITargetHandler;
@@ -17,6 +17,7 @@ export class DenoRunner implements IRunner {
       const scriptPath = await this.#findScript(name);
       if (!scriptPath) { return false; }
 
+      logger.debug(`Importing script from: ${scriptPath}`);
       const { main } = await import(scriptPath);
 
       if (typeof main !== 'function') {
@@ -56,11 +57,8 @@ export class DenoRunner implements IRunner {
       const scriptPath = join(rootPath, `${name}${ext}`);
       const fileInfo = await getFileInfo(scriptPath);
       if (fileInfo && fileInfo.isFile) {
-        logger.debug(`Found script: ${scriptPath}`);
-
-        return Deno.build.os === 'windows'
-          ? formatWindowsImport(scriptPath)
-          : scriptPath;
+        logger.debug(`Found script at: ${scriptPath}`);
+        return findPathTo(scriptPath);
       }
     }
 
