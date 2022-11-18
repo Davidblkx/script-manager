@@ -2,7 +2,7 @@ import type { IScriptManager } from '../../core/model.ts';
 import { IRunnable, IRunner } from "./models.ts";
 import { logger } from '../logger.ts';
 import { ITargetHandler } from "../targets.ts";
-import { join } from 'deno/path/mod.ts';
+import { join, parse } from 'deno/path/mod.ts';
 import { getFileInfo, findPathTo } from '../utils/file.ts';
 
 export class DenoRunner implements IRunner {
@@ -58,7 +58,9 @@ export class DenoRunner implements IRunner {
       const fileInfo = await getFileInfo(scriptPath);
       if (fileInfo && fileInfo.isFile) {
         logger.debug(`Found script at: ${scriptPath}`);
-        return findPathTo(scriptPath);
+        const src = this.#getCurrentPath();
+        logger.debug(`Current path: ${src}`);
+        return findPathTo(scriptPath, src);
       }
     }
 
@@ -69,5 +71,11 @@ export class DenoRunner implements IRunner {
     const index = Deno.args.indexOf(name);
     const args = Deno.args.slice(index + 1);
     return args[0] === '--' ? args.slice(1) : args;
+  }
+
+  #getCurrentPath(): string {
+    const scriptUrl = import.meta.url;
+    const scriptPath = parse(new URL(scriptUrl).pathname).dir;
+    return scriptPath;
   }
 }
