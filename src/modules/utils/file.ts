@@ -1,4 +1,4 @@
-import { parse, join } from "deno/path/mod.ts";
+import { parse, join, relative } from "deno/path/mod.ts";
 
 export async function getFileInfo(path: string): Promise<Deno.FileInfo | false> {
   try {
@@ -22,7 +22,6 @@ export function removeInvalidPathChars(path: string, token = '_'): string {
   return path.replace(/[<>:"/\\|?*]/g, token);
 }
 
-export function formatWindowsImport(path: string): string {
-  return path.replace(/^[a-zA-Z]:\\/, '/')
-    .replace(/\\/g, '/');
+export function findPathTo(path: string, src = Deno.cwd()): string {
+  return relative(src, path);
 }
