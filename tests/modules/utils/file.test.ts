@@ -25,7 +25,7 @@ Deno.test("#utils/file", async utils => {
       const src = "/home/user/data/cwd";
       const result = findPathTo(path, src);
 
-      assertEquals(result, "../../project/file.ts".replaceAll('/', SEP));
+      assertEquals(result, "../../project/file.ts");
     });
 
     if (Deno.build.os === "windows") {
@@ -34,7 +34,7 @@ Deno.test("#utils/file", async utils => {
         const src = "C:\\Users\\user\\data\\cwd";
         const result = findPathTo(path, src);
 
-        assertEquals(result, "..\\..\\project\\file.ts");
+        assertEquals(result, "../../project/file.ts");
       });
     }
   });

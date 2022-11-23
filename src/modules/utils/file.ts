@@ -23,5 +23,5 @@ export function removeInvalidPathChars(path: string, token = '_'): string {
 }
 
 export function findPathTo(path: string, src = Deno.cwd()): string {
-  return relative(src, path);
+  return relative(src, path).replaceAll('\\', '/');
 }
