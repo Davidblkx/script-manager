@@ -1,11 +1,8 @@
 {
   "compilerOptions": {
     "lib": [
-      "dom",
-      "dom.iterable",
-      "dom.asynciterable",
       "deno.ns",
-      "deno.unstable"
+      "dom"
     ]
   },
   "fmt": {
@@ -16,10 +13,16 @@
       "useTabs": false
     }
   },
-  "importMap": "import_map.json",
   "test": {
     "files": {
       "include": ["tests/"]
     }
+  },
+  "imports": {
+    "$deno/": "https://deno.land/std@0.177.0/",
+    "$cliffy/": "https://deno.land/x/cliffy@v0.25.7/"
+  },
+  "tasks": {
+
   }
 }
