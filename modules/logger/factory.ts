@@ -1,7 +1,7 @@
-import { LogEntry, LogFeed, LogFeedAsync, LogFeedSync, Logger, LogLevel } from './models.ts';
+import { ILoggerFactory, LogEntry, LogFeed, LogFeedAsync, LogFeedSync, Logger, LogLevel } from './models.ts';
 import { loadConsoleFeed } from './console-feed.ts';
 
-export class LoggerFactory {
+export class LoggerFactory implements ILoggerFactory {
   #level: number = LogLevel.error;
   #syncFeeds = new Set<LogFeedSync>();
   #asyncFeeds = new Set<LogFeedAsync>();
@@ -55,7 +55,6 @@ export class LoggerFactory {
     const datetime = this.#getDatetime();
     const entryToWrite = { ...entry, datetime };
 
-
     for (const feed of this.#syncFeeds) {
       feed.write(entryToWrite);
     }
@@ -85,14 +84,13 @@ class DefaultLogger implements Logger {
   error(error: Error): Promise<void>;
   error(message: string, ...extra: unknown[]): Promise<void>;
   error(error: unknown, ...extra: unknown[]): Promise<void> {
-    const message = error instanceof Error ? error.message :
-      typeof error === 'string' ? error : 'Unknown error';
+    const message = error instanceof Error ? error.message : typeof error === 'string' ? error : 'Unknown error';
 
     return this.#writer({
       domain: this.#domain,
       level: LogLevel.error,
       message,
-      extra: error instanceof Error ? [error, ...extra] : extra
+      extra: error instanceof Error ? [error, ...extra] : extra,
     });
   }
 
@@ -118,6 +116,15 @@ class DefaultLogger implements Logger {
     return this.#writer({
       domain: this.#domain,
       level: LogLevel.debug,
+      message,
+      extra,
+    });
+  }
+
+  trace(message: string, ...extra: unknown[]): Promise<void> {
+    return this.#writer({
+      domain: this.#domain,
+      level: LogLevel.trace,
       message,
       extra,
     });

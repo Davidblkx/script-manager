@@ -4,6 +4,7 @@ export enum LogLevel {
   warning = 40,
   info = 60,
   debug = 90,
+  trace = 95,
   all = 100,
 }
 
@@ -46,5 +47,13 @@ export type Logger = {
 
   debug(message: string, ...extra: unknown[]): Promise<void>;
 
-  assert(condition: (() => boolean | Promise<boolean>), message?: string, level?: number): Promise<void>;
+  trace(message: string, ...extra: unknown[]): Promise<void>;
+
+  assert(condition: () => boolean | Promise<boolean>, message?: string, level?: number): Promise<void>;
+};
+
+export interface ILoggerFactory {
+  readonly level: LogLevel;
+
+  get(domain?: string): Logger;
 }

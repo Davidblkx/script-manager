@@ -1,12 +1,16 @@
-import type { IConfigHandler, IReader, IWriter, Config, Target } from './models.ts';
+import type { Config, IConfigHandler, IReader, IWriter, Target } from './models.ts';
+import type { ILoggerFactory, Logger } from '../logger/models.ts';
 import { EnvironmentConfig, FileConfig } from './factory.ts';
 
 /** Config handler, allow to read current config value and write */
 export class ConfigHandler implements IConfigHandler {
   #readers: IReader[] = [];
   #writers: IWriter[] = [];
+  #logger: Logger;
 
-  constructor() {}
+  constructor(logFactory: ILoggerFactory) {
+    this.#logger = logFactory.get('config_handler');
+  }
 
   /**
    * Register an handler to read/write config
@@ -17,11 +21,15 @@ export class ConfigHandler implements IConfigHandler {
    */
   register(handler: IReader | IWriter, at?: number) {
     if (isReader(handler)) {
-      this.#readers.splice(at ?? this.#readers.length, 0, handler);
+      const atPos = at ?? this.#readers.length;
+      this.#readers.splice(atPos, 0, handler);
+      this.#logger.trace(`Registered config reader [${handler.name}] at position ${atPos}`);
     }
 
     if (isWriter(handler)) {
-      this.#writers.splice(at ?? this.#writers.length, 0, handler);
+      const atPos = at ?? this.#writers.length;
+      this.#writers.splice(atPos, 0, handler);
+      this.#logger.trace(`Registered config writer [${handler.name}] at position ${atPos}`);
     }
 
     return this;
@@ -34,7 +42,7 @@ export class ConfigHandler implements IConfigHandler {
    * @returns
    */
   regiterEnvironment(at?: number) {
-    if (this.#readers.some(r => r instanceof EnvironmentConfig)) { return this; }
+    if (this.#readers.some((r) => r instanceof EnvironmentConfig)) return this;
 
     return this.register(new EnvironmentConfig(), at);
   }
@@ -48,8 +56,9 @@ export class ConfigHandler implements IConfigHandler {
    * @returns
    */
   registerFile(name: string, path: URL, at?: number) {
-    if (this.#readers.some(r => r instanceof FileConfig && r.name === name)) { return this; }
+    if (this.#readers.some((r) => r instanceof FileConfig && r.name === name)) return this;
 
+    this.#logger.trace(`Registering file config at: ${path}`);
     return this.register(new FileConfig(name, path), at);
   }
 
@@ -59,21 +68,26 @@ export class ConfigHandler implements IConfigHandler {
       keys.unshift(`${config.domain}.${target}.${config.key}`);
     }
 
+    this.#logger.trace(`Reading config: ${keys[0]}`);
+
     for (const key of keys) {
       const value = this.#read(key);
       if (value !== undefined) {
         const parsed = config.parser(value);
         if (parsed !== undefined) {
+          this.#logger.trace(`Config found: ${key} = ${parsed}`);
           return parsed;
         }
       }
     }
 
+    this.#logger.trace(`Config not found: ${keys[0]}`);
     return config.defaultValue;
   }
 
   write<T>(config: Config<T>, value: T, target?: Target): void {
     const key = target ? `${config.domain}.${target}.${config.key}` : `${config.domain}.${config.key}`;
+    this.#logger.trace(`Writing config: ${key} = ${value}`);
     this.#write(key, value);
   }
 
