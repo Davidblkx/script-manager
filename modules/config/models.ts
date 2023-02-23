@@ -10,7 +10,7 @@ export type Config<T> = {
   domain: string;
   defaultValue: T;
   parser: Parser<T>;
-}
+};
 
 /** Config reader */
 export interface IReader {
@@ -31,8 +31,9 @@ export interface IConfigHandler {
    *
    * @param config config entry
    * @param target default to current platform
+   * @param at reader name to use
    */
-  read<T>(config: Config<T>, target?: Target): T;
+  read<T>(config: Config<T>, target?: Target, at?: string): T;
 
   /**
    * Write the value for a config entry
@@ -40,8 +41,9 @@ export interface IConfigHandler {
    * @param config config entry
    * @param value value to write
    * @param target default to empty
+   * @param at writer name to use
    */
-  write<T>(config: Config<T>, value: T, target?: Target): void;
+  write<T>(config: Config<T>, value: T, target?: Target, at?: string): void;
 }
 
 /** Config provider, allow to declare config entries */

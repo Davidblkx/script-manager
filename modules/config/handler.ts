@@ -62,7 +62,7 @@ export class ConfigHandler implements IConfigHandler {
     return this.register(new FileConfig(name, path), at);
   }
 
-  read<T>(config: Config<T>, target: Target = Deno.build.os): T {
+  read<T>(config: Config<T>, target: Target = Deno.build.os, at?: string): T {
     const keys = [`${config.domain}.${config.key}`];
     if (target) {
       keys.unshift(`${config.domain}.${target}.${config.key}`);
@@ -71,7 +71,7 @@ export class ConfigHandler implements IConfigHandler {
     this.#logger.trace(`Reading config: ${keys[0]}`);
 
     for (const key of keys) {
-      const value = this.#read(key);
+      const value = this.#read(key, at);
       if (value !== undefined) {
         const parsed = config.parser(value);
         if (parsed !== undefined) {
@@ -85,14 +85,16 @@ export class ConfigHandler implements IConfigHandler {
     return config.defaultValue;
   }
 
-  write<T>(config: Config<T>, value: T, target?: Target): void {
+  write<T>(config: Config<T>, value: T, target?: Target, at?: string): void {
     const key = target ? `${config.domain}.${target}.${config.key}` : `${config.domain}.${config.key}`;
     this.#logger.trace(`Writing config: ${key} = ${value}`);
-    this.#write(key, value);
+    this.#write(key, value, at);
   }
 
-  #read(key: string): unknown {
-    for (const reader of this.#readers) {
+  #read(key: string, at?: string): unknown {
+    const readers = at ? this.#readers.filter((r) => r.name === at) : this.#readers;
+
+    for (const reader of readers) {
       const value = reader.read(key);
       if (value !== undefined) {
         return value;
@@ -102,8 +104,19 @@ export class ConfigHandler implements IConfigHandler {
     return undefined;
   }
 
-  #write(key: string, value: unknown): void {
-    this.#writers[0]?.write(key, value);
+  #write(key: string, value: unknown, at?: string): void {
+    const writer = at ? this.#writers.find((w) => w.name === at) : this.#writers[0];
+    if (!writer) {
+      const errMessage = at ? `Writer [${at}] not found` : 'No writer registered';
+      this.#logger.error(errMessage);
+      return;
+    }
+
+    try {
+      writer.write(key, value);
+    } catch (err) {
+      this.#logger.error(`Error writing config: ${err.message}`);
+    }
   }
 }
 
