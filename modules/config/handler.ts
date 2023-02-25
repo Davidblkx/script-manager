@@ -1,4 +1,4 @@
-import type { Config, IConfigHandler, IReader, IWriter, Target } from './models.ts';
+import type { Config, IConfigHandler, IReader, IWriter } from './models.ts';
 import type { ILoggerFactory, Logger } from '../logger/models.ts';
 import { EnvironmentConfig, FileConfig } from './factory.ts';
 
@@ -62,7 +62,7 @@ export class ConfigHandler implements IConfigHandler {
     return this.register(new FileConfig(name, path), at);
   }
 
-  read<T>(config: Config<T>, target: Target = Deno.build.os, at?: string): T {
+  read<T>(config: Config<T>, target = Deno.build.os, at?: string): T {
     const keys = [`${config.domain}.${config.key}`];
     if (target) {
       keys.unshift(`${config.domain}.${target}.${config.key}`);
@@ -85,7 +85,7 @@ export class ConfigHandler implements IConfigHandler {
     return config.defaultValue;
   }
 
-  write<T>(config: Config<T>, value: T, target?: Target, at?: string): void {
+  write<T>(config: Config<T>, value: T, target?: string, at?: string): void {
     const key = target ? `${config.domain}.${target}.${config.key}` : `${config.domain}.${config.key}`;
     this.#logger.trace(`Writing config: ${key} = ${value}`);
     this.#write(key, value, at);

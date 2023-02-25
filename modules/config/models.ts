@@ -1,6 +1,3 @@
-/** Target platform for a config entry */
-export type Target = 'windows' | 'darwin' | 'linux';
-
 /** Config value parser */
 export type Parser<T> = (value: unknown) => T | undefined;
 
@@ -33,7 +30,7 @@ export interface IConfigHandler {
    * @param target default to current platform
    * @param at reader name to use
    */
-  read<T>(config: Config<T>, target?: Target, at?: string): T;
+  read<T>(config: Config<T>, target?: string, at?: string): T;
 
   /**
    * Write the value for a config entry
@@ -43,7 +40,7 @@ export interface IConfigHandler {
    * @param target default to empty
    * @param at writer name to use
    */
-  write<T>(config: Config<T>, value: T, target?: Target, at?: string): void;
+  write<T>(config: Config<T>, value: T, target?: string, at?: string): void;
 }
 
 /** Config provider, allow to declare config entries */
