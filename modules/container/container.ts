@@ -25,7 +25,7 @@ export class Container implements IContainer {
   }
 
   register<T>(service: IService<T>): void {
-    this.#services.set(service.token, service.target as unknown as IService<unknown>);
+    this.#services.set(service.token, service as unknown as IService<unknown>);
     this.#singletons.delete(service.token);
   }
 
@@ -34,4 +34,4 @@ export class Container implements IContainer {
   }
 }
 
-export const container = new Container();
+export const container: IContainer = new Container();
