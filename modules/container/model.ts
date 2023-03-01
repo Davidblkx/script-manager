@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 export type Token<T> = symbol & { __type: T };
 
 export interface IContainer {
@@ -67,14 +68,14 @@ export type IServiceDep9<T, D1, D2, D3, D4, D5, D6, D7, D8, D9> = {
 
 export type IService<T> =
   | IServiceDep0<T>
-  | IServiceDep1<T, unknown>
-  | IServiceDep2<T, unknown, unknown>
-  | IServiceDep3<T, unknown, unknown, unknown>
-  | IServiceDep4<T, unknown, unknown, unknown, unknown>
-  | IServiceDep5<T, unknown, unknown, unknown, unknown, unknown>
-  | IServiceDep6<T, unknown, unknown, unknown, unknown, unknown, unknown>
-  | IServiceDep7<T, unknown, unknown, unknown, unknown, unknown, unknown, unknown>
-  | IServiceDep8<T, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown>
-  | IServiceDep9<T, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown>;
+  | IServiceDep1<T, any>
+  | IServiceDep2<T, any, any>
+  | IServiceDep3<T, any, any, any>
+  | IServiceDep4<T, any, any, any, any>
+  | IServiceDep5<T, any, any, any, any, any>
+  | IServiceDep6<T, any, any, any, any, any, any>
+  | IServiceDep7<T, any, any, any, any, any, any, any>
+  | IServiceDep8<T, any, any, any, any, any, any, any, any>
+  | IServiceDep9<T, any, any, any, any, any, any, any, any, any>;
 
 export type DepList = [unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown, unknown];
