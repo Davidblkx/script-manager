@@ -28,7 +28,7 @@ export class GitHandler implements IGitHandler {
   }
 
   async run<P, R>(command: GitGenericCommand<P, R>, cwd?: string): Promise<GitResult<R>> {
-    const args: string[] = [];
+    const args: string[] = [command.params.cmd];
 
     for (const [key, value] of Object.entries(command.params)) {
       if (key === 'cmd') continue;
@@ -49,6 +49,11 @@ export class GitHandler implements IGitHandler {
     }
 
     const res = await this.runRaw(args, cwd);
+
+    if (res.stderr.length) {
+      this.#logger.debug(`Command ${command.params.cmd} failed with stderr: ${res.stderr}`);
+    }
+
     return command.parser({
       ...res,
       params: command.params,

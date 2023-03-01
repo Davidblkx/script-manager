@@ -56,4 +56,10 @@ export interface ILoggerFactory {
   readonly level: LogLevel;
 
   get(domain?: string): Logger;
+  setLogLevel(level: number): ILoggerFactory;
+  addFeed(feed: LogFeed): ILoggerFactory;
+  removeFeed(feed: LogFeed): ILoggerFactory;
+  setDatetimeProvider(provider: () => number): ILoggerFactory;
+  enableConsole(): ILoggerFactory;
+  disableConsole(): ILoggerFactory;
 }
