@@ -14,6 +14,7 @@ export type GitGenericCommand<P, R> = {
   parser: (res: GitResult) => GitResult<R>;
 };
 
+/** Allow to register custom git commands, that can be reused later by an handler */
 export interface IGitCommandBuilder {
   register<P, R>(command: GitGenericCommand<P, R>): void;
   buildCommand<T extends GitCommands, K extends GitAction>(
@@ -22,6 +23,7 @@ export interface IGitCommandBuilder {
   build<P, R>(command: P & { cmd: string }): GitGenericCommand<P, R>;
 }
 
+/** Entry point to run GIT commands, responsible to generate the actually git call */
 export interface IGitHandler {
   runRaw(args: string[], cwd?: string): Promise<{ stdout: string; stderr: string; code: number }>;
   runCommand<T extends GitCommands, K extends GitAction>(
@@ -41,6 +43,7 @@ export type GitStatus = {
   remote?: string;
 };
 
+/** High level GIT interface */
 export interface IGit {
   status(cwd?: string): Promise<GitStatus>;
   isGit(cwd?: string): Promise<boolean>;

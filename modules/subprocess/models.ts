@@ -22,6 +22,7 @@ export type SubprocessOptions<T = CommandResult> = {
   handler?: (res: CommandResult) => T;
 };
 
+/** Create/Execute a subprocess */
 export interface ISubprocessFactory {
   create<T>(options: SubprocessOptions<T>): Subprocess<T>;
   exec<T>(options: SubprocessOptions<T>): Promise<T>;

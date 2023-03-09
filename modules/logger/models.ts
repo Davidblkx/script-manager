@@ -52,6 +52,11 @@ export type Logger = {
   assert(condition: () => boolean | Promise<boolean>, message?: string, level?: number): Promise<void>;
 };
 
+/**
+ * Logger factory
+ *
+ * Factory to create loggers and define feeds
+ */
 export interface ILoggerFactory {
   readonly level: LogLevel;
 

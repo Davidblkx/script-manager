@@ -21,7 +21,7 @@ export interface IWriter {
   write(key: string, value: unknown): void;
 }
 
-/** Config handler, allow to read current config value */
+/** Config handler, allow to read/write current config value */
 export interface IConfigHandler {
   /**
    * Read the value for a config entry
@@ -43,7 +43,9 @@ export interface IConfigHandler {
   write<T>(config: Config<T>, value: T, target?: string, at?: string): void;
 }
 
-/** Config provider, allow to declare config entries */
+/**
+ * Config provider, allow to declare config entries. Which can be used to identify possible configs
+ */
 export interface IConfigProvider {
   /**
    * Declare a config entry
