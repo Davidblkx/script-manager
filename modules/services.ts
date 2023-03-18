@@ -2,19 +2,21 @@ import { CONFIG_HANDLER, CONFIG_PROVIDER } from './config/service.ts';
 import { LOGGER_FACTORY } from './logger/service.ts';
 import { GIT, GIT_BUILDER, GIT_HANDLER } from './git/services.ts';
 import { SUBPROCESS_FACTORY } from './subprocess/service.ts';
+import { FILE_SYSTEM } from "./file-system/services.ts";
 
 import type { IContainer, Token } from './container/mod.ts';
 
 import { container } from './container/container.ts';
 
 export const knownServices = {
-  'config.handler': CONFIG_HANDLER,
-  'config.provider': CONFIG_PROVIDER,
-  'logger': LOGGER_FACTORY,
-  'git': GIT,
-  'git.builder': GIT_BUILDER,
-  'git.handler': GIT_HANDLER,
-  'subprocess': SUBPROCESS_FACTORY,
+  "config.handler": CONFIG_HANDLER,
+  "config.provider": CONFIG_PROVIDER,
+  logger: LOGGER_FACTORY,
+  git: GIT,
+  "git.builder": GIT_BUILDER,
+  "git.handler": GIT_HANDLER,
+  subprocess: SUBPROCESS_FACTORY,
+  "file-system": FILE_SYSTEM,
 };
 
 export interface IServices {
