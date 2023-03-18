@@ -1,6 +1,6 @@
 import type { IEntry, EntryState, IFileSystem } from "./model.ts";
 import type { ILoggerFactory, Logger } from "../logger/mod.ts";
-import { join, toFileUrl } from "$deno/path/mod.ts";
+import { join, toFileUrl, isAbsolute } from "$deno/path/mod.ts";
 import { copy, move } from "$deno/fs/mod.ts";
 import { Entry } from "./entry.ts";
 
@@ -14,7 +14,10 @@ export class FileSystem implements IFileSystem {
   }
 
   getURL(path: string, root?: string | undefined): URL {
-    const fullPath = root ? join(root, path) : path;
+    let fullPath = root ? join(root, path) : path;
+    if (!isAbsolute(fullPath)) {
+      fullPath = join(Deno.cwd(), fullPath);
+    }
     return toFileUrl(fullPath);
   }
 
