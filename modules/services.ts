@@ -40,13 +40,17 @@ export interface IServices {
   get<T extends keyof typeof knownServices>(
     key: T
   ): typeof knownServices[T] extends Token<infer U> ? U : never;
+
+  registerDefaults(): void;
 }
 
 class Services implements IServices {
   #container: IContainer = container;
+  #initialized = false;
 
   use(container: IContainer): void {
     this.#container = container;
+    this.#initialized = false;
   }
 
   get<T extends keyof typeof knownServices>(
@@ -61,6 +65,10 @@ class Services implements IServices {
   }
 
   registerDefaults(): void {
+    if (this.#initialized) {
+      return;
+    }
+
     this.#container.register(condigHandlerService);
     this.#container.register(configProviderService);
     this.#container.register(loggerFactoryService);
@@ -69,6 +77,7 @@ class Services implements IServices {
     this.#container.register(gitHandlerService);
     this.#container.register(subprocessFactoryService);
     this.#container.register(fileSystemService);
+    this.#initialized = true;
   }
 }
 
