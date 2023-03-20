@@ -9,7 +9,7 @@ export class ConfigHandler implements IConfigHandler {
   #logger: Logger;
 
   constructor(logFactory: ILoggerFactory) {
-    this.#logger = logFactory.get('config_handler');
+    this.#logger = logFactory.get("config_handler");
   }
 
   /**
@@ -23,13 +23,17 @@ export class ConfigHandler implements IConfigHandler {
     if (isReader(handler)) {
       const atPos = at ?? this.#readers.length;
       this.#readers.splice(atPos, 0, handler);
-      this.#logger.trace(`Registered config reader [${handler.name}] at position ${atPos}`);
+      this.#logger.trace(
+        `Registered config reader [${handler.name}] at position ${atPos}`
+      );
     }
 
     if (isWriter(handler)) {
       const atPos = at ?? this.#writers.length;
       this.#writers.splice(atPos, 0, handler);
-      this.#logger.trace(`Registered config writer [${handler.name}] at position ${atPos}`);
+      this.#logger.trace(
+        `Registered config writer [${handler.name}] at position ${atPos}`
+      );
     }
 
     return this;
@@ -41,25 +45,47 @@ export class ConfigHandler implements IConfigHandler {
    * @param at position to insert the handler, 0 takes priority
    * @returns
    */
-  regiterEnvironment(at?: number) {
+  async regiterEnvironment(at?: number) {
     if (this.#readers.some((r) => r instanceof EnvironmentConfig)) return this;
 
-    return this.register(new EnvironmentConfig(), at);
+    const env = new EnvironmentConfig();
+    await env.checkAvailability();
+
+    return this.register(env, at);
   }
 
   /**
    * Register an handler to read/write config from/to a file
    *
    * @param name handler name, used to identify the handler in logs
-   * @param path URL to the file
+   * @param file object with read/write functions
    * @param at position to insert the handler, 0 takes priority
    * @returns
    */
-  registerFile(name: string, path: URL, at?: number) {
-    if (this.#readers.some((r) => r instanceof FileConfig && r.name === name)) return this;
+  async registerFile(
+    name: string,
+    file: {
+      read: () => Promise<Record<string, unknown>>;
+      write: (data: Record<string, unknown>) => Promise<void>;
+      isAvailable?: () => boolean | Promise<boolean>;
+    },
+    at?: number
+  ) {
+    if (this.#readers.some((r) => r instanceof FileConfig && r.name === name))
+      return this;
 
-    this.#logger.trace(`Registering file config at: ${path}`);
-    return this.register(new FileConfig(name, path), at);
+    if (file.isAvailable) {
+      const available = await file.isAvailable();
+      if (!available) {
+        this.#logger.trace(`File config not available: ${name}`);
+        return this;
+      }
+    }
+
+    this.#logger.trace(`Registering file config: ${name}`);
+    const data = await file.read();
+    const fileConfig = new FileConfig(name, data, file.write);
+    return this.register(fileConfig, at);
   }
 
   read<T>(config: Config<T>, target = Deno.build.os, at?: string): T {
@@ -85,16 +111,26 @@ export class ConfigHandler implements IConfigHandler {
     return config.defaultValue;
   }
 
-  write<T>(config: Config<T>, value: T, target?: string, at?: string): void {
-    const key = target ? `${config.domain}.${target}.${config.key}` : `${config.domain}.${config.key}`;
+  async write<T>(
+    config: Config<T>,
+    value: T,
+    target?: string,
+    at?: string
+  ): Promise<void> {
+    const key = target
+      ? `${config.domain}.${target}.${config.key}`
+      : `${config.domain}.${config.key}`;
     this.#logger.trace(`Writing config: ${key} = ${value}`);
-    this.#write(key, value, at);
+    await this.#write(key, value, at);
   }
 
   #read(key: string, at?: string): unknown {
-    const readers = at ? this.#readers.filter((r) => r.name === at) : this.#readers;
+    const readers = at
+      ? this.#readers.filter((r) => r.name === at)
+      : this.#readers;
 
     for (const reader of readers) {
+      if (!reader.isAvailable()) continue;
       const value = reader.read(key);
       if (value !== undefined) {
         return value;
@@ -104,16 +140,23 @@ export class ConfigHandler implements IConfigHandler {
     return undefined;
   }
 
-  #write(key: string, value: unknown, at?: string): void {
-    const writer = at ? this.#writers.find((w) => w.name === at) : this.#writers[0];
+  async #write(key: string, value: unknown, at?: string): Promise<void> {
+    const writer = (
+      at
+        ? this.#writers.filter((w) => w.name === at && w.isAvailable())
+        : this.#writers.filter((w) => w.isAvailable())
+    )[0];
+
     if (!writer) {
-      const errMessage = at ? `Writer [${at}] not found` : 'No writer registered';
+      const errMessage = at
+        ? `Writer [${at}] not found`
+        : "No writer registered";
       this.#logger.error(errMessage);
       return;
     }
 
     try {
-      writer.write(key, value);
+      await writer.write(key, value);
     } catch (err) {
       this.#logger.error(`Error writing config: ${err.message}`);
     }

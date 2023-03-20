@@ -1,8 +1,22 @@
-import type { IFileHandler, IReader, IWriter } from './models.ts';
+import type { IReader, IWriter } from "./models.ts";
 
 /** Environment config reader */
 export class EnvironmentConfig implements IReader {
-  readonly name = 'environment';
+  readonly name = "environment";
+  #canUse = false;
+
+  isAvailable(): boolean {
+    return this.#canUse;
+  }
+
+  async checkAvailability() {
+    const status = await Deno.permissions.query({ name: "env" });
+    const setCanUse = (v: boolean) => (this.#canUse = v);
+    status.addEventListener("change", function () {
+      setCanUse(this.state === "granted");
+    });
+    setCanUse(status.state === "granted");
+  }
 
   read(key: string): unknown {
     return Deno.env.get(key);
@@ -12,17 +26,24 @@ export class EnvironmentConfig implements IReader {
 /** File config reader/writer */
 export class FileConfig implements IReader, IWriter {
   #name: string;
-  #path: URL;
-  #handler: IFileHandler;
-  #srcFile?: Record<string, unknown>;
+  #data: Record<string, unknown>;
+  #writer: (data: Record<string, unknown>) => void | Promise<void>;
+  #useable: boolean;
 
-  constructor(name: string, path: URL, handler?: IFileHandler) {
+  isAvailable(): boolean {
+    return this.#useable;
+  }
+
+  constructor(
+    name: string,
+    data: Record<string, unknown>,
+    writer: (data: Record<string, unknown>) => void | Promise<void>,
+    canUse = true
+  ) {
     this.#name = name;
-    this.#path = path;
-    this.#handler = handler ?? {
-      read: (path: URL) => Deno.readTextFileSync(path),
-      write: (path: URL, content: string) => Deno.writeTextFileSync(path, content),
-    }
+    this.#data = data;
+    this.#writer = writer;
+    this.#useable = canUse;
   }
 
   get name() {
@@ -30,29 +51,11 @@ export class FileConfig implements IReader, IWriter {
   }
 
   read(key: string): unknown {
-    return this.#loadFile()[key];
+    return this.#data[key];
   }
 
-  write(key: string, value: unknown): void {
-    const file = this.#loadFile();
-    file[key] = value;
-    this.#srcFile = file;
-    this.#handler.write(this.#path, JSON.stringify(file));
-  }
-
-  #loadFile(): Record<string, unknown> {
-    if (this.#srcFile) {
-      return this.#srcFile;
-    }
-
-    try {
-      const file = this.#handler.read(this.#path);
-      this.#srcFile = JSON.parse(file);
-    } catch {
-      // TODO: log error
-      this.#srcFile = {};
-    }
-
-    return this.#srcFile || {};
+  async write(key: string, value: unknown): Promise<void> {
+    this.#data[key] = value;
+    await this.#writer(this.#data);
   }
 }

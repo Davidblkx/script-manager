@@ -9,16 +9,20 @@ export type Config<T> = {
   parser: Parser<T>;
 };
 
-/** Config reader */
-export interface IReader {
+export interface IHandler {
   readonly name: string;
+
+  isAvailable(): boolean;
+}
+
+/** Config reader */
+export interface IReader extends IHandler {
   read(key: string): unknown;
 }
 
 /** Config writer */
-export interface IWriter {
-  readonly name: string;
-  write(key: string, value: unknown): void;
+export interface IWriter extends IHandler {
+  write(key: string, value: unknown): void | Promise<void>;
 }
 
 /** Config handler, allow to read/write current config value */
@@ -40,7 +44,12 @@ export interface IConfigHandler {
    * @param target default to empty
    * @param at writer name to use
    */
-  write<T>(config: Config<T>, value: T, target?: string, at?: string): void;
+  write<T>(
+    config: Config<T>,
+    value: T,
+    target?: string,
+    at?: string
+  ): Promise<void>;
 }
 
 /**
@@ -68,10 +77,4 @@ export interface IConfigProvider {
    * @param domain
    */
   domain(domain: string): Config<unknown>[];
-}
-
-/** Handle read/write to disk */
-export interface IFileHandler {
-  read(path: URL): string;
-  write(path: URL, content: string): void;
 }
