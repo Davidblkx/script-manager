@@ -61,6 +61,12 @@ export interface ILoggerFactory {
   readonly level: LogLevel;
 
   get(domain?: string): Logger;
+
+  /**
+   * Set log level
+   *
+   * @param level number between 0 and 100, 0 is disabled, 100 is all
+   */
   setLogLevel(level: number): ILoggerFactory;
   addFeed(feed: LogFeed): ILoggerFactory;
   removeFeed(feed: LogFeed): ILoggerFactory;

@@ -53,7 +53,7 @@ export class Directory implements IDirectory {
 
   async ensure(): Promise<IDirectory> {
     try {
-      await ensureDir(this.path.pathname);
+      await ensureDir(this.path);
       return this;
     } catch (err) {
       this.#logger?.debug(`Failed to create directory: ${this.path}`, err);

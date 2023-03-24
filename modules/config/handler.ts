@@ -1,6 +1,12 @@
-import type { Config, IConfigHandler, IReader, IWriter } from './models.ts';
-import type { ILoggerFactory, Logger } from '../logger/models.ts';
-import { EnvironmentConfig, FileConfig } from './factory.ts';
+import type {
+  Config,
+  IConfigFile,
+  IConfigHandler,
+  IReader,
+  IWriter,
+} from "./models.ts";
+import type { ILoggerFactory, Logger } from "../logger/models.ts";
+import { EnvironmentConfig, FileConfig } from "./factory.ts";
 
 /** Config handler, allow to read current config value and write */
 export class ConfigHandler implements IConfigHandler {
@@ -62,15 +68,7 @@ export class ConfigHandler implements IConfigHandler {
    * @param at position to insert the handler, 0 takes priority
    * @returns
    */
-  async registerFile(
-    name: string,
-    file: {
-      read: () => Promise<Record<string, unknown>>;
-      write: (data: Record<string, unknown>) => Promise<void>;
-      isAvailable?: () => boolean | Promise<boolean>;
-    },
-    at?: number
-  ) {
+  async registerFile(name: string, file: IConfigFile, at?: number) {
     if (this.#readers.some((r) => r instanceof FileConfig && r.name === name))
       return this;
 
@@ -164,9 +162,9 @@ export class ConfigHandler implements IConfigHandler {
 }
 
 function isReader(handler: IReader | IWriter): handler is IReader {
-  return typeof (handler as IReader).read === 'function';
+  return typeof (handler as IReader).read === "function";
 }
 
 function isWriter(handler: IReader | IWriter): handler is IWriter {
-  return typeof (handler as IWriter).write === 'function';
+  return typeof (handler as IWriter).write === "function";
 }

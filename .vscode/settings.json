@@ -1,5 +1,7 @@
 {
     "deno.enable": true,
     "deno.unstable": true,
-    "peacock.remoteColor": "#facfa0"
+    "peacock.remoteColor": "#facfa0",
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "denoland.vscode-deno"
 }

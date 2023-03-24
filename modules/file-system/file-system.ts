@@ -7,6 +7,21 @@ import { Entry } from "./entry.ts";
 export class FileSystem implements IFileSystem {
   #logger?: Logger;
   #factory?: ILoggerFactory;
+  #home?: URL;
+
+  get home(): URL {
+    if (!this.#home) {
+      const home =
+        Deno.env.get("HOME") ||
+        Deno.env.get("USERPROFILE") ||
+        Deno.env.get("HOMEPATH") ||
+        Deno.env.get("HOMEDRIVE") ||
+        Deno.cwd();
+
+      this.#home = toFileUrl(home);
+    }
+    return this.#home;
+  }
 
   constructor(loggerFactory?: ILoggerFactory) {
     this.#logger = loggerFactory?.get("FileSystem");
@@ -15,6 +30,11 @@ export class FileSystem implements IFileSystem {
 
   getURL(path: string, root?: string | undefined): URL {
     let fullPath = root ? join(root, path) : path;
+
+    if (path.startsWith("~")) {
+      fullPath = join(this.home.pathname, path.substring(1));
+    }
+
     if (!isAbsolute(fullPath)) {
       fullPath = join(Deno.cwd(), fullPath);
     }

@@ -35,6 +35,8 @@ export const knownServices = {
 };
 
 export interface IServices {
+  readonly container: IContainer;
+
   use(container: IContainer): void;
 
   get<T extends keyof typeof knownServices>(
@@ -47,6 +49,10 @@ export interface IServices {
 class Services implements IServices {
   #container: IContainer = container;
   #initialized = false;
+
+  get container(): IContainer {
+    return this.#container;
+  }
 
   use(container: IContainer): void {
     this.#container = container;

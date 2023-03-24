@@ -34,6 +34,8 @@ export interface IDirectory {
 }
 
 export interface IFileSystem {
+  readonly home: URL;
+
   getURL(path: string, root?: string): URL;
 
   get(path: URL): IEntry;

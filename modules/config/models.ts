@@ -25,8 +25,45 @@ export interface IWriter extends IHandler {
   write(key: string, value: unknown): void | Promise<void>;
 }
 
+export type IConfigFile = {
+  read: () => Promise<Record<string, unknown>>;
+  write: (data: Record<string, unknown>) => Promise<void>;
+  isAvailable?: () => boolean | Promise<boolean>;
+};
+
 /** Config handler, allow to read/write current config value */
 export interface IConfigHandler {
+  /**
+   * Register an handler to read/write config
+   *
+   * @param handler the handler to register
+   * @param at position to insert the handler, 0 takes priority
+   * @returns
+   */
+  register(handler: IReader | IWriter, at?: number): IConfigHandler;
+
+  /**
+   * Register an handler to read config from environment
+   *
+   * @param at position to insert the handler, 0 takes priority
+   * @returns
+   */
+  regiterEnvironment(at?: number): Promise<IConfigHandler>;
+
+  /**
+   * Register an handler to read/write config from/to a file
+   *
+   * @param name handler name, used to identify the handler in logs
+   * @param file object with read/write functions
+   * @param at position to insert the handler, 0 takes priority
+   * @returns
+   */
+  registerFile(
+    name: string,
+    file: IConfigFile,
+    at?: number
+  ): Promise<IConfigHandler>;
+
   /**
    * Read the value for a config entry
    *

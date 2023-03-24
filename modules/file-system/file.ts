@@ -20,7 +20,7 @@ export class File implements IFile {
 
   async write(data: string): Promise<void> {
     try {
-      await Deno.writeTextFile(this.#entry.path.pathname, data);
+      await Deno.writeTextFile(this.#entry.path, data);
     } catch (err) {
       this.#logger?.debug(`Failed to write to file: ${this.path}`, err);
       throw err;
@@ -29,7 +29,7 @@ export class File implements IFile {
 
   async read(): Promise<string> {
     try {
-      return await Deno.readTextFile(this.#entry.path.pathname);
+      return await Deno.readTextFile(this.#entry.path);
     } catch (err) {
       this.#logger?.debug(`Failed to read file: ${this.path}`, err);
       throw err;
