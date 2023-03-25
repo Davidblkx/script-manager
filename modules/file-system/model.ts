@@ -40,6 +40,7 @@ export interface IFileSystem {
 
   get(path: URL): IEntry;
   get(path: string, root?: string): IEntry;
+  get(path: string | URL, root?: string): IEntry;
 
   copy(from: URL, to: URL, overwrite?: boolean): Promise<IEntry>;
   move(from: URL, to: URL, overwrite?: boolean): Promise<IEntry>;

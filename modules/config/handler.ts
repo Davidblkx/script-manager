@@ -68,22 +68,24 @@ export class ConfigHandler implements IConfigHandler {
    * @param at position to insert the handler, 0 takes priority
    * @returns
    */
-  async registerFile(name: string, file: IConfigFile, at?: number) {
-    if (this.#readers.some((r) => r instanceof FileConfig && r.name === name))
+  async registerFile(cfg: IConfigFile) {
+    if (
+      this.#readers.some((r) => r instanceof FileConfig && r.name === cfg.name)
+    )
       return this;
 
-    if (file.isAvailable) {
-      const available = await file.isAvailable();
+    if (cfg.isAvailable) {
+      const available = await cfg.isAvailable();
       if (!available) {
-        this.#logger.trace(`File config not available: ${name}`);
+        this.#logger.trace(`File config not available: ${cfg.name}`);
         return this;
       }
     }
 
-    this.#logger.trace(`Registering file config: ${name}`);
-    const data = await file.read();
-    const fileConfig = new FileConfig(name, data, file.write);
-    return this.register(fileConfig, at);
+    this.#logger.trace(`Registering file config: ${cfg.name}`);
+    const data = cfg.initialData ? cfg.initialData : await cfg.read();
+    const fileConfig = new FileConfig(cfg.name, data, cfg.write);
+    return this.register(fileConfig, cfg.at);
   }
 
   read<T>(config: Config<T>, target = Deno.build.os, at?: string): T {

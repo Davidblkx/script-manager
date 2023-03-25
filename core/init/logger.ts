@@ -1,8 +1,13 @@
-import type { InitMod, IServices } from "./init.model.ts";
+import type { IServices } from "./init.model.ts";
 import { LogLevel } from "../../modules/logger/mod.ts";
 
-export const initLogger: InitMod = (services: IServices) => {
+export const initLogger = (
+  services: IServices,
+  level: number = LogLevel.info
+) => {
   const logger = services.get("logger");
-  logger.setLogLevel(LogLevel.all);
+
+  logger.setLogLevel(level);
+
   logger.enableConsole();
 };

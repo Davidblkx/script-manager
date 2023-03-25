@@ -26,9 +26,12 @@ export interface IWriter extends IHandler {
 }
 
 export type IConfigFile = {
+  name: string;
   read: () => Promise<Record<string, unknown>>;
   write: (data: Record<string, unknown>) => Promise<void>;
   isAvailable?: () => boolean | Promise<boolean>;
+  initialData?: Record<string, unknown>;
+  at?: number;
 };
 
 /** Config handler, allow to read/write current config value */
@@ -58,11 +61,7 @@ export interface IConfigHandler {
    * @param at position to insert the handler, 0 takes priority
    * @returns
    */
-  registerFile(
-    name: string,
-    file: IConfigFile,
-    at?: number
-  ): Promise<IConfigHandler>;
+  registerFile(config: IConfigFile): Promise<IConfigHandler>;
 
   /**
    * Read the value for a config entry

@@ -30,7 +30,7 @@ export class Container implements IContainer {
   }
 
   #isSingleton<T>(service: IService<T>): boolean {
-    return service.token === Symbol.for(service.target.name);
+    return service.token === Symbol.for(service.token.description ?? "UNKNOWN");
   }
 }
 
