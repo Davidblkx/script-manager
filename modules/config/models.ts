@@ -25,14 +25,14 @@ export interface IWriter extends IHandler {
   write(key: string, value: unknown): void | Promise<void>;
 }
 
-export type IConfigFile = {
-  name: string;
+export interface IConfigFile {
+  readonly name: string;
   read: () => Promise<Record<string, unknown>>;
   write: (data: Record<string, unknown>) => Promise<void>;
   isAvailable?: () => boolean | Promise<boolean>;
-  initialData?: Record<string, unknown>;
-  at?: number;
-};
+  readonly initialData?: Record<string, unknown>;
+  readonly at?: number;
+}
 
 /** Config handler, allow to read/write current config value */
 export interface IConfigHandler {

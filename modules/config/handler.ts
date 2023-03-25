@@ -77,12 +77,12 @@ export class ConfigHandler implements IConfigHandler {
     if (cfg.isAvailable) {
       const available = await cfg.isAvailable();
       if (!available) {
-        this.#logger.trace(`File config not available: ${cfg.name}`);
+        this.#logger.trace(`Config file not available: ${cfg.name}`);
         return this;
       }
     }
 
-    this.#logger.trace(`Registering file config: ${cfg.name}`);
+    this.#logger.trace(`Registering config file: ${cfg.name}`);
     const data = cfg.initialData ? cfg.initialData : await cfg.read();
     const fileConfig = new FileConfig(cfg.name, data, cfg.write);
     return this.register(fileConfig, cfg.at);

@@ -15,7 +15,7 @@ export class ScriptManager implements IScriptManager {
     return this.#root;
   }
 
-  public get services(): IServices {
+  get services(): IServices {
     return this.#services;
   }
 
