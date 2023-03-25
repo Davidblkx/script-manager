@@ -6,12 +6,19 @@ import { initLogger } from "./logger.ts";
 export type InitializeOptions = {
   logLevel?: number;
   configFile?: string;
+  disableColor?: boolean;
 };
 
 export async function initialize(
   services: IServices,
-  { logLevel = LogLevel.all, configFile = "~/.smx.json" }: InitializeOptions
+  {
+    logLevel = LogLevel.all,
+    configFile = "~/.smx.json",
+    disableColor = false,
+  }: InitializeOptions
 ) {
-  initLogger(services, logLevel);
-  await initConfigs(services, configFile);
+  initLogger(services, logLevel, disableColor);
+  const root = await initConfigs(services, configFile);
+
+  return root;
 }

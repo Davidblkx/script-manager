@@ -15,6 +15,7 @@ export const initConfigs = async (
   rootConfigFile: string
 ) => {
   const handler = services.get("config.handler");
+  const fs = services.get("file-system");
 
   await handler.regiterEnvironment();
 
@@ -30,6 +31,10 @@ export const initConfigs = async (
     const path = join(machineConfig.path, configFileName);
     await registerFile(services, "user", path, true);
   }
+
+  return machineConfig?.path
+    ? fs.getURL(machineConfig.path)
+    : fs.getURL(Deno.cwd());
 };
 
 export async function registerFile(

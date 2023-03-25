@@ -7,7 +7,7 @@ export async function initScriptManager(
 ): Promise<IScriptManager> {
   services.registerDefaults();
 
-  await initialize(services, options);
+  const root = await initialize(services, options);
 
-  return new ScriptManager(services);
+  return new ScriptManager(services, root);
 }
