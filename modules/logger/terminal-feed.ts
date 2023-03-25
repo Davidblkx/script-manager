@@ -29,25 +29,32 @@ export function createTerminalFeed(target: ConsoleTarget, colorMap: TerminalColo
       }
 
       const colorize = colors[colorMap[key]] as unknown as (text: string) => string;
-      const messageWithPrefix = colorize(`${date}: ${prefix}${message}`);
+      const messageWithPrefix = colorize(
+        `${date}: (${key}) ${prefix} ${message}`
+      );
       target[key](messageWithPrefix, ...extra);
     }
   };
 }
 
-export function loadTerminalFeed(): LogFeedSync {
+export function loadTerminalFeed(colorMap?: TerminalColorMap): LogFeedSync {
   if (logFeed) {
     return logFeed;
   }
 
   const console = globalThis.console;
-  if (!console) { throw new Error('No console available'); }
+  if (!console) {
+    throw new Error("No console available");
+  }
 
-  logFeed = createTerminalFeed(console, {
-    debug: 'cyan',
-    error: 'red',
-    info: 'green',
-    warn: 'yellow'
-  });
+  logFeed = createTerminalFeed(
+    console,
+    colorMap ?? {
+      debug: "cyan",
+      error: "red",
+      info: "green",
+      warn: "yellow",
+    }
+  );
   return logFeed;
 }

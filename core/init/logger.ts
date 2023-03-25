@@ -1,5 +1,6 @@
 import type { IServices } from "./init.model.ts";
 import { LogLevel } from "../../modules/logger/mod.ts";
+import { loadTerminalFeed } from "../../modules/logger/terminal-feed.ts";
 
 export const initLogger = (
   services: IServices,
@@ -9,5 +10,5 @@ export const initLogger = (
 
   logger.setLogLevel(level);
 
-  logger.enableConsole();
+  logger.addFeed(loadTerminalFeed());
 };
