@@ -17,7 +17,9 @@ import {
   SUBPROCESS_FACTORY,
   subprocessFactoryService,
 } from "./subprocess/service.ts";
+import {} from "./ssh/mod.ts";
 import { FILE_SYSTEM, fileSystemService } from "./file-system/services.ts";
+import { SSH, sshService } from "./ssh/services.ts";
 
 import type { IContainer, Token } from "./container/mod.ts";
 
@@ -32,6 +34,7 @@ export const knownServices = {
   "git.handler": GIT_HANDLER,
   subprocess: SUBPROCESS_FACTORY,
   "file-system": FILE_SYSTEM,
+  ssh: SSH,
 };
 
 export interface IServices {
@@ -41,7 +44,7 @@ export interface IServices {
 
   get<T extends keyof typeof knownServices>(
     key: T
-  ): typeof knownServices[T] extends Token<infer U> ? U : never;
+  ): (typeof knownServices)[T] extends Token<infer U> ? U : never;
 
   registerDefaults(): void;
 }
@@ -61,13 +64,11 @@ class Services implements IServices {
 
   get<T extends keyof typeof knownServices>(
     key: T
-  ): typeof knownServices[T] extends Token<infer U> ? U : never {
+  ): (typeof knownServices)[T] extends Token<infer U> ? U : never {
     const token = knownServices[key] as Token<unknown>;
-    return this.#container.get(token) as typeof knownServices[T] extends Token<
-      infer U
-    >
-      ? U
-      : never;
+    return this.#container.get(
+      token
+    ) as (typeof knownServices)[T] extends Token<infer U> ? U : never;
   }
 
   registerDefaults(): void {
@@ -83,6 +84,7 @@ class Services implements IServices {
     this.#container.register(gitHandlerService);
     this.#container.register(subprocessFactoryService);
     this.#container.register(fileSystemService);
+    this.#container.register(sshService);
     this.#initialized = true;
   }
 }

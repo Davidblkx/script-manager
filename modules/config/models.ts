@@ -7,6 +7,7 @@ export type Config<T> = {
   domain: string;
   defaultValue: T;
   parser: Parser<T>;
+  description?: string;
 };
 
 export interface IHandler {

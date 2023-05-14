@@ -24,6 +24,6 @@ export class ScriptManager implements IScriptManager {
     this.#root = root;
 
     this.#logger = services.get("logger").get("script-manager");
-    this.#logger.debug("ScriptManager created at: " + root.pathname);
+    this.#logger.debug("ScriptManager root at: " + root.pathname);
   }
 }

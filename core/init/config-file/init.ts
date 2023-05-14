@@ -8,7 +8,7 @@ import { join } from "$deno/path/mod.ts";
  *  - Environment variables
  *  - Current working directory
  *  - Machine config file (can be defined by passing --config-file)
- *  - User config file (can be defined by passing --config-file)
+ *  - User config file (File loaded from scripts path defined in machine config file)
  */
 export async function registerConfigs(
   services: IServices,

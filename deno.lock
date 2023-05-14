@@ -73,5 +73,16 @@
     "https://deno.land/x/cliffy@v0.25.7/ansi/deps.ts": "0f35cb7e91868ce81561f6a77426ea8bc55dc15e13f84c7352f211023af79053",
     "https://deno.land/x/cliffy@v0.25.7/ansi/mod.ts": "bb4e6588e6704949766205709463c8c33b30fec66c0b1846bc84a3db04a4e075",
     "https://deno.land/x/cliffy@v0.25.7/ansi/tty.ts": "8fb064c17ead6cdf00c2d3bc87a9fd17b1167f2daa575c42b516f38bdb604673"
+  },
+  "npm": {
+    "specifiers": {
+      "@noble/ed25519": "@noble/ed25519@2.0.0"
+    },
+    "packages": {
+      "@noble/ed25519@2.0.0": {
+        "integrity": "sha512-/extjhkwFupyopDrt80OMWKdLgP429qLZj+z6sYJz90rF2Iz0gjZh2ArMKPImUl13Kx+0EXI2hN9T/KJV0/Zng==",
+        "dependencies": {}
+      }
+    }
   }
 }
