@@ -14,3 +14,8 @@
 ## Clone existing repository
 
  - smx init --clone {GIT_REPO_URL}
+
+## Documentation
+
+ - cd docs
+ - pyro dev
