@@ -37,7 +37,7 @@ export async function registerConfigs(
   const cwdFile = join(Deno.cwd(), configFileName);
   const cwdConfig = await ConfigFile.create(services, "workdir", cwdFile);
   if (cwdConfig) {
-    await handler.registerFile(cwdConfig);
+    await handler.registerAsyncConfig(cwdConfig);
   } else {
     logger.debug(`Config file not found: ${cwdFile}`);
   }
@@ -50,7 +50,7 @@ export async function registerConfigs(
     { path: scriptsPath }
   );
   if (machineConfig) {
-    await handler.registerFile(machineConfig);
+    await handler.registerAsyncConfig(machineConfig);
   } else {
     logger.debug(`Config file not found: ${configFilePath}`);
     return fs.getURL(Deno.cwd());
@@ -66,7 +66,7 @@ export async function registerConfigs(
     {}
   );
   if (scriptConfig) {
-    await handler.registerFile(scriptConfig);
+    await handler.registerAsyncConfig(scriptConfig);
   } else {
     logger.debug(`Config file not found: ${scriptConfigPath}`);
   }

@@ -1,10 +1,10 @@
 import type { Logger } from "../../../modules/logger/mod.ts";
-import type { IConfigFile } from "../../../modules/config/mod.ts";
+import type { IAsyncConfig } from "../../../modules/config/mod.ts";
 import type { IServices } from "../../../modules/services.ts";
 import type { IFile } from "../../../modules/file-system/model.ts";
 import type { ScriptManagerConfig } from "./models.ts";
 
-export class ConfigFile implements IConfigFile {
+export class ConfigFile implements IAsyncConfig {
   #file: IFile;
   #logger: Logger;
   #name: string;

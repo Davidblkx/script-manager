@@ -12,16 +12,16 @@ import { SSHConfig } from "./config.ts";
 import { Parser } from "./parser.ts";
 
 const PathConfig: Config<string> = {
-  domain: "smx:ssh",
-  key: "path",
+  domain: "smx",
+  key: "ssh.path",
   defaultValue: "~/.ssh",
   parser: defaultParser(""),
   description: "The path to the .ssh folder",
 };
 
 const FileConfig: Config<string> = {
-  domain: "smx:ssh",
-  key: "config",
+  domain: "smx",
+  key: "ssh.config",
   defaultValue: "config",
   parser: defaultParser(""),
   description: "The name of the ssh config file",

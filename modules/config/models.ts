@@ -26,7 +26,7 @@ export interface IWriter extends IHandler {
   write(key: string, value: unknown): void | Promise<void>;
 }
 
-export interface IConfigFile {
+export interface IAsyncConfig {
   readonly name: string;
   read: () => Promise<Record<string, unknown>>;
   write: (data: Record<string, unknown>) => Promise<void>;
@@ -62,7 +62,7 @@ export interface IConfigHandler {
    * @param at position to insert the handler, 0 takes priority
    * @returns
    */
-  registerFile(config: IConfigFile): Promise<IConfigHandler>;
+  registerAsyncConfig(config: IAsyncConfig): Promise<IConfigHandler>;
 
   /**
    * Read the value for a config entry

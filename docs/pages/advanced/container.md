@@ -4,8 +4,6 @@ description: Details inversion of control container
 index: 1
 ---
 
-## Container
-
 The `Container` is responsible for creating and managing the services. It's a simple implementation of the [inversion of control](https://en.wikipedia.org/wiki/Inversion_of_control) principle, `IoC`, where the services are created and managed by the framework, and are injected into the classes that need them. The `Container` is a singleton, and is created by the framework at startup. It's possible to create a new instance of the `Container` class, but it's not recommended.
 
 ### Tokens

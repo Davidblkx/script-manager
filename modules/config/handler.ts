@@ -1,12 +1,12 @@
 import type {
   Config,
-  IConfigFile,
+  IAsyncConfig,
   IConfigHandler,
   IReader,
   IWriter,
 } from "./models.ts";
 import type { ILoggerFactory, Logger } from "../logger/models.ts";
-import { EnvironmentConfig, FileConfig } from "./factory.ts";
+import { EnvironmentConfig, AsyncConfig } from "./factory.ts";
 
 /** Config handler, allow to read current config value and write */
 export class ConfigHandler implements IConfigHandler {
@@ -68,11 +68,8 @@ export class ConfigHandler implements IConfigHandler {
    * @param at position to insert the handler, 0 takes priority
    * @returns
    */
-  async registerFile(cfg: IConfigFile) {
-    if (
-      this.#readers.some((r) => r instanceof FileConfig && r.name === cfg.name)
-    )
-      return this;
+  async registerAsyncConfig(cfg: IAsyncConfig) {
+    if (this.#readers.some((r) => r.name === cfg.name)) return this;
 
     if (cfg.isAvailable) {
       const available = await cfg.isAvailable();
@@ -84,8 +81,8 @@ export class ConfigHandler implements IConfigHandler {
 
     this.#logger.trace(`Registering config file: ${cfg.name}`);
     const data = cfg.initialData ? cfg.initialData : await cfg.read();
-    const fileConfig = new FileConfig(cfg.name, data, cfg.write);
-    return this.register(fileConfig, cfg.at);
+    const config = new AsyncConfig(cfg.name, data, cfg.write);
+    return this.register(config, cfg.at);
   }
 
   read<T>(config: Config<T>, target = Deno.build.os, at?: string): T {
@@ -130,7 +127,7 @@ export class ConfigHandler implements IConfigHandler {
       : this.#readers;
 
     for (const reader of readers) {
-      if (!reader.isAvailable()) continue;
+      if (!reader || !reader.isAvailable()) continue;
       const value = reader.read(key);
       if (value !== undefined) {
         return value;

@@ -19,12 +19,12 @@ export class EnvironmentConfig implements IReader {
   }
 
   read(key: string): unknown {
-    return Deno.env.get(key);
+    return Deno.env.get(key.toUpperCase().replaceAll(".", "_"));
   }
 }
 
 /** File config reader/writer */
-export class FileConfig implements IReader, IWriter {
+export class AsyncConfig implements IReader, IWriter {
   #name: string;
   #data: Record<string, unknown>;
   #writer: (data: Record<string, unknown>) => void | Promise<void>;

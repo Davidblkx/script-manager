@@ -7,5 +7,9 @@ import { ConfigProvider } from './provider.ts';
 export const CONFIG_HANDLER = createToken<IConfigHandler>('config_handler');
 export const CONFIG_PROVIDER = createToken<IConfigProvider>('config_provider');
 
-export const condigHandlerService = declareService(CONFIG_HANDLER, ConfigHandler, LOGGER_FACTORY);
+export const condigHandlerService = declareService(
+  CONFIG_HANDLER,
+  ConfigHandler,
+  LOGGER_FACTORY
+);
 export const configProviderService = declareService(CONFIG_PROVIDER, ConfigProvider);
