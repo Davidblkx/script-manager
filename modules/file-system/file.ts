@@ -35,4 +35,22 @@ export class File implements IFile {
       throw err;
     }
   }
+
+  async readBinary(): Promise<Uint8Array> {
+    try {
+      return await Deno.readFile(this.#entry.path);
+    } catch (err) {
+      this.#logger?.debug(`Failed to read file: ${this.path}`, err);
+      throw err;
+    }
+  }
+
+  async writeBinary(data: Uint8Array): Promise<void> {
+    try {
+      await Deno.writeFile(this.#entry.path, data);
+    } catch (err) {
+      this.#logger?.debug(`Failed to write to file: ${this.path}`, err);
+      throw err;
+    }
+  }
 }

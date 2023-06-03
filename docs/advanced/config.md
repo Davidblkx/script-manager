@@ -1,8 +1,4 @@
----
-title: Configuration
-description: Describes configuration of the framework
-index: 2
----
+# Configuration
 
 The configuration module allows to persist data and settings between sessions. It is also used to store the settings of the framework itself. Each entry has a domain, which allows to groups settings and avoid clashes between different modules. The actual storage in the file system is comply abstracted and out of scope of this module. This module is divided into two parts: the configuration provider and the configuration Handler.
 
@@ -13,7 +9,7 @@ The configuration provider is an in-memory storage used to define configuration 
 ### Configuration Definition
 
 The configuration definition is a simple object with the following API:
-```javascript
+```typescript
 const PathConfig: Config<string> = {
   domain: "my-module",
   key: "path",
@@ -37,7 +33,7 @@ const PathConfig: Config<string> = {
 
 New configuration are declared using the `declare<T>(Config<T>)` method of the configuration provider. The `declare<T>(Config<T>)` method is a generic method that takes the type of the configuration entry as a parameter. The type is used to type the returned `Config<T>` object. Declaring a value allows to other modules to access it and helps a user know what configuration entries are available.
 
-```javascript
+```typescript
 const PathConfig: Config<string> = {
   domain: "my-module",
   key: "path",
@@ -53,7 +49,7 @@ services.get('config.provider').declare(PathConfig);
 
 The `search(key: string, domain?: string): Config<unknown> | undefined` method of the configuration provider allows to search for a configuration entry. It returns the configuration entry if it exists, `undefined` otherwise. By default it searchs in the `smx` domain.
 
-```javascript
+```typescript
 const PathConfig: Config<string> = {
   domain: "my-module",
   key: "path",
@@ -84,7 +80,7 @@ The configuration handler is used to read and modify configuration values. It's 
 
 The `read<T>(config: Config<T>, target?: string, at?: string): T` method of the configuration handler allows to read a configuration value. It returns the configuration value if it exists, the default value otherwise. The `target` parameter allows to target a specific version of the value, usually the OS name. By default it uses the current OS name. The `at` parameter allows to target a specific [reader](#registering-a-readerwriter), if left empty it follows the current order of the readers.
 
-```javascript
+```typescript
 const PathConfig: Config<string> = {
   domain: "my-module",
   key: "path",
@@ -107,7 +103,7 @@ const value = services.get('config.handler').read(PathConfig, undefined, 'local-
 
 The `write<T>(config: Config<T>, value: T, target?: string, at?: string): void` method of the configuration handler allows to write a configuration value. The `target` parameter allows to target a specific version of the value, usually the OS name. By default it leaves it empty. The `at` parameter allows to target a specific [writer](#registering-a-readerwriter), if left empty it writes to the first available writer.
 
-```javascript
+```typescript
 const PathConfig: Config<string> = {
   domain: "my-module",
   key: "path",
@@ -130,7 +126,7 @@ services.get('config.handler').write(PathConfig, "~/my-module", undefined, 'loca
 
 The configuration handler uses readers and writers to read and write configuration values. Readers and writers are simple objects with the following API:
 
-```javascript
+```typescript
 interface IReader {
   readonly name: string;
   isAvailable(): boolean;
@@ -153,7 +149,7 @@ interface IWriter {
 
 They can be registered using the `register(handler: Reader | Writer, at?: number): this`. The `at` parameter allows to specify the position of the reader/writer in the list of readers/writers. By default it adds it at the end of the list. When needed they are loaded starting from position 0 to the last position.
 
-```javascript
+```typescript
 const reader = {
   name: 'my-reader',
   isAvailable: () => true,
@@ -173,7 +169,7 @@ The framework provides two helpers methods to register readers and writers:
 
 Registers an environment reader. It uses the current environment variables to read configuration values. The `at` parameter allows to specify the position of the reader in the list of readers. By default it adds it at the end of the list. The keys are transformed to uppercase and the `.` are replaced by `_`. It checks if Deno has permission to read environment variables, if not it does nothing.
 
-```javascript
+```typescript
 const PathConfig: Config<string> = {
   domain: "my-module",
   key: "path",
@@ -194,7 +190,7 @@ const value = services.get('config.handler').read(PathConfig);
 
 Because readers are synchronous, it's not possible to read configuration values from asynchronous sources. The `registerAsyncConfig(config: IAsyncConfig): Promise<this>` method allows to register an asynchronous configuration source. It takes an object with the following API:
 
-```javascript
+```typescript
 interface IAsyncConfig {
   readonly name: string;
   read: () => Promise<Record<string, unknown>>;

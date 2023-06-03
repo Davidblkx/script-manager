@@ -1,9 +1,3 @@
----
-title: Advanced
-description:  Advanced details about the internals of the project
-index: 2
----
-
 ## Architecture
 
 Script-manager is divided into several modules, each one with a specific purpose and its own set of services. At it's core the `IScriptManager` interface, is the main entry point of both the cli and the framework.

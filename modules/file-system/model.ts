@@ -16,6 +16,9 @@ export interface IFile {
 
   write(data: string): Promise<void>;
   read(): Promise<string>;
+
+  readBinary(): Promise<Uint8Array>;
+  writeBinary(data: Uint8Array): Promise<void>;
 }
 
 export interface IDirectory {

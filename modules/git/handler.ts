@@ -65,17 +65,15 @@ export class GitHandler implements IGitHandler {
 
     try {
       return await this.#runner.exec({
-        target: 'git',
+        target: "git",
         runOptions: {
           args,
           cwd,
-          stderr: 'piped',
-          stdout: 'piped',
         },
         handler: (proc) => ({
           code: proc.code,
-          stderr: proc.stderr ?? '',
-          stdout: proc.stdout ?? '',
+          stderr: proc.stderr ?? "",
+          stdout: proc.stdout ?? "",
         }),
       });
     } catch (ex) {
