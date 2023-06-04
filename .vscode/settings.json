@@ -1,9 +1,13 @@
 {
-    "deno.enable": true,
-    "deno.unstable": true,
-    "peacock.remoteColor": "#facfa0",
+  "deno.enable": true,
+  "deno.unstable": true,
+  "peacock.remoteColor": "#facfa0",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "denoland.vscode-deno",
+  "typescript.preferences.quoteStyle": "single",
+  "editor.formatOnSaveMode": "file",
+  "[typescript]": {
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "denoland.vscode-deno",
-    "typescript.preferences.quoteStyle": "single",
-    "prettier.enable": false
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
 }

@@ -1,5 +1,4 @@
 import type {
-  IService,
   IServiceDep0,
   IServiceDep1,
   IServiceDep2,

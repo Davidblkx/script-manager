@@ -1,34 +1,30 @@
 import {
+  condigHandlerService,
   CONFIG_HANDLER,
   CONFIG_PROVIDER,
-  condigHandlerService,
   configProviderService,
-} from "./config/service.ts";
-import { LOGGER_FACTORY, loggerFactoryService } from "./logger/service.ts";
-import {
-  GIT,
-  gitService,
-} from "./git/services.ts";
-import {
-  SUBPROCESS_FACTORY,
-  subprocessFactoryService,
-} from "./subprocess/service.ts";
-import {} from "./ssh/mod.ts";
-import { FILE_SYSTEM, fileSystemService } from "./file-system/services.ts";
-import { SSH, sshService } from "./ssh/services.ts";
+} from './config/service.ts';
+import { LOGGER_FACTORY, loggerFactoryService } from './logger/service.ts';
+import { GIT, gitService } from './git/services.ts';
+import { SUBPROCESS_FACTORY, subprocessFactoryService } from './subprocess/service.ts';
+import {} from './ssh/mod.ts';
+import { FILE_SYSTEM, fileSystemService } from './file-system/services.ts';
+import { SSH, sshService } from './ssh/services.ts';
+import { aifService, APP_INTERFACE_FACTORY } from './aif/services.ts';
 
-import type { IContainer, Token } from "./container/mod.ts";
+import type { IContainer, Token } from './container/mod.ts';
 
-import { container } from "./container/container.ts";
+import { container } from './container/container.ts';
 
 export const knownServices = {
-  "config.handler": CONFIG_HANDLER,
-  "config.provider": CONFIG_PROVIDER,
+  'config.handler': CONFIG_HANDLER,
+  'config.provider': CONFIG_PROVIDER,
   logger: LOGGER_FACTORY,
   git: GIT,
   subprocess: SUBPROCESS_FACTORY,
-  "file-system": FILE_SYSTEM,
+  'file-system': FILE_SYSTEM,
   ssh: SSH,
+  aif: APP_INTERFACE_FACTORY,
 };
 
 export interface IServices {
@@ -37,7 +33,7 @@ export interface IServices {
   use(container: IContainer): void;
 
   get<T extends keyof typeof knownServices>(
-    key: T
+    key: T,
   ): (typeof knownServices)[T] extends Token<infer U> ? U : never;
 
   registerDefaults(): void;
@@ -57,11 +53,11 @@ class Services implements IServices {
   }
 
   get<T extends keyof typeof knownServices>(
-    key: T
+    key: T,
   ): (typeof knownServices)[T] extends Token<infer U> ? U : never {
     const token = knownServices[key] as Token<unknown>;
     return this.#container.get(
-      token
+      token,
     ) as (typeof knownServices)[T] extends Token<infer U> ? U : never;
   }
 
@@ -77,6 +73,7 @@ class Services implements IServices {
     this.#container.register(subprocessFactoryService);
     this.#container.register(fileSystemService);
     this.#container.register(sshService);
+    this.#container.register(aifService);
     this.#initialized = true;
   }
 }

@@ -8,4 +8,5 @@
   - [Configuration](advanced/config.md)
   - [File System](advanced/file-system.md)
   - [Subprocess](advanced/subprocess.md)
+  - [App Interface](advanced/app-interface.md)
   - [GIT](advanced/git.md)
