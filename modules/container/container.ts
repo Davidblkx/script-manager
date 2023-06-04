@@ -1,4 +1,5 @@
 import type { DepList, IContainer, IService } from './model.ts';
+import { isServiceInstance, isServiceTarget } from './factory.ts';
 
 export class Container implements IContainer {
   #services: Map<symbol, IService<unknown>> = new Map();
@@ -15,7 +16,13 @@ export class Container implements IContainer {
     }
 
     const deps = (service.deps?.map((dep) => this.get(dep)) ?? []) as unknown as DepList;
-    const instance = new service.target(...deps);
+    const instance = isServiceTarget(service) ? new service.target(...deps)
+      : isServiceInstance(service) ? service.instance
+      : undefined;
+
+    if (typeof instance === 'undefined') {
+      throw new Error(`Service instance not found: ${token.toString()}`);
+    }
 
     if (this.#isSingleton(service)) {
       this.#singletons.set(token, instance);
