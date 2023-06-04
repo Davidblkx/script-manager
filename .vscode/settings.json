@@ -3,5 +3,7 @@
     "deno.unstable": true,
     "peacock.remoteColor": "#facfa0",
     "editor.formatOnSave": true,
-    "editor.defaultFormatter": "denoland.vscode-deno"
+    "editor.defaultFormatter": "denoland.vscode-deno",
+    "typescript.preferences.quoteStyle": "single",
+    "prettier.enable": false
 }

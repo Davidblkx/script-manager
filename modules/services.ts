@@ -7,10 +7,6 @@ import {
 import { LOGGER_FACTORY, loggerFactoryService } from "./logger/service.ts";
 import {
   GIT,
-  GIT_BUILDER,
-  GIT_HANDLER,
-  gitBuilderService,
-  gitHandlerService,
   gitService,
 } from "./git/services.ts";
 import {
@@ -30,8 +26,6 @@ export const knownServices = {
   "config.provider": CONFIG_PROVIDER,
   logger: LOGGER_FACTORY,
   git: GIT,
-  "git.builder": GIT_BUILDER,
-  "git.handler": GIT_HANDLER,
   subprocess: SUBPROCESS_FACTORY,
   "file-system": FILE_SYSTEM,
   ssh: SSH,
@@ -80,8 +74,6 @@ class Services implements IServices {
     this.#container.register(configProviderService);
     this.#container.register(loggerFactoryService);
     this.#container.register(gitService);
-    this.#container.register(gitBuilderService);
-    this.#container.register(gitHandlerService);
     this.#container.register(subprocessFactoryService);
     this.#container.register(fileSystemService);
     this.#container.register(sshService);
