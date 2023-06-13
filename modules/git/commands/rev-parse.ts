@@ -1,13 +1,14 @@
-import { buildSpec, toResult } from '../utils.ts';
+import { buildCommandSpec } from '../../aif/mod.ts';
 
 export type RevParseParams = {
   isInsideWorkTree?: boolean;
+  gitDir?: string;
 };
 
-export const revParse = buildSpec('rev-parse', {} as RevParseParams, (result) => {
-  return toResult(result, result.stdout.trim());
-});
+export const revParse = buildCommandSpec('rev-parse', {} as RevParseParams, (r) => r);
 
-export const isGitRepo = buildSpec('rev-parse', { isInsideWorkTree: true }, (result) => {
-  return toResult(result, result.stdout.trim() === 'true');
-});
+export const isGitRepo = buildCommandSpec(
+  'rev-parse',
+  { isInsideWorkTree: true },
+  (res) => res.stdout?.trim() === 'true',
+);

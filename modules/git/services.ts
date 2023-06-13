@@ -1,7 +1,12 @@
-import { IGit, Git } from './mod.ts';
-import { createToken, declareService } from '../container/mod.ts';
-import { SUBPROCESS_FACTORY } from '../subprocess/service.ts';
-import { LOGGER_FACTORY } from '../logger/service.ts';
+import { IGit } from './model.ts';
+import { GIT_SPEC } from './commands/mod.ts';
+import { createToken, declareFactory } from '../container/mod.ts';
+import { APP_INTERFACE_FACTORY } from '../aif/services.ts';
 
 export const GIT = createToken<IGit>('git');
-export const gitService = declareService(GIT, Git, LOGGER_FACTORY, SUBPROCESS_FACTORY);
+
+export const gitService = declareFactory(
+  GIT,
+  (factory) => factory.create('git', GIT_SPEC),
+  APP_INTERFACE_FACTORY,
+);
