@@ -1,7 +1,7 @@
-import type { IEntry, IDirectory, EntryState, IFile } from "./model.ts";
-import type { ILoggerFactory, Logger } from "../logger/mod.ts";
-import { join, toFileUrl } from "$deno/path/mod.ts";
-import { ensureDir, emptyDir } from "$deno/fs/mod.ts";
+import type { EntryState, IDirectory, IEntry, IFile } from './model.ts';
+import type { ILoggerFactory, Logger } from '../logger/mod.ts';
+import { join, toFileUrl } from '$deno/path/mod.ts';
+import { emptyDir, ensureDir } from '$deno/fs/mod.ts';
 
 export class Directory implements IDirectory {
   #entry: IEntry;
@@ -15,11 +15,11 @@ export class Directory implements IDirectory {
   constructor(
     entry: IEntry,
     toEntry: (url: URL) => IEntry,
-    loggerFactory?: ILoggerFactory
+    loggerFactory?: ILoggerFactory,
   ) {
     this.#entry = entry;
     this.#toEntry = toEntry;
-    this.#logger = loggerFactory?.get("FileSystem:Directory");
+    this.#logger = loggerFactory?.get('FileSystem:Directory');
   }
 
   async list(): Promise<IEntry[]> {

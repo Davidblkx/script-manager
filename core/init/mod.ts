@@ -1,7 +1,7 @@
-import { LogLevel } from "../../modules/logger/mod.ts";
-import type { IServices } from "../../modules/services.ts";
-import { registerConfigs } from "./config-file/init.ts";
-import { initLogger } from "./logger.ts";
+import { LogLevel } from '../../modules/logger/mod.ts';
+import type { IServices } from '../../modules/services.ts';
+import { registerConfigs } from './config-file/init.ts';
+import { initLogger } from './logger.ts';
 
 export type InitializeOptions = {
   logLevel?: number;
@@ -17,11 +17,11 @@ export async function initialize(
   {
     logLevel = LogLevel.all,
     disableColor = false,
-    configFileName = ".smx.json",
+    configFileName = '.smx.json',
     configFilePath = `~/${configFileName}`,
     useEnvirontment = true,
-    scriptsPath = "~/.smx",
-  }: InitializeOptions
+    scriptsPath = '~/.smx',
+  }: InitializeOptions,
 ) {
   initLogger(services, logLevel, disableColor);
   const root = await registerConfigs(services, {
@@ -33,3 +33,5 @@ export async function initialize(
 
   return root;
 }
+
+export * from './runners/mod.ts';

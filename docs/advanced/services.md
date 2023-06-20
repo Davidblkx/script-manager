@@ -35,8 +35,8 @@ The framework provides a set of core services, which are registered by default. 
 - `config.provider`: [IConfigProvider](/advanced/config?id=configuration-provider) - The configuration provider
 - `logger`: [ILogger](/advanced/logger) - The logger
 - `git`: [IGit](/advanced/git) - The high level git interface
-- `git.builder`: [IGitBuilder](/advanced/git?id=git-builder) - Create reusable git commands
-- `git.handler`: [IGitHandler](/advanced/git?id=git-handler) - Low level git interface
 - `subprocess`: [ISubprocess](/advanced/subprocess) - The subprocess handler to run external commands
 - `file-system`: [IFileSystem](/advanced/file-system) - The file system handler
+- `aif`: [IAppInterface](/advanced/app-interface) - Abstracts interaction with command line applications
+- `runners`: [IRunners](/advanced/runners) - The runners service to run scripts
 - `ssh`: [ISSH](/advanced/ssh) - The ssh service to manage ssh configuration

@@ -1,13 +1,15 @@
-import { services } from "../modules/services.ts";
-import { IScriptManager, ScriptManager } from "./script-manager.ts";
-import { initialize, InitializeOptions } from "./init/mod.ts";
+import { services } from '../modules/services.ts';
+import { IScriptManager, ScriptManager } from './script-manager.ts';
+import { initialize, InitializeOptions, registerRunners } from './init/mod.ts';
 
 export async function initScriptManager(
-  options: InitializeOptions = {}
+  options: InitializeOptions = {},
 ): Promise<IScriptManager> {
   services.registerDefaults();
 
   const root = await initialize(services, options);
+  const sm = new ScriptManager(services, root);
+  registerRunners(sm);
 
-  return new ScriptManager(services, root);
+  return sm;
 }

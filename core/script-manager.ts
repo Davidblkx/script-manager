@@ -1,5 +1,5 @@
-import type { Logger } from "../modules/logger/mod.ts";
-import { IServices } from "../modules/services.ts";
+import type { Logger } from '../modules/logger/mod.ts';
+import { IServices } from '../modules/services.ts';
 
 export interface IScriptManager {
   readonly services: IServices;
@@ -23,7 +23,18 @@ export class ScriptManager implements IScriptManager {
     this.#services = services;
     this.#root = root;
 
-    this.#logger = services.get("logger").get("script-manager");
-    this.#logger.debug("ScriptManager root at: " + root.pathname);
+    this.#logger = services.get('logger').get('script-manager');
+    this.#logger.debug('ScriptManager root at: ' + root.pathname);
   }
 }
+
+export type ModuleResult = string | number | boolean | void | {
+  success: boolean;
+  message?: string;
+  data?: unknown;
+};
+
+export type ScriptManagerModule = (
+  args: string[],
+  context: IScriptManager,
+) => ModuleResult | Promise<ModuleResult>;
