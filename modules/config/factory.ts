@@ -1,8 +1,8 @@
-import type { IReader, IWriter } from "./models.ts";
+import type { IReader, IWriter } from './models.ts';
 
 /** Environment config reader */
 export class EnvironmentConfig implements IReader {
-  readonly name = "environment";
+  readonly name = 'environment';
   #canUse = false;
 
   isAvailable(): boolean {
@@ -10,16 +10,16 @@ export class EnvironmentConfig implements IReader {
   }
 
   async checkAvailability() {
-    const status = await Deno.permissions.query({ name: "env" });
+    const status = await Deno.permissions.query({ name: 'env' });
     const setCanUse = (v: boolean) => (this.#canUse = v);
-    status.addEventListener("change", function () {
-      setCanUse(this.state === "granted");
+    status.addEventListener('change', function () {
+      setCanUse(this.state === 'granted');
     });
-    setCanUse(status.state === "granted");
+    setCanUse(status.state === 'granted');
   }
 
   read(key: string): unknown {
-    return Deno.env.get(key.toUpperCase().replaceAll(".", "_"));
+    return Deno.env.get(key.toUpperCase().replaceAll('.', '_'));
   }
 }
 
@@ -28,17 +28,17 @@ export class AsyncConfig implements IReader, IWriter {
   #name: string;
   #data: Record<string, unknown>;
   #writer: (data: Record<string, unknown>) => void | Promise<void>;
-  #useable: boolean;
+  #useable: boolean | (() => boolean);
 
   isAvailable(): boolean {
-    return this.#useable;
+    return typeof this.#useable === 'boolean' ? this.#useable : this.#useable();
   }
 
   constructor(
     name: string,
     data: Record<string, unknown>,
     writer: (data: Record<string, unknown>) => void | Promise<void>,
-    canUse = true
+    canUse: boolean | (() => boolean) = true,
   ) {
     this.#name = name;
     this.#data = data;

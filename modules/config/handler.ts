@@ -2,11 +2,12 @@ import type {
   Config,
   IAsyncConfig,
   IConfigHandler,
+  IFileConfig,
   IReader,
   IWriter,
-} from "./models.ts";
-import type { ILoggerFactory, Logger } from "../logger/models.ts";
-import { EnvironmentConfig, AsyncConfig } from "./factory.ts";
+} from './models.ts';
+import type { ILoggerFactory, Logger } from '../logger/models.ts';
+import { AsyncConfig, EnvironmentConfig } from './factory.ts';
 
 /** Config handler, allow to read current config value and write */
 export class ConfigHandler implements IConfigHandler {
@@ -15,7 +16,7 @@ export class ConfigHandler implements IConfigHandler {
   #logger: Logger;
 
   constructor(logFactory: ILoggerFactory) {
-    this.#logger = logFactory.get("config_handler");
+    this.#logger = logFactory.get('config_handler');
   }
 
   /**
@@ -30,7 +31,7 @@ export class ConfigHandler implements IConfigHandler {
       const atPos = at ?? this.#readers.length;
       this.#readers.splice(atPos, 0, handler);
       this.#logger.trace(
-        `Registered config reader [${handler.name}] at position ${atPos}`
+        `Registered config reader [${handler.name}] at position ${atPos}`,
       );
     }
 
@@ -38,7 +39,7 @@ export class ConfigHandler implements IConfigHandler {
       const atPos = at ?? this.#writers.length;
       this.#writers.splice(atPos, 0, handler);
       this.#logger.trace(
-        `Registered config writer [${handler.name}] at position ${atPos}`
+        `Registered config writer [${handler.name}] at position ${atPos}`,
       );
     }
 
@@ -63,9 +64,7 @@ export class ConfigHandler implements IConfigHandler {
   /**
    * Register an handler to read/write config from/to a file
    *
-   * @param name handler name, used to identify the handler in logs
-   * @param file object with read/write functions
-   * @param at position to insert the handler, 0 takes priority
+   * @param cfg object with read/write functions
    * @returns
    */
   async registerAsyncConfig(cfg: IAsyncConfig) {
@@ -83,6 +82,39 @@ export class ConfigHandler implements IConfigHandler {
     const data = cfg.initialData ? cfg.initialData : await cfg.read();
     const config = new AsyncConfig(cfg.name, data, cfg.write);
     return this.register(config, cfg.at);
+  }
+
+  async registerFileConfig(cfg: IFileConfig) {
+    if (this.#readers.some((r) => r.name === cfg.name)) return this;
+
+    const fileState = await cfg.file.state();
+    if (fileState === 'directory') {
+      this.#logger.trace(`Failed to load ${cfg.file.path}, it's a directory`);
+      return this;
+    } else if (fileState === 'missing' && !cfg.init) {
+      this.#logger.trace(`Failed to load ${cfg.file.path}, file not found`);
+      return this;
+    }
+
+    try {
+      const file = await cfg.file.toFile();
+      if (fileState === 'missing') {
+        this.#logger.trace(`Creating config file: ${cfg.file.path}`);
+        const data = cfg.initialData ?? {};
+        file.write(JSON.stringify(data, null, 2));
+      }
+
+      const data = JSON.parse(await file.read());
+      const config = new AsyncConfig(cfg.name, data, async (value) => {
+        await file.write(JSON.stringify(value, null, 2));
+      }, cfg.canUse);
+      this.#logger.trace(`Registering config file: ${cfg.name}`);
+      return this.register(config, cfg.at);
+    } catch (err) {
+      this.#logger.error(`Failed to load config file: ${cfg.file.path}`, err);
+    }
+
+    return this;
   }
 
   read<T>(config: Config<T>, target = Deno.build.os, at?: string): T {
@@ -112,7 +144,7 @@ export class ConfigHandler implements IConfigHandler {
     config: Config<T>,
     value: T,
     target?: string,
-    at?: string
+    at?: string,
   ): Promise<void> {
     const key = target
       ? `${config.domain}.${target}.${config.key}`
@@ -122,9 +154,7 @@ export class ConfigHandler implements IConfigHandler {
   }
 
   #read(key: string, at?: string): unknown {
-    const readers = at
-      ? this.#readers.filter((r) => r.name === at)
-      : this.#readers;
+    const readers = at ? this.#readers.filter((r) => r.name === at) : this.#readers;
 
     for (const reader of readers) {
       if (!reader || !reader.isAvailable()) continue;
@@ -145,9 +175,7 @@ export class ConfigHandler implements IConfigHandler {
     )[0];
 
     if (!writer) {
-      const errMessage = at
-        ? `Writer [${at}] not found`
-        : "No writer registered";
+      const errMessage = at ? `Writer [${at}] not found` : 'No writer registered';
       this.#logger.error(errMessage);
       return;
     }
@@ -161,9 +189,9 @@ export class ConfigHandler implements IConfigHandler {
 }
 
 function isReader(handler: IReader | IWriter): handler is IReader {
-  return typeof (handler as IReader).read === "function";
+  return typeof (handler as IReader).read === 'function';
 }
 
 function isWriter(handler: IReader | IWriter): handler is IWriter {
-  return typeof (handler as IWriter).write === "function";
+  return typeof (handler as IWriter).write === 'function';
 }

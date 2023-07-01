@@ -12,6 +12,7 @@ import { FILE_SYSTEM, fileSystemService } from './file-system/services.ts';
 import { SSH, sshService } from './ssh/services.ts';
 import { aifService, APP_INTERFACE_FACTORY } from './aif/services.ts';
 import { RUNNER_STORE, runnerStoreService } from './runner/services.ts';
+import { WORKSPACE, workspaceService } from './workspace/service.ts';
 
 import type { IContainer, Token } from './container/mod.ts';
 
@@ -27,6 +28,7 @@ export const knownServices = {
   ssh: SSH,
   aif: APP_INTERFACE_FACTORY,
   runners: RUNNER_STORE,
+  workspace: WORKSPACE,
 };
 
 export interface IServices {
@@ -77,6 +79,7 @@ class Services implements IServices {
     this.#container.register(sshService);
     this.#container.register(aifService);
     this.#container.register(runnerStoreService);
+    this.#container.register(workspaceService);
     this.#initialized = true;
   }
 }

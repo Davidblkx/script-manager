@@ -2,6 +2,7 @@ import { LogLevel } from '../../modules/logger/mod.ts';
 import type { IServices } from '../../modules/services.ts';
 import { registerConfigs } from './config-file/init.ts';
 import { initLogger } from './logger.ts';
+import { declareWorkspaceRoot } from '../../modules/workspace/service.ts';
 
 export type InitializeOptions = {
   logLevel?: number;
@@ -30,6 +31,9 @@ export async function initialize(
     useEnvirontment,
     scriptsPath,
   });
+
+  services.container.register(declareWorkspaceRoot(root));
+  services.get('workspace').open('main');
 
   return root;
 }

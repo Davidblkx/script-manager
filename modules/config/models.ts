@@ -1,3 +1,5 @@
+import { IEntry } from '../file-system/model.ts';
+
 /** Config value parser */
 export type Parser<T> = (value: unknown) => T | undefined;
 
@@ -35,6 +37,15 @@ export interface IAsyncConfig {
   readonly at?: number;
 }
 
+export interface IFileConfig {
+  name: string;
+  file: IEntry;
+  at?: number;
+  initialData?: Record<string, unknown>;
+  init?: boolean;
+  canUse?: () => boolean;
+}
+
 /** Config handler, allow to read/write current config value */
 export interface IConfigHandler {
   /**
@@ -57,12 +68,17 @@ export interface IConfigHandler {
   /**
    * Register an handler to read/write config from/to a file
    *
-   * @param name handler name, used to identify the handler in logs
-   * @param file object with read/write functions
-   * @param at position to insert the handler, 0 takes priority
+   * @param config object with read/write functions
    * @returns
    */
   registerAsyncConfig(config: IAsyncConfig): Promise<IConfigHandler>;
+
+  /**
+   * Register an handler to read/write config from/to a JSON file
+   *
+   * @param config object with file details
+   */
+  registerFileConfig(config: IFileConfig): Promise<IConfigHandler>;
 
   /**
    * Read the value for a config entry
@@ -85,7 +101,7 @@ export interface IConfigHandler {
     config: Config<T>,
     value: T,
     target?: string,
-    at?: string
+    at?: string,
   ): Promise<void>;
 }
 
