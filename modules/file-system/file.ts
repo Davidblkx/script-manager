@@ -1,5 +1,5 @@
-import type { IEntry, IFile, EntryState } from "./model.ts";
-import type { ILoggerFactory, Logger } from "../logger/mod.ts";
+import type { EntryState, IDirectory, IEntry, IFile } from './model.ts';
+import type { ILoggerFactory, Logger } from '../logger/mod.ts';
 
 export class File implements IFile {
   #entry: IEntry;
@@ -9,9 +9,13 @@ export class File implements IFile {
     return this.#entry.path;
   }
 
+  get parent(): IDirectory {
+    return this.#entry.parent;
+  }
+
   constructor(entry: IEntry, loggerFactory?: ILoggerFactory) {
     this.#entry = entry;
-    this.#logger = loggerFactory?.get("FileSystem:File");
+    this.#logger = loggerFactory?.get('FileSystem:File');
   }
 
   state(): Promise<EntryState> {

@@ -15,4 +15,4 @@
 __BAK/
 
 # Playground files
-_play.ts
+_play*.ts

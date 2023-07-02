@@ -12,6 +12,10 @@ export class Directory implements IDirectory {
     return this.#entry.path;
   }
 
+  get parent(): IDirectory {
+    return this.#entry.parent;
+  }
+
   constructor(
     entry: IEntry,
     toEntry: (url: URL) => IEntry,

@@ -1,7 +1,8 @@
-export type EntryState = "file" | "directory" | "missing";
+export type EntryState = 'file' | 'directory' | 'missing';
 
 export interface IEntry {
   readonly path: URL;
+  readonly parent: IDirectory;
 
   state(): Promise<EntryState>;
 
@@ -11,6 +12,7 @@ export interface IEntry {
 
 export interface IFile {
   readonly path: URL;
+  readonly parent: IDirectory;
 
   state(): Promise<EntryState>;
 
@@ -23,6 +25,7 @@ export interface IFile {
 
 export interface IDirectory {
   readonly path: URL;
+  readonly parent: IDirectory;
 
   state(): Promise<EntryState>;
 
