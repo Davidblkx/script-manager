@@ -11,11 +11,18 @@ export class WorkspaceHandler implements IWorkspaceHandler {
   #logger: Logger;
   #config: IConfigHandler;
   #history: string[] = [];
+  #configFileName: string;
 
-  constructor(logFactory: ILoggerFactory, root: IDirectory, config: IConfigHandler) {
+  constructor(
+    logFactory: ILoggerFactory,
+    root: IDirectory,
+    config: IConfigHandler,
+    fileName: string,
+  ) {
     this.#root = root;
     this.#logger = logFactory.get('workspace');
     this.#config = config;
+    this.#configFileName = fileName;
   }
 
   get active(): IWorkspace | undefined {
@@ -77,7 +84,7 @@ export class WorkspaceHandler implements IWorkspaceHandler {
 
       const config: IFileConfig = {
         name: `workspace.${name}`,
-        file: dir.getEntry('.smx.json'),
+        file: dir.getEntry(this.#configFileName),
         at: 1,
         initialData: {},
         init: true,

@@ -16,8 +16,12 @@ export class Container implements IContainer {
     }
 
     const deps = (service.deps?.map((dep) => this.get(dep)) ?? []) as unknown as DepList;
-    const instance = isServiceTarget(service) ? new service.target(...deps)
-      : isServiceInstance(service) ? service.instance
+    const instance = isServiceTarget(service)
+      ? new service.target(...deps)
+      : isServiceInstance(service)
+      ? typeof service.instance === 'function'
+        ? service.instance(...deps)
+        : service.instance
       : undefined;
 
     if (typeof instance === 'undefined') {
@@ -37,7 +41,7 @@ export class Container implements IContainer {
   }
 
   #isSingleton<T>(service: IService<T>): boolean {
-    return service.token === Symbol.for(service.token.description ?? "UNKNOWN");
+    return service.token === Symbol.for(service.token.description ?? 'UNKNOWN');
   }
 }
 

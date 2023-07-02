@@ -2,7 +2,10 @@ import { LogLevel } from '../../modules/logger/mod.ts';
 import type { IServices } from '../../modules/services.ts';
 import { registerConfigs } from './config-file/init.ts';
 import { initLogger } from './logger.ts';
-import { declareWorkspaceRoot } from '../../modules/workspace/service.ts';
+import {
+  declareWorkspaceConfig,
+  declareWorkspaceRoot,
+} from '../../modules/workspace/service.ts';
 
 export type InitializeOptions = {
   logLevel?: number;
@@ -18,10 +21,10 @@ export async function initialize(
   {
     logLevel = LogLevel.all,
     disableColor = false,
-    configFileName = '.smx.json',
+    configFileName = '.script-manager.json',
     configFilePath = `~/${configFileName}`,
     useEnvirontment = true,
-    scriptsPath = '~/.smx',
+    scriptsPath = '~/.scripts',
   }: InitializeOptions,
 ) {
   initLogger(services, logLevel, disableColor);
@@ -33,7 +36,8 @@ export async function initialize(
   });
 
   services.container.register(declareWorkspaceRoot(root));
-  services.get('workspace').open('main');
+  services.container.register(declareWorkspaceConfig(configFileName));
+  await services.get('workspace').open('main');
 
   return root;
 }

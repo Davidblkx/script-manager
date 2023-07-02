@@ -6,16 +6,16 @@ export interface IContainer {
   register<T>(service: IService<T>): void;
 }
 
-export type InstanceFactoryDep0<T> = () => T | Promise<T>;
-export type InstanceFactoryDep1<T, D1> = (dep1: D1) => T | Promise<T>;
-export type InstanceFactoryDep2<T, D1, D2> = (dep1: D1, dep2: D2) => T | Promise<T>;
-export type InstanceFactoryDep3<T, D1, D2, D3> = (dep1: D1, dep2: D2, dep3: D3) => T | Promise<T>;
-export type InstanceFactoryDep4<T, D1, D2, D3, D4> = (dep1: D1, dep2: D2, dep3: D3, dep4: D4) => T | Promise<T>;
-export type InstanceFactoryDep5<T, D1, D2, D3, D4, D5> = (dep1: D1, dep2: D2, dep3: D3, dep4: D4, dep5: D5) => T | Promise<T>;
-export type InstanceFactoryDep6<T, D1, D2, D3, D4, D5, D6> = (dep1: D1, dep2: D2, dep3: D3, dep4: D4, dep5: D5, dep6: D6) => T | Promise<T>;
-export type InstanceFactoryDep7<T, D1, D2, D3, D4, D5, D6, D7> = (dep1: D1, dep2: D2, dep3: D3, dep4: D4, dep5: D5, dep6: D6, dep7: D7) => T | Promise<T>;
-export type InstanceFactoryDep8<T, D1, D2, D3, D4, D5, D6, D7, D8> = (dep1: D1, dep2: D2, dep3: D3, dep4: D4, dep5: D5, dep6: D6, dep7: D7, dep8: D8) => T | Promise<T>;
-export type InstanceFactoryDep9<T, D1, D2, D3, D4, D5, D6, D7, D8, D9> = (dep1: D1, dep2: D2, dep3: D3, dep4: D4, dep5: D5, dep6: D6, dep7: D7, dep8: D8, dep9: D9) => T | Promise<T>;
+export type InstanceFactoryDep0<T> = () => T;
+export type InstanceFactoryDep1<T, D1> = (dep1: D1) => T;
+export type InstanceFactoryDep2<T, D1, D2> = (dep1: D1, dep2: D2) => T;
+export type InstanceFactoryDep3<T, D1, D2, D3> = (dep1: D1, dep2: D2, dep3: D3) => T;
+export type InstanceFactoryDep4<T, D1, D2, D3, D4> = (dep1: D1, dep2: D2, dep3: D3, dep4: D4) => T;
+export type InstanceFactoryDep5<T, D1, D2, D3, D4, D5> = (dep1: D1, dep2: D2, dep3: D3, dep4: D4, dep5: D5) => T;
+export type InstanceFactoryDep6<T, D1, D2, D3, D4, D5, D6> = (dep1: D1, dep2: D2, dep3: D3, dep4: D4, dep5: D5, dep6: D6) => T;
+export type InstanceFactoryDep7<T, D1, D2, D3, D4, D5, D6, D7> = (dep1: D1, dep2: D2, dep3: D3, dep4: D4, dep5: D5, dep6: D6, dep7: D7) => T;
+export type InstanceFactoryDep8<T, D1, D2, D3, D4, D5, D6, D7, D8> = (dep1: D1, dep2: D2, dep3: D3, dep4: D4, dep5: D5, dep6: D6, dep7: D7, dep8: D8) => T;
+export type InstanceFactoryDep9<T, D1, D2, D3, D4, D5, D6, D7, D8, D9> = (dep1: D1, dep2: D2, dep3: D3, dep4: D4, dep5: D5, dep6: D6, dep7: D7, dep8: D8, dep9: D9) => T;
 
 export type IServiceDep0<T> = {
   token: Token<T>;

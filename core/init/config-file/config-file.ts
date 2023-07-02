@@ -1,8 +1,8 @@
-import type { Logger } from "../../../modules/logger/mod.ts";
-import type { IAsyncConfig } from "../../../modules/config/mod.ts";
-import type { IServices } from "../../../modules/services.ts";
-import type { IFile } from "../../../modules/file-system/model.ts";
-import type { ScriptManagerConfig } from "./models.ts";
+import type { Logger } from '../../../modules/logger/mod.ts';
+import type { IAsyncConfig } from '../../../modules/config/mod.ts';
+import type { IServices } from '../../../modules/services.ts';
+import type { IFile } from '../../../modules/file-system/model.ts';
+import type { ScriptManagerConfig } from './models.ts';
 
 export class ConfigFile implements IAsyncConfig {
   #file: IFile;
@@ -39,12 +39,12 @@ export class ConfigFile implements IAsyncConfig {
   constructor(services: IServices, name: string, file: IFile) {
     this.#file = file;
     this.#logger = services
-      .get("logger")
+      .get('logger')
       .get(`config-file:${file.path.pathname}`);
     this.#name = name;
     this.#lasValue = {
       settings: {},
-      version: "0.5.0",
+      version: '0.5.0',
     };
   }
 
@@ -57,10 +57,9 @@ export class ConfigFile implements IAsyncConfig {
   updateValue(
     value:
       | ScriptManagerConfig
-      | ((e: ScriptManagerConfig) => ScriptManagerConfig)
+      | ((e: ScriptManagerConfig) => ScriptManagerConfig),
   ): this {
-    this.#lasValue =
-      typeof value === "function" ? value(this.#lasValue) : value;
+    this.#lasValue = typeof value === 'function' ? value(this.#lasValue) : value;
     return this;
   }
 
@@ -72,10 +71,10 @@ export class ConfigFile implements IAsyncConfig {
     this.#init = true;
 
     const state = await this.#file.state();
-    if (state === "missing" && ensureFile) {
+    if (state === 'missing' && ensureFile) {
       this.#logger.trace(`File is missing, creating it`);
       await this.writeFileConfig(this.#lasValue);
-    } else if (state === "missing") {
+    } else if (state === 'missing') {
       this.#logger.trace(`File is missing, skiping`);
       this.#init = false;
       return false;
@@ -117,6 +116,7 @@ export class ConfigFile implements IAsyncConfig {
   async writeFileConfig(config?: ScriptManagerConfig) {
     const toWrite = config ?? this.#lasValue;
     const content = JSON.stringify(toWrite, null, 2);
+    await this.#file.parent.ensure();
     await this.#file.write(content);
   }
 
@@ -124,21 +124,21 @@ export class ConfigFile implements IAsyncConfig {
     services: IServices,
     name: string,
     path: string | URL,
-    initFile?: Partial<ScriptManagerConfig>
+    initFile?: Partial<ScriptManagerConfig>,
   ) {
-    const fs = services.get("file-system");
-    const logger = services.get("logger").get("init.config-file");
+    const fs = services.get('file-system');
+    const logger = services.get('logger').get('init.config-file');
 
     const entry = fs.get(path);
     const state = await entry.state();
-    if (state === "directory") {
+    if (state === 'directory') {
       logger.error(`Path ${entry.path.pathname} is a directory, skiping`);
       return;
     }
 
     const file = await entry.toFile();
     const config = new ConfigFile(services, name, file);
-    if (typeof initFile === "object") {
+    if (typeof initFile === 'object') {
       await config
         .updateValue((v) => ({
           ...v,

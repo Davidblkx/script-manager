@@ -101,7 +101,8 @@ export class ConfigHandler implements IConfigHandler {
       if (fileState === 'missing') {
         this.#logger.trace(`Creating config file: ${cfg.file.path}`);
         const data = cfg.initialData ?? {};
-        file.write(JSON.stringify(data, null, 2));
+        await file.parent.ensure();
+        await file.write(JSON.stringify(data, null, 2));
       }
 
       const data = JSON.parse(await file.read());

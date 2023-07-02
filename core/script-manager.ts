@@ -1,9 +1,11 @@
 import type { Logger } from '../modules/logger/mod.ts';
 import { IServices } from '../modules/services.ts';
+import { APP_VERSION } from '../version.ts';
 
 export interface IScriptManager {
   readonly services: IServices;
   readonly root: URL;
+  readonly version: string;
 }
 
 export class ScriptManager implements IScriptManager {
@@ -17,6 +19,10 @@ export class ScriptManager implements IScriptManager {
 
   get services(): IServices {
     return this.#services;
+  }
+
+  get version(): string {
+    return APP_VERSION;
   }
 
   constructor(services: IServices, root: URL) {

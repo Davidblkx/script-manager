@@ -8,6 +8,7 @@ import { FILE_SYSTEM } from '../file-system/services.ts';
 
 export const WORKSPACE_ROOT = createToken<IDirectory>('workspaceRoot');
 export const WORKSPACE = createToken<IWorkspaceHandler>('workspace');
+export const WORKSPACE_CONFIG = createToken<string>('workspaceConfigFileName');
 
 export const workspaceService = declareService(
   WORKSPACE,
@@ -15,11 +16,15 @@ export const workspaceService = declareService(
   LOGGER_FACTORY,
   WORKSPACE_ROOT,
   CONFIG_HANDLER,
+  WORKSPACE_CONFIG,
 );
 
 export const declareWorkspaceRoot = (url: URL) =>
   declareFactory(
     WORKSPACE_ROOT,
-    (fs: IFileSystem) => fs.get(url).toDirectory(),
+    (fs: IFileSystem) => fs.get(url).toDirectorySync(),
     FILE_SYSTEM,
   );
+
+export const declareWorkspaceConfig = (name: string) =>
+  declareFactory(WORKSPACE_CONFIG, name);

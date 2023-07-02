@@ -5,9 +5,12 @@ export interface IEntry {
   readonly parent: IDirectory;
 
   state(): Promise<EntryState>;
+  stateSync(): EntryState;
 
   toFile(): Promise<IFile>;
+  toFileSync(): IFile;
   toDirectory(): Promise<IDirectory>;
+  toDirectorySync(): IDirectory;
 }
 
 export interface IFile {
