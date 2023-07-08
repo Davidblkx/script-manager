@@ -15,6 +15,8 @@ export interface InstallOptions {
   folder: string;
   rootFolder: string;
   userFolder: string;
+  cliName: string;
+  xCliName: string;
 }
 
 export type SetupFolderOptions = {
@@ -57,6 +59,10 @@ export interface SetupOptions {
   };
   scriptsFolder: SetupFolderOptions;
   ssh: SSHConfig;
+  cli: {
+    name: string;
+    x: string;
+  };
 }
 
 export const opt: InstallOptions = {
@@ -69,6 +75,8 @@ export const opt: InstallOptions = {
   folder: '.scripts',
   rootFolder: '~',
   gitCustomHost: false,
+  cliName: 'sm',
+  xCliName: 'smx',
 };
 
 export function isInteractive(): boolean {

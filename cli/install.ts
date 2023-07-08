@@ -4,6 +4,7 @@ import {
   C,
   calculateActions,
   E,
+  loadDomainSettings,
   loadFileSettings,
   loadGitOptions,
   opt,
@@ -33,6 +34,7 @@ const gVersion = await validateGIT();
 tty.text(C('green', `\n${E('✅', 'OK!')} (${gVersion.trim()})`));
 tty.text('\n\n');
 
+await loadDomainSettings();
 await loadFileSettings();
 await loadGitOptions();
 

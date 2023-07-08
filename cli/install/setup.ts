@@ -57,6 +57,10 @@ export async function validateOptions(): Promise<SetupOptions> {
       existing: true,
     },
     ssh: { use: false },
+    cli: {
+      name: opt.cliName,
+      x: opt.xCliName,
+    },
   };
 
   setup.configFile.fileName = opt.fileName;
@@ -139,6 +143,7 @@ export async function calculateActions(): Promise<string[]> {
     configFile,
     scriptsFolder,
     ssh,
+    cli,
   } = await validateOptions();
 
   let actionCount = 0;
@@ -201,11 +206,15 @@ export async function calculateActions(): Promise<string[]> {
   }
 
   actions.push(
-    `${++actionCount}: ${C('yellow', 'Install script-manager CLI as sm')}`,
+    `${++actionCount}: ${C('yellow', 'Install script-manager CLI as')} ${
+      C('green', cli.name)
+    }`,
   );
 
   actions.push(
-    `${++actionCount}: ${C('yellow', 'Install script-manager executor CLI as smx')}`,
+    `${++actionCount}: ${C('yellow', 'Install script-manager executor CLI as')} ${
+      C('green', cli.x)
+    }`,
   );
 
   if (ssh.use) {
